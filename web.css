@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+  body {
+    background-color: #0d122b;
+    color: white;
+    font-family: "Nunito Sans", sans-serif;
+  }
+  .dream-card img {
+    width: 50px;
+    height: 50px;
+  }
+  .dream-card {
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  .profile-card {
+    background-color: #ffeaa7;
+    border-radius: 1rem;
+    color: #000;
+  }
