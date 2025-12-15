@@ -2,33 +2,43 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Chart Saham</title>
+  <title>Mini App Saham</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Telegram Mini App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      padding: 12px;
       background: #0f172a;
       color: #e5e7eb;
+      font-family: Arial, sans-serif;
       text-align: center;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 10px;
     }
     img {
       max-width: 100%;
+      border-radius: 10px;
       margin-top: 10px;
-      border-radius: 8px;
+      background: #020617;
     }
-    .code {
-      font-size: 18px;
-      margin-top: 10px;
-      font-weight: bold;
+    .info {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
 
-<div class="code" id="code">Loading...</div>
+<h1 id="title">Loading...</h1>
 <img id="chart" />
+<div class="info">Data visual dari QuickChart</div>
 
 <script>
   const tg = window.Telegram.WebApp;
@@ -36,10 +46,11 @@
   tg.expand();
 
   const params = new URLSearchParams(window.location.search);
-  const code = params.get("code") || "-";
+  const code = params.get("code");
   const chart = params.get("chart");
 
-  document.getElementById("code").innerText = `Kode Saham: ${code}`;
+  document.getElementById("title").innerText =
+    code ? `Kode Saham: ${code.toUpperCase()}` : "Kode saham tidak ditemukan";
 
   if (chart) {
     document.getElementById("chart").src = chart;
