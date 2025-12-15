@@ -168,9 +168,10 @@ a:hover {
 /* ===== BOT COMMANDS PANEL ===== */
 .bot-commands-panel {
     position: fixed;
-    bottom: -486px;
+    bottom: -40rem;
     right: 1rem;
-    width: 300px;
+    width: 302px;
+    height: 39rem;
     background-color: var(--bg-card);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: var(--shadow-lg);
@@ -211,7 +212,7 @@ a:hover {
 }
 
 .commands-list {
-    max-height: 350px;
+    max-height: 506px;
     overflow-y: auto;
     padding: var(--spacing-md);
 }
@@ -274,62 +275,7 @@ a:hover {
         padding: 0 0.5rem;
     }
     
-    .app-header {
-        flex-direction: column;
-        gap: var(--spacing-md);
-        text-align: center;
-    }
     
-    .main-nav {
-        justify-content: flex-start;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        gap: var(--spacing-md);
-        align-items: flex-start;
-    }
-    
-    .commands-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .stock-selector {
-        grid-template-columns: 1fr;
-    }
-    
-    .table-header,
-    .table-row {
-        grid-template-columns: 50px 1fr 1fr;
-        font-size: 0.875rem;
-    }
-    
-    .table-header .col-freq,
-    .table-header .col-net,
-    .table-header .col-action,
-    .table-row .col-freq,
-    .table-row .col-net,
-    .table-row .col-action {
-        display: none;
-    }
-    
-    .flow-summary {
-        flex-direction: column;
-        gap: var(--spacing-md);
-    }
-    
-    .flow-item {
-        min-width: auto;
-    }
-    
-    .funda-score {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .quadrant-grid {
-        height: 300px;
-    }
     
     .bot-commands-panel {
         width: calc(100% - 2rem);
@@ -362,7 +308,6 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-secondary);
 }
-
 
   </style>
 </head>
