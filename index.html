@@ -9,55 +9,116 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      padding: 12px;
-      background: #0f172a;
-      color: #e5e7eb;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    h1 {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-    img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-top: 10px;
-      background: #020617;
-    }
-    .info {
-      font-size: 13px;
-      color: #94a3b8;
-      margin-top: 8px;
-    }
+    /* Floating Button */
+.btn-floating {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    z-index: 999;
+}
+
+/* Panel Default (Hidden) */
+.bot-commands-panel {
+    position: fixed;
+    bottom: 0;
+    right: 1rem;
+    width: 300px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+
+    /* animasi */
+    transform: translateY(110%);
+    opacity: 0;
+    transition: transform var(--transition-slow),
+                opacity var(--transition-normal);
+}
+
+/* Saat Aktif */
+.bot-commands-panel.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Header */
+.commands-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.btn-close-panel {
+    background: transparent;
+    color: var(--text-primary);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+    .bot-commands-panel {
+    will-change: transform, opacity;
+}
+
+
   </style>
 </head>
 <body>
 
 <h1 id="title">Loading...</h1>
-<img id="chart" />
-<div class="info">Data visual dari QuickChart</div>
+<!-- Button Floating -->
+<button id="openCommands" class="btn-floating">
+    <i class="fas fa-robot"></i>
+</button>
 
+<!-- Telegram Bot Commands Panel -->
+<div class="bot-commands-panel" id="botPanel">
+    <div class="commands-header">
+        <h4><i class="fas fa-robot"></i> Telegram Bot Commands</h4>
+        <button class="btn-close-panel" id="closePanel">&times;</button>
+    </div>
+    <div class="commands-list">
+        <div class="command-item"><code>/start</code><span>Memulai bot</span></div>
+        <div class="command-item"><code>/help</code><span>Bantuan dan panduan</span></div>
+        <div class="command-item"><code>/tr-[KODE]</code><span>Trendlines analysis</span></div>
+        <div class="command-item"><code>/bsd-[KODE]</code><span>Buyer/Seller diagram</span></div>
+        <div class="command-item"><code>/t5-[KODE]</code><span>Top 5 brokers</span></div>
+        <div class="command-item"><code>/fl-[KODE]-[DATE]</code><span>Flow analysis</span></div>
+        <div class="command-item"><code>/fc-[KODE]-[PERIOD]</code><span>FundaChart analysis</span></div>
+        <div class="command-item"><code>/rrg-[KODE]</code><span>RRG matrix analysis</span></div>
+    </div>
+</div>
 <script>
-  const tg = window.Telegram.WebApp;
-  tg.ready();
-  tg.expand();
+const openBtn = document.getElementById("openCommands");
+const closeBtn = document.getElementById("closePanel");
+const panel = document.getElementById("botPanel");
 
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  const chart = params.get("chart");
+openBtn.addEventListener("click", () => {
+    panel.classList.add("show");
+});
 
-  document.getElementById("title").innerText =
-    code ? `Kode Saham: ${code.toUpperCase()}` : "Kode saham tidak ditemukan";
+closeBtn.addEventListener("click", () => {
+    panel.classList.remove("show");
+});
 
-  if (chart) {
-    document.getElementById("chart").src = chart;
-  } else {
-    document.getElementById("chart").alt = "Chart tidak tersedia";
-  }
+/* Optional: klik di luar panel untuk menutup */
+document.addEventListener("click", (e) => {
+    if (!panel.contains(e.target) && !openBtn.contains(e.target)) {
+        panel.classList.remove("show");
+    }
+});
 </script>
+
 
 </body>
 </html>
