@@ -8,66 +8,359 @@
   <!-- Telegram Mini App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    /* Floating Button */
-.btn-floating {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--primary-color);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    box-shadow: var(--shadow-lg);
-    z-index: 999;
+    /* ===== VARIABLES ===== */
+:root {
+    /* Primary Colors */
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #3b82f6;
+    
+    /* Secondary Colors */
+    --secondary-color: #10b981;
+    --secondary-dark: #0d9668;
+    
+    /* Status Colors */
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    
+    /* Neutral Colors */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #475569;
+    
+    /* Chart Colors */
+    --chart-green: #10b981;
+    --chart-red: #ef4444;
+    --chart-blue: #3b82f6;
+    --chart-yellow: #f59e0b;
+    --chart-purple: #8b5cf6;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border Radius */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 300ms ease;
+    --transition-slow: 500ms ease;
 }
 
-/* Panel Default (Hidden) */
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: var(--spacing-sm);
+}
+
+h1 { font-size: 1.875rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.125rem; }
+
+p {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+}
+
+a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+
+/* ===== BUTTONS ===== */
+.btn-primary,
+.btn-refresh,
+.btn-small {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-refresh {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.btn-refresh:hover {
+    background-color: var(--border-color);
+}
+
+.btn-small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.btn-info {
+    background-color: var(--info-color);
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #2563eb;
+}
+
+/* ===== BOT COMMANDS PANEL ===== */
 .bot-commands-panel {
     position: fixed;
-    bottom: 0;
+    bottom: -486px;
     right: 1rem;
     width: 300px;
     background-color: var(--bg-card);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: var(--shadow-lg);
+    transition: bottom var(--transition-normal);
     z-index: 1000;
-
-    /* animasi */
-    transform: translateY(110%);
-    opacity: 0;
-    transition: transform var(--transition-slow),
-                opacity var(--transition-normal);
 }
 
-/* Saat Aktif */
 .bot-commands-panel.show {
-    transform: translateY(0);
-    opacity: 1;
+    bottom: 0;
 }
 
-/* Header */
 .commands-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--spacing-sm);
-    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-md);
+    background-color: var(--primary-color);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    color: white;
 }
 
 .btn-close-panel {
-    background: transparent;
-    color: var(--text-primary);
+    background: none;
     border: none;
+    color: white;
     font-size: 1.5rem;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
+.btn-close-panel:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.commands-list {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: var(--spacing-md);
+}
+
+.command-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.command-item:last-child {
+    border-bottom: none;
+}
+
+.command-item code {
+    background-color: var(--bg-primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-family: 'Monaco', 'Consolas', monospace;
+    color: var(--primary-light);
+    min-width: 140px;
+}
+
+.command-item span {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* ===== FLOATING ACTION BUTTON ===== */
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-normal);
+    z-index: 999;
+}
+
+.fab:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 0 0.5rem;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .main-nav {
+        justify-content: flex-start;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: flex-start;
+    }
+    
+    .commands-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stock-selector {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-header,
+    .table-row {
+        grid-template-columns: 50px 1fr 1fr;
+        font-size: 0.875rem;
+    }
+    
+    .table-header .col-freq,
+    .table-header .col-net,
+    .table-header .col-action,
+    .table-row .col-freq,
+    .table-row .col-net,
+    .table-row .col-action {
+        display: none;
+    }
+    
+    .flow-summary {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .flow-item {
+        min-width: auto;
+    }
+    
+    .funda-score {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .quadrant-grid {
+        height: 300px;
+    }
+    
     .bot-commands-panel {
-    will-change: transform, opacity;
+        width: calc(100% - 2rem);
+        right: 1rem;
+    }
+    
+    .fab {
+        bottom: 1rem;
+        right: 1rem;
+    }
+}
+
+
+/* ===== SCROLLBAR STYLING ===== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
 }
 
 
@@ -75,48 +368,101 @@
 </head>
 <body>
 
-<h1 id="title">Loading...</h1>
-<!-- Button Floating -->
-<button id="openCommands" class="btn-floating">
-    <i class="fas fa-robot"></i>
-</button>
+<div class="app-container">
+        
 
-<!-- Telegram Bot Commands Panel -->
-<div class="bot-commands-panel" id="botPanel">
-    <div class="commands-header">
-        <h4><i class="fas fa-robot"></i> Telegram Bot Commands</h4>
-        <button class="btn-close-panel" id="closePanel">&times;</button>
+        <!-- Telegram Bot Commands Panel -->
+        <div class="bot-commands-panel">
+            <div class="commands-header">
+                <h4><i class="fas fa-robot"></i> Telegram Bot Commands</h4>
+                <button class="btn-close-panel">&times;</button>
+            </div>
+            <div class="commands-list">
+                <div class="command-item">
+                    <code>/start</code>
+                    <span>Memulai bot</span>
+                </div>
+                <div class="command-item">
+                    <code>/help</code>
+                    <span>Bantuan dan panduan</span>
+                </div>
+                <div class="command-item">
+                    <code>/tr-[KODE]</code>
+                    <span>Trendlines analysis</span>
+                </div>
+                <div class="command-item">
+                    <code>/bsd-[KODE]</code>
+                    <span>Buyer/Seller diagram</span>
+                </div>
+                <div class="command-item">
+                    <code>/t5-[KODE]</code>
+                    <span>Top 5 brokers</span>
+                </div>
+                <div class="command-item">
+                    <code>/fl-[KODE]-[DATE]</code>
+                    <span>Flow analysis</span>
+                </div>
+                <div class="command-item">
+                    <code>/fc-[KODE]-[PERIOD]</code>
+                    <span>FundaChart analysis</span>
+                </div>
+                <div class="command-item">
+                    <code>/rrg-[KODE]</code>
+                    <span>RRG matrix analysis</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab" id="commands-fab">
+            <i class="fas fa-terminal"></i>
+        </button>
     </div>
-    <div class="commands-list">
-        <div class="command-item"><code>/start</code><span>Memulai bot</span></div>
-        <div class="command-item"><code>/help</code><span>Bantuan dan panduan</span></div>
-        <div class="command-item"><code>/tr-[KODE]</code><span>Trendlines analysis</span></div>
-        <div class="command-item"><code>/bsd-[KODE]</code><span>Buyer/Seller diagram</span></div>
-        <div class="command-item"><code>/t5-[KODE]</code><span>Top 5 brokers</span></div>
-        <div class="command-item"><code>/fl-[KODE]-[DATE]</code><span>Flow analysis</span></div>
-        <div class="command-item"><code>/fc-[KODE]-[PERIOD]</code><span>FundaChart analysis</span></div>
-        <div class="command-item"><code>/rrg-[KODE]</code><span>RRG matrix analysis</span></div>
-    </div>
-</div>
+
+  
 <script>
-const openBtn = document.getElementById("openCommands");
-const closeBtn = document.getElementById("closePanel");
-const panel = document.getElementById("botPanel");
+// Initialize Telegram Web App
+const tg = window.Telegram.WebApp;
 
-openBtn.addEventListener("click", () => {
-    panel.classList.add("show");
-});
 
-closeBtn.addEventListener("click", () => {
-    panel.classList.remove("show");
-});
+// Initialize App
+function initApp() {
+        
+    // Set up event listeners
+    setupEventListeners();
+    
+   
+}
 
-/* Optional: klik di luar panel untuk menutup */
-document.addEventListener("click", (e) => {
-    if (!panel.contains(e.target) && !openBtn.contains(e.target)) {
-        panel.classList.remove("show");
-    }
-});
+// Setup all event listeners
+function setupEventListeners() {
+      
+    // FAB for bot commands
+    document.getElementById('commands-fab').addEventListener('click', toggleCommandsPanel);
+    
+    // Close commands panel
+    document.querySelector('.btn-close-panel').addEventListener('click', toggleCommandsPanel);
+    
+    // Input changes
+    document.querySelectorAll('.stock-selector input').forEach(input => {
+        input.addEventListener('change', updateCurrentStock);
+    });
+}
+
+
+
+
+// Toggle commands panel
+function toggleCommandsPanel() {
+    const panel = document.querySelector('.bot-commands-panel');
+    panel.classList.toggle('show');
+}
+
+
+
+// Initialize app when DOM is loaded
+document.addEventListener('DOMContentLoaded', initApp);
+
 </script>
 
 
