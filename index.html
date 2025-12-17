@@ -476,19 +476,74 @@ a:hover {
         </button>
     </div>
 
+  <script>
+    // Ganti dengan URL Web App Google Apps Script Anda nanti
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx0lQNDNGm5nIe5iwZx3MlHMmNWFcYbf32bwmrf2sPkz6Pp13i2ZGuU-wkypVT3yqGHkw/exec';
+
+    // Fungsi untuk mengirim perintah
+    async function sendTelegramCommand(commandText) {
+        // 1. Akses data pengguna Telegram dari Mini App
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe.user;
+
+        if (!user || !user.id) {
+            alert("Data pengguna tidak ditemukan. Pastikan Anda membuka dari Telegram.");
+            return;
+        }
+
+        // 2. Siapkan data untuk dikirim ke GAS
+        const requestData = {
+            userId: user.id,
+            command: commandText, // Misal: "/help"
+            username: user.username,
+            firstName: user.first_name,
+            source: 'mini_app'
+        };
+
+        // 3. (Opsional) Tampilkan indikator loading
+        // ...
+
+        // 4. Kirim data ke Google Apps Script
+        try {
+            // Menggunakan 'no-cors' mode karena domain GitHub Pages dan GAS berbeda
+            await fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Penting!
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            });
+
+            // 5. Beri tahu pengguna
+            tg.showAlert(`Perintah "${commandText}" telah dikirim. Silakan cek chat Telegram Anda untuk balasan dari bot.`);
+            // Atau gunakan: tg.HapticFeedback.impactOccurred('medium'); // Untuk getar
+
+        } catch (error) {
+            console.error('Gagal mengirim:', error);
+            tg.showAlert('Terjadi kesalahan. Silakan coba lagi.');
+        }
+    }
+
+    // 6. Hubungkan fungsi ke elemen di halaman (setelah halaman dimuat)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Contoh: Menghubungkan semua elemen dengan class 'cmd-btn'
+        document.querySelectorAll('.cmd-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const command = this.getAttribute('data-cmd'); // Ambil perintah dari atribut data-cmd
+                if (command) {
+                    sendTelegramCommand(command);
+                }
+            });
+        });
+    });
+</script>
   
 <script>
-// Initialize Telegram Web App
-const tg = window.Telegram.WebApp;
-
 
 // Initialize App
 function initApp() {
-        
-    // Set up event listeners
-    setupEventListeners();
     
-   
+    // Set up event listeners
+    setupEventListeners();   
 }
 
 // Setup all event listeners
@@ -499,23 +554,14 @@ function setupEventListeners() {
     
     // Close commands panel
     document.querySelector('.btn-close-panel').addEventListener('click', toggleCommandsPanel);
-    
-    // Input changes
-    document.querySelectorAll('.stock-selector input').forEach(input => {
-        input.addEventListener('change', updateCurrentStock);
-    });
+
 }
-
-
-
 
 // Toggle commands panel
 function toggleCommandsPanel() {
     const panel = document.querySelector('.bot-commands-panel');
     panel.classList.toggle('show');
 }
-
-
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', initApp);
