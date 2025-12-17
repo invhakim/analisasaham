@@ -427,10 +427,13 @@ a:hover {
 <button class="button-49" data-cmd="/tr-DGIK">Trendlines DGIK</button>
 <button class="button-49" data-cmd="/fc-BUMI">FundaChart BUMI</button>
 
-<!-- Atau buat form input untuk kode dinamis -->
-<div class="input-group">
-    <input type="text" id="stockCode" placeholder="Masukkan kode saham (BBCA)">
-    <button class="button-49" onclick="sendCustomCommand()">Analisis</button>
+<!-- Contoh tombol dengan input -->
+<div class="input-group" style="margin: 20px 0;">
+    <input type="text" id="stock-input" placeholder="Kode saham (BBCA, TLKM...)" 
+           style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-right: 10px;">
+    <button class="button-49 analyze-btn" style="background: #2563eb; color: white;">
+        Analisis Trendlines
+    </button>
 </div>
   
 
@@ -495,28 +498,58 @@ a:hover {
 
   <script>
 // ===== KONFIGURASI =====
-// GANTI URL INI dengan URL Web App Google Apps Script Anda
 const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
 
-// ===== INISIALISASI TELEGRAM WEB APP =====
+// ===== INISIALISASI =====
 const tg = window.Telegram.WebApp;
 
-// ===== FUNGSI UTAMA UNTUK MENGIRIM PERINTAH =====
+// ===== CUSTOM NOTIFICATION SYSTEM (Kompatibel semua versi) =====
+let notificationTimeout;
+
+function showNotification(message, type = 'info') {
+    // Hapus notifikasi sebelumnya
+    const existingNotif = document.getElementById('custom-notification');
+    if (existingNotif) existingNotif.remove();
+    
+    // Buat elemen notifikasi
+    const notif = document.createElement('div');
+    notif.id = 'custom-notification';
+    notif.className = `notification ${type}`;
+    notif.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
+            <span class="notification-text">${message}</span>
+        </div>
+    `;
+    
+    // Tambahkan ke body
+    document.body.appendChild(notif);
+    
+    // Tampilkan dengan animasi
+    setTimeout(() => notif.classList.add('show'), 10);
+    
+    // Auto-hide setelah 3 detik
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => {
+        notif.classList.remove('show');
+        setTimeout(() => notif.remove(), 300);
+    }, 3000);
+}
+
+// ===== FUNGSI UTAMA =====
 async function sendTelegramCommand(commandText) {
-    // 1. Ambil data pengguna dari Telegram
     const user = tg.initDataUnsafe.user;
     
     if (!user || !user.id) {
-        tg.showAlert("❌ Tidak dapat mengidentifikasi pengguna. Pastikan Anda membuka dari Telegram.");
+        showNotification("Buka aplikasi ini melalui Telegram untuk menggunakan fitur ini", "error");
         return;
     }
     
-    // 2. Tampilkan indikator loading (opsional)
-    tg.MainButton.setText("Mengirim...");
-    tg.MainButton.show();
-    tg.MainButton.disable();
+    // Tampilkan indikator loading
+    const originalButtons = document.querySelectorAll('.button-49[data-cmd]');
+    originalButtons.forEach(btn => btn.disabled = true);
+    showNotification(`Mengirim perintah: ${commandText}...`, "info");
     
-    // 3. Siapkan data untuk dikirim ke GAS
     const requestData = {
         userId: user.id,
         command: commandText,
@@ -525,9 +558,8 @@ async function sendTelegramCommand(commandText) {
         source: 'mini_app'
     };
     
-    // 4. Kirim ke Google Apps Script
     try {
-        // Mode 'no-cors' penting karena domain berbeda (GitHub Pages vs Google)
+        // Kirim ke Google Apps Script
         await fetch(GAS_WEB_APP_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -535,30 +567,34 @@ async function sendTelegramCommand(commandText) {
             body: JSON.stringify(requestData)
         });
         
-        // 5. Beri feedback ke pengguna
-        tg.showAlert(`✅ Perintah "${commandText}" telah dikirim!\n\n📩 Cek chat Telegram Anda untuk balasan dari bot.`);
+        // Beri feedback sukses
+        showNotification(`✅ Perintah "${commandText}" terkirim! Cek chat Telegram Anda.`, "success");
         
-        // Getar (jika didukung)
-        if (tg.HapticFeedback) {
-            tg.HapticFeedback.impactOccurred('light');
-        }
+        // Getar jika didukung dan versi cukup
+        try {
+            if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        } catch (e) {}
         
     } catch (error) {
-        console.error('Gagal mengirim:', error);
-        tg.showAlert('❌ Gagal mengirim perintah. Coba lagi atau periksa koneksi.');
+        console.error('Error:', error);
+        showNotification('❌ Gagal mengirim. Coba lagi.', "error");
     } finally {
-        // 6. Reset tombol
-        tg.MainButton.hide();
+        // Aktifkan kembali tombol
+        setTimeout(() => {
+            originalButtons.forEach(btn => btn.disabled = false);
+        }, 1000);
     }
 }
 
-// ===== SETUP EVENT LISTENER UNTUK TOMBOL =====
+// ===== SETUP EVENT LISTENER =====
 document.addEventListener('DOMContentLoaded', function() {
-    // Cari semua tombol dengan class 'button-49' yang memiliki atribut data-cmd
-    const commandButtons = document.querySelectorAll('.button-49[data-cmd]');
+    console.log('Web App Version:', tg.version);
+    console.log('User:', tg.initDataUnsafe.user);
     
-    // Tambahkan event listener ke setiap tombol
-    commandButtons.forEach(button => {
+    // Setup tombol perintah
+    document.querySelectorAll('.button-49[data-cmd]').forEach(button => {
         button.addEventListener('click', function() {
             const command = this.getAttribute('data-cmd');
             if (command) {
@@ -567,41 +603,121 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Atur tombol utama Telegram
-    tg.MainButton.setText("🚀 Buka di Telegram");
-    tg.MainButton.onClick(() => {
-        tg.close();
-    });
+    // Setup tombol dengan input (jika ada)
+    const analyzeBtn = document.querySelector('.analyze-btn');
+    if (analyzeBtn) {
+        analyzeBtn.addEventListener('click', function() {
+            const stockCode = document.getElementById('stock-input')?.value?.trim();
+            if (!stockCode) {
+                showNotification("Masukkan kode saham terlebih dahulu!", "error");
+                return;
+            }
+            sendTelegramCommand(`/tr-${stockCode.toUpperCase()}`);
+        });
+    }
     
-    // Perluas Web App ke ukuran penuh
-    tg.expand();
+    // Setup Telegram Main Button (jika versi mendukung)
+    try {
+        if (tg.MainButton && tg.MainButton.setText) {
+            tg.MainButton.setText("Buka di Telegram");
+            tg.MainButton.onClick(() => {
+                try {
+                    tg.close();
+                } catch (e) {}
+            });
+            tg.MainButton.show();
+        }
+    } catch (e) {}
     
-    // Tampilkan data pengguna di console untuk debugging
-    console.log('Telegram User:', tg.initDataUnsafe.user);
-    console.log('Start Param:', tg.initDataUnsafe.start_param);
+    // Expand WebApp jika didukung
+    try {
+        if (tg.expand) tg.expand();
+    } catch (e) {}
 });
 
-// ===== FUNGSI TAMBAHAN UNTUK PERINTAH KOMPLEKS =====
-// Untuk tombol yang membutuhkan parameter (seperti /tr-BBCA)
-function openCommandDialog(baseCommand) {
-    const stockCode = prompt(`Masukkan kode saham untuk ${baseCommand}:`, "BBCA");
-    if (stockCode && stockCode.trim() !== '') {
-        const fullCommand = `${baseCommand}-${stockCode.trim().toUpperCase()}`;
-        sendTelegramCommand(fullCommand);
-    }
-}
+    // Debug info
+console.log("=== TELEGRAM WEB APP DEBUG INFO ===");
+console.log("WebApp Version:", window.Telegram.WebApp.version);
+console.log("Platform:", window.Telegram.WebApp.platform);
+console.log("User:", window.Telegram.WebApp.initDataUnsafe.user);
+console.log("Available Methods:");
 
-function sendCustomCommand() {
-    const stockCode = document.getElementById('stockCode').value;
-    if (!stockCode) {
-        tg.showAlert("Masukkan kode saham terlebih dahulu!");
-        return;
-    }
-    // Pilih perintah berdasarkan kebutuhan
-    sendTelegramCommand(`/tr-${stockCode.toUpperCase()}`);
-}
+// Test each method
+const methods = ['showAlert', 'showPopup', 'HapticFeedback', 'MainButton', 'expand'];
+methods.forEach(method => {
+    console.log(`- ${method}:`, typeof window.Telegram.WebApp[method] !== 'undefined' ? 'Available' : 'Not Available');
+});
     
 </script>
+
+<!-- Tambahkan CSS untuk notification custom -->
+<style>
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10000;
+    min-width: 300px;
+    max-width: 90vw;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.notification.success {
+    border-left: 4px solid #10b981;
+}
+
+.notification.error {
+    border-left: 4px solid #ef4444;
+}
+
+.notification.info {
+    border-left: 4px solid #3b82f6;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.notification-icon {
+    font-size: 1.2em;
+    flex-shrink: 0;
+}
+
+.notification-text {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Animation for button click */
+.button-49:active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+}
+
+.button-49:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
   
 <script>
 
