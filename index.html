@@ -417,11 +417,22 @@ a:hover {
 
 <div class="app-container">
         
-<!-- HTML !-->
-<button class="button-49" role="button">/start</button> 
-  <button class="button-49" role="button">/help</button>
-  <button class="button-49" role="button">/scr</button>
-  <button class="button-49" role="button">/tng</button>
+<!-- Tambahkan atribut 'data-cmd' yang berisi perintah Telegram -->
+<button class="button-49" role="button" data-cmd="/start">/start</button>
+<button class="button-49" role="button" data-cmd="/help">/help</button>
+<button class="button-49" role="button" data-cmd="/scr">/scr</button>
+<button class="button-49" role="button" data-cmd="/tng">/tng</button>
+
+  <!-- Tombol dengan parameter statis -->
+<button class="button-49" data-cmd="/tr-DGIK">Trendlines DGIK</button>
+<button class="button-49" data-cmd="/fc-BUMI">FundaChart BUMI</button>
+
+<!-- Atau buat form input untuk kode dinamis -->
+<div class="input-group">
+    <input type="text" id="stockCode" placeholder="Masukkan kode saham (BBCA)">
+    <button class="button-49" onclick="sendCustomCommand()">Analisis</button>
+</div>
+  
 
 
         <!-- Telegram Bot Commands Panel -->
@@ -483,64 +494,113 @@ a:hover {
     </div>
 
   <script>
-    // Ganti dengan URL Web App Google Apps Script Anda nanti
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx0lQNDNGm5nIe5iwZx3MlHMmNWFcYbf32bwmrf2sPkz6Pp13i2ZGuU-wkypVT3yqGHkw/exec';
+// ===== KONFIGURASI =====
+// GANTI URL INI dengan URL Web App Google Apps Script Anda
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
 
-    // Fungsi untuk mengirim perintah
-    async function sendTelegramCommand(commandText) {
-        // 1. Akses data pengguna Telegram dari Mini App
-        const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe.user;
+// ===== INISIALISASI TELEGRAM WEB APP =====
+const tg = window.Telegram.WebApp;
 
-        if (!user || !user.id) {
-            alert("Data pengguna tidak ditemukan. Pastikan Anda membuka dari Telegram.");
-            return;
-        }
-
-        // 2. Siapkan data untuk dikirim ke GAS
-        const requestData = {
-            userId: user.id,
-            command: commandText, // Misal: "/help"
-            username: user.username,
-            firstName: user.first_name,
-            source: 'mini_app'
-        };
-
-        // 3. (Opsional) Tampilkan indikator loading
-        // ...
-
-        // 4. Kirim data ke Google Apps Script
-        try {
-            // Menggunakan 'no-cors' mode karena domain GitHub Pages dan GAS berbeda
-            await fetch(GAS_WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors', // Penting!
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            });
-
-            // 5. Beri tahu pengguna
-            tg.showAlert(`Perintah "${commandText}" telah dikirim. Silakan cek chat Telegram Anda untuk balasan dari bot.`);
-            // Atau gunakan: tg.HapticFeedback.impactOccurred('medium'); // Untuk getar
-
-        } catch (error) {
-            console.error('Gagal mengirim:', error);
-            tg.showAlert('Terjadi kesalahan. Silakan coba lagi.');
-        }
+// ===== FUNGSI UTAMA UNTUK MENGIRIM PERINTAH =====
+async function sendTelegramCommand(commandText) {
+    // 1. Ambil data pengguna dari Telegram
+    const user = tg.initDataUnsafe.user;
+    
+    if (!user || !user.id) {
+        tg.showAlert("❌ Tidak dapat mengidentifikasi pengguna. Pastikan Anda membuka dari Telegram.");
+        return;
     }
+    
+    // 2. Tampilkan indikator loading (opsional)
+    tg.MainButton.setText("Mengirim...");
+    tg.MainButton.show();
+    tg.MainButton.disable();
+    
+    // 3. Siapkan data untuk dikirim ke GAS
+    const requestData = {
+        userId: user.id,
+        command: commandText,
+        username: user.username || '',
+        firstName: user.first_name || 'User',
+        source: 'mini_app'
+    };
+    
+    // 4. Kirim ke Google Apps Script
+    try {
+        // Mode 'no-cors' penting karena domain berbeda (GitHub Pages vs Google)
+        await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        });
+        
+        // 5. Beri feedback ke pengguna
+        tg.showAlert(`✅ Perintah "${commandText}" telah dikirim!\n\n📩 Cek chat Telegram Anda untuk balasan dari bot.`);
+        
+        // Getar (jika didukung)
+        if (tg.HapticFeedback) {
+            tg.HapticFeedback.impactOccurred('light');
+        }
+        
+    } catch (error) {
+        console.error('Gagal mengirim:', error);
+        tg.showAlert('❌ Gagal mengirim perintah. Coba lagi atau periksa koneksi.');
+    } finally {
+        // 6. Reset tombol
+        tg.MainButton.hide();
+    }
+}
 
-    // 6. Hubungkan fungsi ke elemen di halaman (setelah halaman dimuat)
-    document.addEventListener('DOMContentLoaded', function() {
-        // Contoh: Menghubungkan semua elemen dengan class 'cmd-btn'
-        document.querySelectorAll('.cmd-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const command = this.getAttribute('data-cmd'); // Ambil perintah dari atribut data-cmd
-                if (command) {
-                    sendTelegramCommand(command);
-                }
-            });
+// ===== SETUP EVENT LISTENER UNTUK TOMBOL =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Cari semua tombol dengan class 'button-49' yang memiliki atribut data-cmd
+    const commandButtons = document.querySelectorAll('.button-49[data-cmd]');
+    
+    // Tambahkan event listener ke setiap tombol
+    commandButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const command = this.getAttribute('data-cmd');
+            if (command) {
+                sendTelegramCommand(command);
+            }
         });
     });
+    
+    // Atur tombol utama Telegram
+    tg.MainButton.setText("🚀 Buka di Telegram");
+    tg.MainButton.onClick(() => {
+        tg.close();
+    });
+    
+    // Perluas Web App ke ukuran penuh
+    tg.expand();
+    
+    // Tampilkan data pengguna di console untuk debugging
+    console.log('Telegram User:', tg.initDataUnsafe.user);
+    console.log('Start Param:', tg.initDataUnsafe.start_param);
+});
+
+// ===== FUNGSI TAMBAHAN UNTUK PERINTAH KOMPLEKS =====
+// Untuk tombol yang membutuhkan parameter (seperti /tr-BBCA)
+function openCommandDialog(baseCommand) {
+    const stockCode = prompt(`Masukkan kode saham untuk ${baseCommand}:`, "BBCA");
+    if (stockCode && stockCode.trim() !== '') {
+        const fullCommand = `${baseCommand}-${stockCode.trim().toUpperCase()}`;
+        sendTelegramCommand(fullCommand);
+    }
+}
+
+function sendCustomCommand() {
+    const stockCode = document.getElementById('stockCode').value;
+    if (!stockCode) {
+        tg.showAlert("Masukkan kode saham terlebih dahulu!");
+        return;
+    }
+    // Pilih perintah berdasarkan kebutuhan
+    sendTelegramCommand(`/tr-${stockCode.toUpperCase()}`);
+}
+    
 </script>
   
 <script>
