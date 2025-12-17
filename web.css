@@ -5,16 +5,3 @@
     color: white;
     font-family: "Nunito Sans", sans-serif;
   }
-  .dream-card img {
-    width: 50px;
-    height: 50px;
-  }
-  .dream-card {
-    text-align: center;
-    font-size: 0.85rem;
-  }
-  .profile-card {
-    background-color: #ffeaa7;
-    border-radius: 1rem;
-    color: #000;
-  }
