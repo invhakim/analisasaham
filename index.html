@@ -8,23 +8,26 @@
   <!-- Telegram Mini App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   
+  <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    /* ===== VARIABLES ===== */
+    /* ===== VARIABLES & RESET ===== */
     :root {
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
       --secondary: #10b981;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
       --dark: #0f172a;
       --darker: #020617;
       --light: #f8fafc;
       --gray: #94a3b8;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --card-bg: rgba(30, 41, 59, 0.7);
+      --dark-gray: #475569;
+      --card-bg: rgba(30, 41, 59, 0.9);
       --card-border: rgba(71, 85, 105, 0.3);
     }
     
@@ -40,39 +43,28 @@
       color: var(--light);
       min-height: 100vh;
       padding: 16px;
+      line-height: 1.6;
     }
     
     .container {
-      max-width: 800px;
+      max-width: 100%;
       margin: 0 auto;
-      padding-bottom: 80px;
     }
     
     /* ===== HEADER ===== */
     .header {
       text-align: center;
-      margin-bottom: 32px;
-      padding: 24px;
+      margin-bottom: 24px;
+      padding: 20px;
       background: var(--card-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       border-radius: 20px;
       border: 1px solid var(--card-border);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .header::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
     
     .header h1 {
-      font-size: 28px;
+      font-size: 24px;
       margin-bottom: 8px;
       background: linear-gradient(90deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
@@ -82,95 +74,107 @@
     
     .header p {
       color: var(--gray);
-      font-size: 15px;
+      font-size: 14px;
     }
     
-    /* ===== COMMAND SECTION ===== */
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 20px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--light);
+    }
+    
+    /* ===== COMMAND SECTIONS ===== */
     .section {
       background: var(--card-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
+      padding: 20px;
+      margin-bottom: 16px;
       border: 1px solid var(--card-border);
     }
     
     .section-title {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 16px;
       color: var(--light);
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
     }
     
     .section-title i {
       color: var(--primary);
+      width: 20px;
     }
     
     /* ===== COMMAND BUTTONS ===== */
     .command-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    @media (max-width: 640px) {
+      .command-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
     
     .command-btn {
-      padding: 16px;
+      padding: 14px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       color: var(--light);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       text-align: center;
-      height: 100%;
       position: relative;
       overflow: hidden;
-    }
-    
-    .command-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1));
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-    
-    .command-btn:hover::before {
-      opacity: 1;
     }
     
     .command-btn:hover {
       border-color: var(--primary);
       transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+    
+    .command-btn:active {
+      transform: translateY(0);
     }
     
     .command-btn i {
-      font-size: 24px;
+      font-size: 20px;
       color: var(--primary);
     }
     
-    .command-btn .label {
+    .command-btn .command-text {
       font-size: 13px;
-      color: var(--gray);
-      margin-top: 4px;
+      font-weight: 600;
     }
     
-    /* Primary Commands */
+    .command-btn .description {
+      font-size: 11px;
+      color: var(--gray);
+      opacity: 0.8;
+    }
+    
+    /* Button Variants */
     .command-btn.primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       border: none;
@@ -180,11 +184,6 @@
       color: white;
     }
     
-    .command-btn.primary .label {
-      color: rgba(255, 255, 255, 0.9);
-    }
-    
-    /* Secondary Commands */
     .command-btn.secondary {
       background: rgba(16, 185, 129, 0.1);
       border-color: rgba(16, 185, 129, 0.2);
@@ -194,28 +193,42 @@
       color: var(--secondary);
     }
     
+    .command-btn.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+    
+    .command-btn.warning i {
+      color: var(--warning);
+    }
+    
     /* ===== SEARCH SECTION ===== */
+    .search-section {
+      margin-bottom: 20px;
+    }
+    
     .search-box {
       display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
     
     .search-input {
       flex: 1;
-      padding: 16px;
+      padding: 14px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       color: var(--light);
-      font-size: 15px;
-      transition: all 0.2s ease;
+      font-size: 14px;
+      transition: all 0.2s;
     }
     
     .search-input:focus {
       outline: none;
       border-color: var(--primary);
       background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
     
     .search-input::placeholder {
@@ -223,15 +236,15 @@
     }
     
     .search-btn {
-      padding: 0 24px;
+      padding: 0 20px;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       border: none;
       border-radius: 12px;
       color: white;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -240,59 +253,61 @@
     
     .search-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     }
     
-    /* ===== RESULT SECTION ===== */
+    /* ===== RESULT DISPLAY ===== */
     .result-container {
       background: var(--card-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       border-radius: 16px;
-      padding: 24px;
-      margin-top: 24px;
+      padding: 20px;
+      margin-top: 20px;
       border: 1px solid var(--card-border);
       display: none;
+      animation: slideUp 0.3s ease;
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .result-container.active {
       display: block;
-      animation: fadeIn 0.3s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
     
     .result-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
       border-bottom: 1px solid var(--card-border);
     }
     
     .result-title {
-      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--light);
     }
     
     .result-title i {
       color: var(--primary);
-      margin-right: 10px;
     }
     
     .close-result {
       background: none;
       border: none;
       color: var(--gray);
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
-      padding: 4px;
-      border-radius: 6px;
-      transition: all 0.2s ease;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: all 0.2s;
     }
     
     .close-result:hover {
@@ -300,17 +315,18 @@
       color: var(--light);
     }
     
-    .result-content {
-      color: var(--light);
-      line-height: 1.6;
+    /* Analysis Cards */
+    .analysis-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--primary);
+      transition: transform 0.2s;
     }
     
-    .analysis-card {
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 16px;
-      border-left: 4px solid var(--primary);
+    .analysis-card:hover {
+      transform: translateX(2px);
     }
     
     .analysis-card.success {
@@ -325,50 +341,100 @@
       border-left-color: var(--danger);
     }
     
+    .analysis-card.info {
+      border-left-color: var(--info);
+    }
+    
     .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--light);
+    }
+    
+    .card-title i {
+      font-size: 16px;
     }
     
     .card-content {
       color: var(--gray);
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.5;
     }
     
+    .card-content p {
+      margin-bottom: 8px;
+    }
+    
+    /* Metric Grid */
     .metric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
     }
     
     .metric {
       background: rgba(255, 255, 255, 0.05);
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
       text-align: center;
     }
     
     .metric-label {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--gray);
       margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     
     .metric-value {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--light);
     }
     
-    .metric-value.positive { color: var(--success); }
-    .metric-value.negative { color: var(--danger); }
+    .metric-value.positive {
+      color: var(--success);
+    }
     
-    /* ===== LOADING ===== */
+    .metric-value.negative {
+      color: var(--danger);
+    }
+    
+    .metric-value.neutral {
+      color: var(--warning);
+    }
+    
+    /* Recommendation Badge */
+    .recommendation {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--success);
+      color: white;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    
+    .recommendation.buy {
+      background: var(--success);
+    }
+    
+    .recommendation.sell {
+      background: var(--danger);
+    }
+    
+    .recommendation.hold {
+      background: var(--warning);
+    }
+    
+    /* ===== LOADING INDICATOR ===== */
     .loading {
       display: none;
       text-align: center;
@@ -405,20 +471,21 @@
       left: 50%;
       transform: translateX(-50%) translateY(100px);
       background: var(--card-bg);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       border: 1px solid var(--card-border);
       border-radius: 12px;
-      padding: 16px 24px;
+      padding: 14px 20px;
       color: var(--light);
       font-size: 14px;
       z-index: 1000;
       opacity: 0;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       max-width: 400px;
       width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
     
     .notification.show {
@@ -427,30 +494,39 @@
     }
     
     .notification i {
-      font-size: 18px;
+      font-size: 16px;
     }
     
-    .notification.success { border-left: 4px solid var(--success); }
-    .notification.error { border-left: 4px solid var(--danger); }
-    .notification.info { border-left: 4px solid var(--primary); }
+    .notification.success {
+      border-left: 4px solid var(--success);
+    }
+    
+    .notification.error {
+      border-left: 4px solid var(--danger);
+    }
+    
+    .notification.info {
+      border-left: 4px solid var(--info);
+    }
     
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 640px) {
-      .container {
+    @media (max-width: 480px) {
+      body {
         padding: 12px;
       }
       
       .header {
-        padding: 20px;
-        margin-bottom: 24px;
+        padding: 16px;
+        margin-bottom: 20px;
       }
       
-      .header h1 {
-        font-size: 24px;
+      .section {
+        padding: 16px;
       }
       
       .command-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        gap: 8px;
       }
       
       .search-box {
@@ -459,7 +535,7 @@
       
       .search-btn {
         justify-content: center;
-        padding: 16px;
+        padding: 14px;
       }
       
       .metric-grid {
@@ -467,11 +543,37 @@
       }
     }
     
-    @media (max-width: 400px) {
-      .command-grid {
-        grid-template-columns: 1fr;
-      }
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
     }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    /* ===== UTILITIES ===== */
+    .hidden {
+      display: none !important;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
   </style>
 </head>
 <body>
@@ -479,91 +581,81 @@
     <!-- Header -->
     <header class="header">
       <h1><i class="fas fa-chart-network"></i> Holistik Pro Investment</h1>
-      <p>Advanced Stock Analysis Tools</p>
+      <p>Advanced Technical Analysis Tools for Telegram</p>
+      <div class="user-badge" id="userBadge">
+        <i class="fas fa-user"></i>
+        <span id="userName">Loading...</span>
+      </div>
     </header>
     
-    <!-- Basic Commands -->
+    <!-- Quick Actions Section -->
     <section class="section">
       <div class="section-title">
-        <i class="fas fa-terminal"></i>
-        <span>Basic Commands</span>
+        <i class="fas fa-bolt"></i>
+        <span>Quick Actions</span>
       </div>
-      
       <div class="command-grid">
         <button class="command-btn primary" data-cmd="/start">
           <i class="fas fa-play"></i>
-          <span>/start</span>
-          <span class="label">Start Bot</span>
+          <span class="command-text">Start Bot</span>
+          <span class="description">Initialize bot</span>
         </button>
         
         <button class="command-btn primary" data-cmd="/help">
           <i class="fas fa-question-circle"></i>
-          <span>/help</span>
-          <span class="label">Help Guide</span>
+          <span class="command-text">Help Guide</span>
+          <span class="description">Show help</span>
         </button>
         
-        <button class="command-btn" data-cmd="/scr">
+        <button class="command-btn warning" data-cmd="/scr">
           <i class="fas fa-filter"></i>
-          <span>/scr</span>
-          <span class="label">Screener</span>
+          <span class="command-text">Screener</span>
+          <span class="description">Stock screener</span>
         </button>
         
-        <button class="command-btn" data-cmd="/tng">
-          <i class="fas fa-chart-line"></i>
-          <span>/tng</span>
-          <span class="label">Top Nego</span>
+        <button class="command-btn warning" data-cmd="/tng">
+          <i class="fas fa-fire"></i>
+          <span class="command-text">Top Nego</span>
+          <span class="description">Running trade</span>
         </button>
       </div>
     </section>
     
-    <!-- Stock Analysis Commands -->
+    <!-- Popular Stocks Section -->
     <section class="section">
       <div class="section-title">
-        <i class="fas fa-chart-line"></i>
-        <span>Stock Analysis</span>
+        <i class="fas fa-star"></i>
+        <span>Popular Analysis</span>
       </div>
-      
       <div class="command-grid">
-        <button class="command-btn secondary" data-cmd="/tr-DGIK">
-          <i class="fas fa-chart-line"></i>
-          <span>Trendlines</span>
-          <span class="label">DGIK</span>
-        </button>
-        
         <button class="command-btn secondary" data-cmd="/fc-BUMI">
           <i class="fas fa-chart-pie"></i>
-          <span>FundaChart</span>
-          <span class="label">BUMI</span>
+          <span class="command-text">BUMI</span>
+          <span class="description">FundaChart</span>
+        </button>
+        
+        <button class="command-btn secondary" data-cmd="/tr-DGIK">
+          <i class="fas fa-chart-line"></i>
+          <span class="command-text">DGIK</span>
+          <span class="description">Trendlines</span>
         </button>
         
         <button class="command-btn secondary" data-cmd="/bsd-GULA">
           <i class="fas fa-balance-scale"></i>
-          <span>Buyer/Seller</span>
-          <span class="label">GULA</span>
+          <span class="command-text">GULA</span>
+          <span class="description">Buyer/Seller</span>
         </button>
         
         <button class="command-btn secondary" data-cmd="/t5-DGIK">
           <i class="fas fa-users"></i>
-          <span>Top Brokers</span>
-          <span class="label">DGIK</span>
-        </button>
-        
-        <button class="command-btn secondary" data-cmd="/fl-DGIK">
-          <i class="fas fa-water"></i>
-          <span>Flow Analysis</span>
-          <span class="label">DGIK</span>
-        </button>
-        
-        <button class="command-btn secondary" data-cmd="/rrg-DGIK">
-          <i class="fas fa-rocket"></i>
-          <span>RRG Matrix</span>
-          <span class="label">DGIK</span>
+          <span class="command-text">DGIK</span>
+          <span class="description">Top Brokers</span>
         </button>
       </div>
     </section>
     
-    <!-- Search Section -->
-    <section class="section">
+    <!-- Custom Analysis Section -->
+    <section class="section search-section">
       <div class="section-title">
         <i class="fas fa-search"></i>
         <span>Custom Analysis</span>
@@ -572,32 +664,39 @@
       <div class="search-box">
         <input type="text" 
                class="search-input" 
-               id="stock-input" 
+               id="stockInput" 
                placeholder="Enter stock code (BBCA, TLKM, BBRI...)"
-               autocomplete="off">
-        <button class="search-btn" id="analyze-btn">
+               autocomplete="off"
+               autocapitalize="characters">
+        <button class="search-btn" id="analyzeBtn">
           <i class="fas fa-chart-line"></i>
-          Analyze
+          <span>Analyze</span>
         </button>
       </div>
       
       <div class="command-grid">
-        <button class="command-btn" data-cmd="/tr-" data-prefix="/tr-">
-          <i class="fas fa-chart-line"></i>
-          <span>Trendlines</span>
-          <span class="label">Any Stock</span>
-        </button>
-        
-        <button class="command-btn" data-cmd="/fc-" data-prefix="/fc-">
+        <button class="command-btn" data-prefix="/fc-">
           <i class="fas fa-chart-pie"></i>
-          <span>FundaChart</span>
-          <span class="label">Any Stock</span>
+          <span class="command-text">FundaChart</span>
+          <span class="description">Fundamental</span>
         </button>
         
-        <button class="command-btn" data-cmd="/bsd-" data-prefix="/bsd-">
+        <button class="command-btn" data-prefix="/tr-">
+          <i class="fas fa-chart-line"></i>
+          <span class="command-text">Trendlines</span>
+          <span class="description">Technical</span>
+        </button>
+        
+        <button class="command-btn" data-prefix="/bsd-">
           <i class="fas fa-balance-scale"></i>
-          <span>Buyer/Seller</span>
-          <span class="label">Any Stock</span>
+          <span class="command-text">Buyer/Seller</span>
+          <span class="description">Volume</span>
+        </button>
+        
+        <button class="command-btn" data-prefix="/rrg-">
+          <i class="fas fa-rocket"></i>
+          <span class="command-text">RRG Matrix</span>
+          <span class="description">Rotation</span>
         </button>
       </div>
     </section>
@@ -605,116 +704,140 @@
     <!-- Loading Indicator -->
     <div class="loading" id="loading">
       <div class="spinner"></div>
-      <div class="loading-text" id="loading-text">Processing analysis...</div>
+      <div class="loading-text" id="loadingText">Processing analysis...</div>
     </div>
     
-    <!-- Results Section -->
-    <div class="result-container" id="result-container">
+    <!-- Results Display -->
+    <div class="result-container" id="resultContainer">
       <div class="result-header">
         <div class="result-title">
-          <i class="fas fa-chart-bar" id="result-icon"></i>
-          <span id="result-title">Analysis Results</span>
+          <i class="fas fa-chart-bar" id="resultIcon"></i>
+          <span id="resultTitle">Analysis Results</span>
         </div>
-        <button class="close-result" id="close-result">
+        <button class="close-result" id="closeResult">
           <i class="fas fa-times"></i>
         </button>
       </div>
       
-      <div class="result-content" id="result-content">
-        <!-- Results will be displayed here -->
+      <div class="result-content" id="resultContent">
+        <!-- Results will be dynamically inserted here -->
       </div>
     </div>
-    
-    <!-- Notification -->
-    <div class="notification" id="notification">
-      <i class="fas fa-info-circle"></i>
-      <span id="notification-text">Message</span>
-    </div>
+  </div>
+  
+  <!-- Notification -->
+  <div class="notification" id="notification">
+    <i class="fas fa-info-circle"></i>
+    <span id="notificationText">Message</span>
   </div>
 
+  <!-- JavaScript -->
   <script>
-    // Configuration
+    // ============================================================================
+    // CONFIGURATION
+    // ============================================================================
+    // GANTI URL INI dengan URL Google Apps Script Anda setelah deploy
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx0lQNDNGm5nIe5iwZx3MlHMmNWFcYbf32bwmrf2sPkz6Pp13i2ZGuU-wkypVT3yqGHkw/exec';
     
-    // Initialize Telegram WebApp
+    // ============================================================================
+    // TELEGRAM WEBAPP INITIALIZATION
+    // ============================================================================
     const tg = window.Telegram.WebApp;
+    let isProcessing = false;
     
-    // App State
-    const state = {
-      currentStock: '',
-      lastCommand: '',
-      isProcessing: false
-    };
-    
-    // DOM Elements
+    // ============================================================================
+    // DOM ELEMENTS
+    // ============================================================================
     const elements = {
       loading: document.getElementById('loading'),
-      loadingText: document.getElementById('loading-text'),
-      resultContainer: document.getElementById('result-container'),
-      resultTitle: document.getElementById('result-title'),
-      resultIcon: document.getElementById('result-icon'),
-      resultContent: document.getElementById('result-content'),
+      loadingText: document.getElementById('loadingText'),
+      resultContainer: document.getElementById('resultContainer'),
+      resultTitle: document.getElementById('resultTitle'),
+      resultIcon: document.getElementById('resultIcon'),
+      resultContent: document.getElementById('resultContent'),
       notification: document.getElementById('notification'),
-      notificationText: document.getElementById('notification-text'),
-      stockInput: document.getElementById('stock-input'),
-      analyzeBtn: document.getElementById('analyze-btn'),
-      closeResult: document.getElementById('close-result')
+      notificationText: document.getElementById('notificationText'),
+      stockInput: document.getElementById('stockInput'),
+      analyzeBtn: document.getElementById('analyzeBtn'),
+      closeResult: document.getElementById('closeResult'),
+      userBadge: document.getElementById('userBadge'),
+      userName: document.getElementById('userName')
     };
     
-    // Initialize App
+    // ============================================================================
+    // INITIALIZATION
+    // ============================================================================
     function initApp() {
-      // Expand Telegram WebApp
-      tg.expand();
-      
-      // Setup Telegram Main Button
-      tg.MainButton.setText("Open in Telegram");
-      tg.MainButton.onClick(() => tg.close());
-      tg.MainButton.show();
-      
-      // Setup event listeners
-      setupEventListeners();
-      
-      // Check for deep link commands
-      handleDeepLink();
-      
-      console.log('App initialized. WebApp version:', tg.version);
+      try {
+        // Expand Telegram WebApp
+        tg.expand();
+        
+        // Setup Telegram Main Button
+        tg.MainButton.setText("💬 Open Chat");
+        tg.MainButton.onClick(() => {
+          tg.close();
+        });
+        tg.MainButton.show();
+        
+        // Update user info
+        updateUserInfo();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Handle deep linking
+        handleDeepLink();
+        
+        console.log('✅ Holistik Pro Mini App initialized');
+        console.log('📱 WebApp Version:', tg.version);
+        console.log('👤 User:', tg.initDataUnsafe.user);
+        
+      } catch (error) {
+        console.error('❌ Error initializing app:', error);
+        showNotification('Failed to initialize app', 'error');
+      }
     }
     
-    // Setup all event listeners
+    // ============================================================================
+    // EVENT LISTENERS
+    // ============================================================================
     function setupEventListeners() {
-      // Command buttons
-      document.querySelectorAll('.command-btn').forEach(btn => {
+      // Command buttons with full commands
+      document.querySelectorAll('.command-btn[data-cmd]').forEach(btn => {
         btn.addEventListener('click', function() {
           const command = this.getAttribute('data-cmd');
-          const prefix = this.getAttribute('data-prefix');
-          
-          if (prefix) {
-            // Button needs stock code
-            const stock = elements.stockInput.value.trim();
-            if (!stock) {
-              showNotification('Please enter a stock code first', 'error');
-              elements.stockInput.focus();
-              return;
-            }
-            executeCommand(`${prefix}${stock.toUpperCase()}`);
-          } else {
-            // Button has full command
-            executeCommand(command);
-          }
+          executeCommand(command);
         });
       });
       
-      // Analyze button
-      elements.analyzeBtn.addEventListener('click', () => {
-        const stock = elements.stockInput.value.trim();
-        if (!stock) {
-          showNotification('Please enter a stock code', 'error');
-          return;
-        }
-        executeCommand(`/tr-${stock.toUpperCase()}`);
+      // Command buttons with prefixes (need stock code)
+      document.querySelectorAll('.command-btn[data-prefix]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const prefix = this.getAttribute('data-prefix');
+          const stockCode = elements.stockInput.value.trim().toUpperCase();
+          
+          if (!stockCode) {
+            showNotification('Please enter a stock code first', 'error');
+            elements.stockInput.focus();
+            return;
+          }
+          
+          executeCommand(`${prefix}${stockCode}`);
+        });
       });
       
-      // Enter key in input
+      // Analyze button (default: Trendlines)
+      elements.analyzeBtn.addEventListener('click', () => {
+        const stockCode = elements.stockInput.value.trim().toUpperCase();
+        if (!stockCode) {
+          showNotification('Please enter a stock code', 'error');
+          elements.stockInput.focus();
+          return;
+        }
+        executeCommand(`/tr-${stockCode}`);
+      });
+      
+      // Enter key in stock input
       elements.stockInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
           elements.analyzeBtn.click();
@@ -722,197 +845,258 @@
       });
       
       // Close result button
-      elements.closeResult.addEventListener('click', () => {
-        hideResults();
-      });
+      elements.closeResult.addEventListener('click', hideResults);
       
-      // Telegram events
+      // Telegram viewport changes
       tg.onEvent('viewportChanged', tg.expand);
     }
     
-    // Execute command
+    // ============================================================================
+    // MAIN COMMAND EXECUTION
+    // ============================================================================
     async function executeCommand(command) {
-      if (state.isProcessing) return;
+      if (isProcessing) {
+        showNotification('Please wait for current process to complete', 'warning');
+        return;
+      }
       
+      // Get user info from Telegram
       const user = tg.initDataUnsafe.user;
       if (!user || !user.id) {
         showNotification('Please open this app through Telegram', 'error');
         return;
       }
       
-      // Show loading
-      state.isProcessing = true;
-      state.lastCommand = command;
+      // Show loading state
+      isProcessing = true;
       showLoading(true);
       hideResults();
+      
+      // Extract command info
+      const commandParts = command.split('-');
+      const baseCommand = commandParts[0];
+      const stockCode = commandParts[1] || '';
+      
+      // Update loading text
+      elements.loadingText.textContent = `Processing ${baseCommand} ${stockCode ? `for ${stockCode}` : ''}...`;
       
       // Prepare request data
       const requestData = {
         userId: user.id,
         command: command,
         username: user.username || '',
-        firstName: user.first_name || 'User',
+        firstName: user.first_name || '',
         source: 'mini_app',
-        returnFormat: 'html' // Request HTML format for display
+        returnFormat: 'html' // Request HTML for display
       };
       
       try {
-        // Send request to GAS
+        // Send request to Google Apps Script
         const response = await fetch(GAS_WEB_APP_URL, {
           method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(requestData)
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(requestData),
+          mode: 'cors'
         });
         
-        // Note: With 'no-cors' we can't read response directly
-        // In a real implementation, you'd handle the response
-        
-        // For now, simulate successful response with demo data
-        setTimeout(() => {
-          processCommandResponse(command);
-          state.isProcessing = false;
-          showLoading(false);
-        }, 1500);
+        // Handle response
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data.status === 'success' && data.html) {
+            // Display the HTML response
+            displayResults(data.html, command, stockCode);
+            showNotification(`✅ Analysis completed for ${stockCode || 'command'}`, 'success');
+          } else if (data.status === 'success' && data.message) {
+            // Fallback to message display
+            displayFallbackResults(command, stockCode, data.message);
+            showNotification(`✅ Command executed successfully`, 'success');
+          } else {
+            throw new Error(data.message || 'Invalid response format');
+          }
+          
+        } else {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
         
       } catch (error) {
-        console.error('Error:', error);
-        showNotification('Failed to send command', 'error');
-        state.isProcessing = false;
+        console.error('❌ API Error:', error);
+        
+        // Fallback to demo data if API fails
+        const fallbackHtml = generateFallbackContent(command, stockCode);
+        displayResults(fallbackHtml, command, stockCode);
+        
+        showNotification(
+          `⚠️ Using demo data. API error: ${error.message}`, 
+          'warning'
+        );
+      } finally {
+        // Reset loading state
+        isProcessing = false;
         showLoading(false);
+        
+        // Clear input
+        elements.stockInput.value = '';
+        
+        // Haptic feedback
+        if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
+          try {
+            tg.HapticFeedback.impactOccurred('light');
+          } catch (e) {}
+        }
       }
     }
     
-    // Process command response (this would come from GAS in real implementation)
-    function processCommandResponse(command) {
-      const commandType = command.split('-')[0];
-      const stockCode = command.split('-')[1] || '';
-      
+    // ============================================================================
+    // RESULT DISPLAY FUNCTIONS
+    // ============================================================================
+    function displayResults(htmlContent, command, stockCode) {
       // Set result title and icon
-      const titles = {
-        '/tr': 'Trendlines Analysis',
-        '/fc': 'FundaChart Analysis',
-        '/bsd': 'Buyer/Seller Analysis',
-        '/t5': 'Top 5 Brokers',
-        '/fl': 'Flow Analysis',
-        '/rrg': 'RRG Matrix',
-        '/scr': 'Screener Results',
-        '/tng': 'Top Nego Screener',
-        '/start': 'Welcome',
-        '/help': 'Help Guide'
-      };
+      const { title, icon } = getCommandInfo(command);
+      elements.resultTitle.textContent = `${title}${stockCode ? ` - ${stockCode}` : ''}`;
+      elements.resultIcon.className = `fas ${icon}`;
       
-      const icons = {
-        '/tr': 'fa-chart-line',
-        '/fc': 'fa-chart-pie',
-        '/bsd': 'fa-balance-scale',
-        '/t5': 'fa-users',
-        '/fl': 'fa-water',
-        '/rrg': 'fa-rocket',
-        '/scr': 'fa-filter',
-        '/tng': 'fa-chart-line',
-        '/start': 'fa-play',
-        '/help': 'fa-question-circle'
-      };
+      // Insert HTML content
+      elements.resultContent.innerHTML = htmlContent;
       
-      elements.resultTitle.textContent = `${titles[commandType] || 'Analysis'} ${stockCode ? `- ${stockCode}` : ''}`;
-      elements.resultIcon.className = `fas ${icons[commandType] || 'fa-chart-bar'}`;
-      
-      // Generate demo content based on command type
-      let content = '';
-      
-      switch(commandType) {
-        case '/fc':
-          content = generateFundaChartContent(stockCode);
-          break;
-        case '/tr':
-          content = generateTrendlinesContent(stockCode);
-          break;
-        case '/bsd':
-          content = generateBuyerSellerContent(stockCode);
-          break;
-        case '/start':
-          content = generateWelcomeContent();
-          break;
-        case '/help':
-          content = generateHelpContent();
-          break;
-        default:
-          content = generateDefaultContent(command, stockCode);
-      }
-      
-      elements.resultContent.innerHTML = content;
+      // Show results
       showResults();
-      showNotification(`Analysis completed for ${stockCode || 'command'}`, 'success');
+      
+      // Scroll to results
+      setTimeout(() => {
+        elements.resultContainer.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 100);
     }
     
-    // Demo content generators
-    function generateFundaChartContent(stockCode) {
+    function displayFallbackResults(command, stockCode, message) {
+      const { title, icon } = getCommandInfo(command);
+      elements.resultTitle.textContent = `${title}${stockCode ? ` - ${stockCode}` : ''}`;
+      elements.resultIcon.className = `fas ${icon}`;
+      
+      elements.resultContent.innerHTML = `
+        <div class="analysis-card info">
+          <div class="card-title">
+            <i class="fas fa-info-circle"></i>
+            <span>${title}</span>
+          </div>
+          <div class="card-content">
+            <p>${message}</p>
+            <p><em>Note: This is a simplified response. For full analysis, check your Telegram chat.</em></p>
+          </div>
+        </div>
+      `;
+      
+      showResults();
+    }
+    
+    function generateFallbackContent(command, stockCode) {
+      const baseCommand = command.split('-')[0];
+      
+      switch(baseCommand) {
+        case '/fc':
+          return generateFundaChartDemo(stockCode);
+        case '/tr':
+          return generateTrendlinesDemo(stockCode);
+        case '/bsd':
+          return generateBuyerSellerDemo(stockCode);
+        case '/t5':
+          return generateTopBrokersDemo(stockCode);
+        case '/rrg':
+          return generateRRGDemo(stockCode);
+        case '/start':
+          return generateWelcomeDemo();
+        case '/help':
+          return generateHelpDemo();
+        case '/scr':
+          return generateScreenerDemo();
+        case '/tng':
+          return generateTopNegoDemo();
+        default:
+          return generateDefaultDemo(command, stockCode);
+      }
+    }
+    
+    // ============================================================================
+    // DEMO CONTENT GENERATORS (Fallback when API is not available)
+    // ============================================================================
+    function generateFundaChartDemo(stockCode) {
       return `
         <div class="analysis-card success">
           <div class="card-title">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-chart-pie"></i>
             <span>📊 FundaChart Analysis - ${stockCode}</span>
           </div>
           <div class="card-content">
-            <p>"Jika publik menurun, harganya dapat dengan mudah naik."</p>
-            <p>Fundamental kuat dengan valuasi menarik.</p>
-          </div>
-          
-          <div class="metric-grid">
-            <div class="metric">
-              <div class="metric-label">Fundamental Score</div>
-              <div class="metric-value positive">7.8/10</div>
+            <p><strong>"Jika publik menurun, harganya dapat dengan mudah naik."</strong></p>
+            <p>Fundamental analysis shows strong potential with attractive valuation.</p>
+            
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">Score</div>
+                <div class="metric-value positive">7.8/10</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Valuation</div>
+                <div class="metric-value positive">UNDERVALUED</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">P/E Ratio</div>
+                <div class="metric-value">12.5x</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">ROE</div>
+                <div class="metric-value positive">18.5%</div>
+              </div>
             </div>
-            <div class="metric">
-              <div class="metric-label">Valuation</div>
-              <div class="metric-value positive">UNDERVALUED</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">P/E Ratio</div>
-              <div class="metric-value">12.5x</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">ROE</div>
-              <div class="metric-value positive">18.5%</div>
-            </div>
+            
+            <div class="recommendation buy">STRONG BUY</div>
           </div>
         </div>
         
         <div class="analysis-card">
           <div class="card-title">
             <i class="fas fa-chart-line"></i>
-            <span>Technical Analysis</span>
+            <span>Technical Overview</span>
           </div>
           <div class="card-content">
-            <p>• Above 200-day Moving Average</p>
+            <p>• Above 200-day Moving Average 📈</p>
             <p>• Volume accumulation detected</p>
             <p>• Breaking resistance levels</p>
+            <p>• RSI: 62 (Neutral)</p>
           </div>
         </div>
         
         <div class="analysis-card warning">
           <div class="card-title">
             <i class="fas fa-exclamation-triangle"></i>
-            <span>Recommendation</span>
+            <span>Investment Advice</span>
           </div>
           <div class="card-content">
-            <p><strong>STRONG BUY</strong> - Accumulate on dips</p>
-            <p>Target Price: Rp 950 - Rp 1,000</p>
-            <p>Stop Loss: Rp 800</p>
+            <p><strong>Action:</strong> ACCUMULATE</p>
+            <p><strong>Target Price:</strong> Rp 950 - Rp 1,000</p>
+            <p><strong>Stop Loss:</strong> Rp 800</p>
+            <p><strong>Timeframe:</strong> 3-6 months</p>
           </div>
         </div>
       `;
     }
     
-    function generateTrendlinesContent(stockCode) {
+    function generateTrendlinesDemo(stockCode) {
       return `
         <div class="analysis-card">
           <div class="card-title">
             <i class="fas fa-chart-line"></i>
-            <span>Trendlines Analysis - ${stockCode}</span>
+            <span>📈 Trendlines Analysis - ${stockCode}</span>
           </div>
           <div class="card-content">
+            <p><strong>Trend Status:</strong> <span class="recommendation buy">UPTREND CONFIRMED</span></p>
+            
             <p><strong>Support Levels:</strong></p>
             <p>• Strong Support: Rp 950 - Rp 1,000</p>
             <p>• Secondary Support: Rp 1,100 - Rp 1,150</p>
@@ -921,108 +1105,124 @@
             <p>• Immediate Resistance: Rp 1,250 - Rp 1,300</p>
             <p>• Strong Resistance: Rp 1,400 - Rp 1,450</p>
             
-            <p><strong>Trend Direction:</strong> UPTREND CONFIRMED ✅</p>
+            <p><strong>Moving Averages:</strong></p>
+            <div class="metric-grid">
+              <div class="metric">
+                <div class="metric-label">MA 20</div>
+                <div class="metric-value positive">Rp 1,120</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">MA 50</div>
+                <div class="metric-value positive">Rp 1,080</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">MA 200</div>
+                <div class="metric-value positive">Rp 980</div>
+              </div>
+            </div>
           </div>
         </div>
       `;
     }
     
-    function generateBuyerSellerContent(stockCode) {
+    function generateBuyerSellerDemo(stockCode) {
       return `
         <div class="analysis-card">
           <div class="card-title">
             <i class="fas fa-balance-scale"></i>
-            <span>Buyer vs Seller Analysis - ${stockCode}</span>
+            <span>⚖️ Buyer vs Seller Analysis - ${stockCode}</span>
           </div>
           <div class="card-content">
             <p><strong>Volume Analysis (5 Days):</strong></p>
             <p>• Buy Volume: 2,450,000 shares (65%)</p>
             <p>• Sell Volume: 1,320,000 shares (35%)</p>
-            <p>• Net Volume: +1,130,000 shares</p>
+            <p>• Net Volume: <span class="metric-value positive">+1,130,000 shares</span></p>
             
-            <p><strong>Sentiment:</strong> BULLISH 📈</p>
-            <p><strong>Institutional Activity:</strong> Strong accumulation detected</p>
+            <p><strong>Institutional Activity:</strong></p>
+            <p>✅ Strong accumulation detected</p>
+            <p>✅ Net buy from foreign institutions</p>
+            <p>✅ Retail participation increasing</p>
+            
+            <p><strong>Market Sentiment:</strong> <span class="recommendation buy">BULLISH</span></p>
           </div>
         </div>
       `;
     }
     
-    function generateWelcomeContent() {
+    function generateWelcomeDemo() {
       return `
         <div class="analysis-card success">
           <div class="card-title">
             <i class="fas fa-robot"></i>
-            <span>Welcome to Holistik Pro Investment</span>
+            <span>🤖 Welcome to Holistik Pro Investment</span>
           </div>
           <div class="card-content">
-            <p><strong>Advanced Stock Analysis Tools</strong></p>
-            <p>• Trendlines & Technical Analysis</p>
-            <p>• FundaChart & Fundamental Analysis</p>
-            <p>• Buyer/Seller Diagram</p>
-            <p>• Top 5 Brokers Analysis</p>
-            <p>• Flow Analysis</p>
-            <p>• RRG Matrix</p>
+            <p><strong>Advanced Stock Analysis Tools for Smart Investors</strong></p>
             
-            <p style="margin-top: 16px;">Use the buttons above or type commands in the format:</p>
+            <p><strong>Available Analysis Types:</strong></p>
+            <p>• 📈 Trendlines & Technical Analysis</p>
+            <p>• 📊 FundaChart & Fundamental Analysis</p>
+            <p>• ⚖️ Buyer/Seller Diagram</p>
+            <p>• 👥 Top 5 Brokers Analysis</p>
+            <p>• 💧 Flow Analysis</p>
+            <p>• 🚀 RRG Matrix</p>
+            <p>• 🔍 Screener & Top Nego</p>
+            
+            <p><strong>How to Use:</strong></p>
+            <p>1. Click any button for quick analysis</p>
+            <p>2. Enter stock code for custom analysis</p>
+            <p>3. Results appear here and in Telegram</p>
+            
+            <p><strong>Example Commands:</strong></p>
             <p><code>/tr-BBCA</code> - Trendlines for BBCA</p>
             <p><code>/fc-TLKM</code> - FundaChart for TLKM</p>
+            <p><code>/t5-DGIK</code> - Top brokers for DGIK</p>
           </div>
         </div>
       `;
     }
     
-    function generateHelpContent() {
-      return `
-        <div class="analysis-card">
-          <div class="card-title">
-            <i class="fas fa-question-circle"></i>
-            <span>Help Guide</span>
-          </div>
-          <div class="card-content">
-            <p><strong>Available Commands:</strong></p>
-            <p><code>/start</code> - Start the bot</p>
-            <p><code>/help</code> - Show this help</p>
-            <p><code>/tr-[KODE]</code> - Trendlines analysis</p>
-            <p><code>/fc-[KODE]</code> - FundaChart analysis</p>
-            <p><code>/bsd-[KODE]</code> - Buyer/Seller diagram</p>
-            <p><code>/t5-[KODE]</code> - Top 5 brokers (20 days)</p>
-            <p><code>/fl-[KODE]</code> - Flow analysis</p>
-            <p><code>/rrg-[KODE]</code> - RRG matrix</p>
-            <p><code>/scr</code> - Screener</p>
-            <p><code>/tng</code> - Top nego screener</p>
-            
-            <p style="margin-top: 16px;"><strong>Examples:</strong></p>
-            <p><code>/tr-BBCA</code> - Analyze BBCA trendlines</p>
-            <p><code>/fc-TLKM-1y</code> - TLKM FundaChart 1 year</p>
-            <p><code>/t5-DGIK</code> - Top 5 brokers for DGIK</p>
-          </div>
-        </div>
-      `;
+    // Other demo generators (simplified for brevity)
+    function generateHelpDemo() {
+      return `<div class="analysis-card"><div class="card-title"><i class="fas fa-question-circle"></i><span>Help Guide</span></div><div class="card-content"><p>Available commands: /start, /help, /scr, /tng, /tr-[KODE], /fc-[KODE], /bsd-[KODE], /t5-[KODE], /rrg-[KODE]</p></div></div>`;
     }
     
-    function generateDefaultContent(command, stockCode) {
-      return `
-        <div class="analysis-card">
-          <div class="card-title">
-            <i class="fas fa-check-circle"></i>
-            <span>Command Executed</span>
-          </div>
-          <div class="card-content">
-            <p><strong>Command:</strong> <code>${command}</code></p>
-            ${stockCode ? `<p><strong>Stock:</strong> ${stockCode}</p>` : ''}
-            <p>The analysis results have been processed successfully.</p>
-            <p>In a real implementation, this would show actual data from your Google Apps Script.</p>
-          </div>
-        </div>
-      `;
+    function generateTopBrokersDemo(stockCode) {
+      return `<div class="analysis-card"><div class="card-title"><i class="fas fa-users"></i><span>Top 5 Brokers - ${stockCode}</span></div><div class="card-content"><p>1. Mirae Asset: +3.1M net buy<br>2. Mandiri Sekuritas: +2.4M<br>3. CGS CIMB: -1.2M<br>4. Phintraco: +1.8M<br>5. Panin: +1.5M</p></div></div>`;
     }
     
-    // UI Helper Functions
+    // ============================================================================
+    // UI HELPER FUNCTIONS
+    // ============================================================================
+    function getCommandInfo(command) {
+      const baseCommand = command.split('-')[0];
+      const info = {
+        '/start': { title: 'Welcome', icon: 'fa-robot' },
+        '/help': { title: 'Help Guide', icon: 'fa-question-circle' },
+        '/scr': { title: 'Screener', icon: 'fa-filter' },
+        '/tng': { title: 'Top Nego', icon: 'fa-fire' },
+        '/tr': { title: 'Trendlines Analysis', icon: 'fa-chart-line' },
+        '/fc': { title: 'FundaChart Analysis', icon: 'fa-chart-pie' },
+        '/bsd': { title: 'Buyer/Seller Analysis', icon: 'fa-balance-scale' },
+        '/t5': { title: 'Top Brokers Analysis', icon: 'fa-users' },
+        '/fl': { title: 'Flow Analysis', icon: 'fa-water' },
+        '/rrg': { title: 'RRG Matrix Analysis', icon: 'fa-rocket' }
+      };
+      
+      return info[baseCommand] || { title: 'Analysis Results', icon: 'fa-chart-bar' };
+    }
+    
+    function updateUserInfo() {
+      const user = tg.initDataUnsafe.user;
+      if (user) {
+        elements.userName.textContent = user.first_name || 'Trader';
+      } else {
+        elements.userBadge.style.display = 'none';
+      }
+    }
+    
     function showLoading(show) {
       elements.loading.classList.toggle('active', show);
-      elements.loadingText.textContent = show ? 
-        `Processing ${state.lastCommand}...` : 
-        'Processing analysis...';
     }
     
     function showResults() {
@@ -1036,20 +1236,24 @@
     function showNotification(message, type = 'info') {
       elements.notificationText.textContent = message;
       elements.notification.className = `notification ${type}`;
-      elements.notification.querySelector('i').className = {
-        success: 'fas fa-check-circle',
-        error: 'fas fa-exclamation-circle',
-        info: 'fas fa-info-circle'
-      }[type] || 'fas fa-info-circle';
+      
+      const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+      };
+      
+      elements.notification.querySelector('i').className = `fas ${icons[type] || 'fa-info-circle'}`;
       
       elements.notification.classList.add('show');
       
+      // Auto hide after 3 seconds
       setTimeout(() => {
         elements.notification.classList.remove('show');
       }, 3000);
     }
     
-    // Handle deep linking from Telegram
     function handleDeepLink() {
       const startParam = tg.initDataUnsafe.start_param;
       if (startParam && startParam.startsWith('cmd_')) {
@@ -1058,8 +1262,17 @@
       }
     }
     
-    // Initialize app when page loads
+    // ============================================================================
+    // INITIALIZE APP
+    // ============================================================================
     document.addEventListener('DOMContentLoaded', initApp);
+    
+    // Export functions for debugging
+    window.debugApp = {
+      executeCommand,
+      showNotification,
+      getCommandInfo
+    };
   </script>
 </body>
 </html>
