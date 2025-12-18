@@ -888,7 +888,7 @@ async function executeCommand(command) {
     
     const response = await fetch(gasUrl, {
       method: 'POST',
-      mode: 'cors', // Penting untuk CORS
+      mode: 'no-cors', // Penting untuk CORS
       headers: {
         'Content-Type': 'application/json',
       },
