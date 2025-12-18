@@ -601,6 +601,43 @@
       50% { transform: rotate(900deg); animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
       100% { transform: rotate(1800deg); }
     }
+    
+    /* ===== INPUT PERSISTENT ===== */
+    .search-input.persistent {
+      border-color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+    }
+    
+    .recent-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .recent-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .recent-badge:hover {
+      background: rgba(16, 185, 129, 0.2);
+      transform: translateY(-1px);
+    }
+    
+    .recent-badge i {
+      font-size: 10px;
+      color: var(--secondary);
+    }
   </style>
 </head>
 <body>
@@ -648,6 +685,8 @@
       </div>
     </section>
     
+    
+    
     <!-- Custom Analysis Section -->
     <section class="section search-section">
       <div class="section-title">
@@ -661,11 +700,16 @@
                id="stockInput" 
                placeholder="Enter stock code (BBCA, TLKM, BBRI...)"
                autocomplete="off"
-               autocapitalize="characters">
+               autocapitalize="characters"
+               value="">
         <button class="search-btn" id="analyzeBtn">
           <i class="fas fa-chart-line"></i>
           <span>Analyze</span>
         </button>
+      </div>
+      
+      <div class="recent-actions" id="recentActions">
+        <!-- Recent actions akan ditampilkan di sini -->
       </div>
       
       <div class="command-grid">
@@ -728,8 +772,6 @@
       </div>
     </section>
     
-    
-    
     <!-- Loading Indicator -->
     <div class="loading" id="loading">
       <div class="spinner"></div>
@@ -767,6 +809,10 @@
     // ===== INISIALISASI =====
     const tg = window.Telegram.WebApp;
 
+    // ===== VARIABEL GLOBAL =====
+    let recentActions = JSON.parse(localStorage.getItem('holistik_recent_actions') || '[]');
+    let currentStockCode = '';
+
     // ===== NOTIFICATION SYSTEM =====
     let notificationTimeout;
 
@@ -798,6 +844,107 @@
         }, duration);
     }
 
+    // ===== FUNGSI UNTUK MENYIMPAN AKSI TERAKHIR =====
+    function saveRecentAction(stockCode, commandType) {
+        // Simpan kode saham saat ini
+        currentStockCode = stockCode;
+        
+        // Tambah aksi ke daftar recent
+        const action = {
+            stockCode: stockCode,
+            commandType: commandType,
+            timestamp: new Date().getTime()
+        };
+        
+        // Hapus duplikat berdasarkan stockCode dan commandType
+        recentActions = recentActions.filter(a => 
+            !(a.stockCode === stockCode && a.commandType === commandType)
+        );
+        
+        // Tambah ke awal array
+        recentActions.unshift(action);
+        
+        // Simpan maksimal 5 aksi
+        if (recentActions.length > 5) {
+            recentActions = recentActions.slice(0, 5);
+        }
+        
+        // Simpan ke localStorage
+        localStorage.setItem('holistik_recent_actions', JSON.stringify(recentActions));
+        
+        // Update tampilan recent actions
+        updateRecentActions();
+    }
+
+    // ===== FUNGSI UNTUK UPDATE TAMPILAN RECENT ACTIONS =====
+    function updateRecentActions() {
+        const recentActionsContainer = document.getElementById('recentActions');
+        
+        if (recentActions.length === 0) {
+            recentActionsContainer.innerHTML = '';
+            return;
+        }
+        
+        let html = '';
+        recentActions.forEach(action => {
+            const commandName = getCommandName(action.commandType);
+            const timeAgo = getTimeAgo(action.timestamp);
+            
+            html += `
+                <div class="recent-badge" data-stock="${action.stockCode}" data-type="${action.commandType}">
+                    <i class="fas fa-history"></i>
+                    <span>${action.stockCode} - ${commandName}</span>
+                    <span style="font-size: 10px; opacity: 0.7;">(${timeAgo})</span>
+                </div>
+            `;
+        });
+        
+        recentActionsContainer.innerHTML = html;
+        
+        // Tambah event listener untuk recent badges
+        document.querySelectorAll('.recent-badge').forEach(badge => {
+            badge.addEventListener('click', function() {
+                const stockCode = this.getAttribute('data-stock');
+                const commandType = this.getAttribute('data-type');
+                
+                // Set input dengan kode saham
+                document.getElementById('stockInput').value = stockCode;
+                document.getElementById('stockInput').classList.add('persistent');
+                
+                // Kirim perintah
+                sendTelegramCommand(`${commandType}${stockCode}`);
+            });
+        });
+    }
+
+    // ===== FUNGSI BANTUAN =====
+    function getCommandName(commandType) {
+        const commandMap = {
+            '/fc-': 'FundaChart',
+            '/tr-': 'Trendlines',
+            '/bsd-': 'Buyer/Seller',
+            '/rrg-': 'RRG Matrix',
+            '/t5-': 'Top 5 Brokers',
+            '/fl-': 'Flow Analysis'
+        };
+        
+        return commandMap[commandType] || 'Analysis';
+    }
+
+    function getTimeAgo(timestamp) {
+        const now = new Date().getTime();
+        const diff = now - timestamp;
+        
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        
+        if (minutes < 1) return 'just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        return `${days}d ago`;
+    }
+
     // ===== FUNGSI UTAMA =====
     async function sendTelegramCommand(commandText) {
         const user = tg.initDataUnsafe.user;
@@ -805,6 +952,24 @@
         if (!user || !user.id) {
             showNotification("Open this app through Telegram to use this feature", "error");
             return;
+        }
+        
+        // Dapatkan kode saham dari command
+        const stockMatch = commandText.match(/-\s*([A-Z]+)/);
+        if (stockMatch && stockMatch[1]) {
+            currentStockCode = stockMatch[1];
+            document.getElementById('stockInput').value = currentStockCode;
+            document.getElementById('stockInput').classList.add('persistent');
+        }
+        
+        // Simpan ke recent actions jika ada kode saham
+        const commandType = commandText.substring(0, commandText.lastIndexOf('-') + 1);
+        const stockCode = currentStockCode || document.getElementById('stockInput').value.trim().toUpperCase();
+        
+        if (stockCode && (commandText.includes('/fc-') || commandText.includes('/tr-') || 
+            commandText.includes('/bsd-') || commandText.includes('/rrg-') || 
+            commandText.includes('/t5-') || commandText.includes('/fl-'))) {
+            saveRecentAction(stockCode, commandType);
         }
         
         // Tampilkan loading state
@@ -847,8 +1012,10 @@
                 console.log('Haptic feedback not available');
             }
             
-            // Clear input field
-            document.getElementById('stockInput').value = '';
+            // JANGAN HAPUS INPUT - Biarkan input tetap ada
+            // Hanya highlight input field
+            const stockInput = document.getElementById('stockInput');
+            stockInput.classList.add('persistent');
             
         } catch (error) {
             console.error('Error:', error);
@@ -881,6 +1048,9 @@
             document.getElementById('userName').textContent = userName;
         }
         
+        // Tampilkan recent actions
+        updateRecentActions();
+        
         // Setup command buttons dengan data-cmd
         document.querySelectorAll('.command-btn[data-cmd]').forEach(button => {
             button.addEventListener('click', function() {
@@ -904,7 +1074,7 @@
             });
         });
         
-        // Setup analyze button
+        // Setup analyze button (default: trendlines)
         document.getElementById('analyzeBtn').addEventListener('click', function() {
             const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
             if (!stockCode) {
@@ -919,6 +1089,11 @@
             if (e.key === 'Enter') {
                 document.getElementById('analyzeBtn').click();
             }
+        });
+        
+        // Ketika input diubah, hilangkan highlight
+        document.getElementById('stockInput').addEventListener('input', function() {
+            this.classList.remove('persistent');
         });
         
         // Close result button
@@ -938,6 +1113,43 @@
         if (startParam && startParam.startsWith('cmd_')) {
             const command = startParam.replace('cmd_', '/').replace(/_/g, '-');
             setTimeout(() => sendTelegramCommand(command), 1000);
+        }
+        
+        // Tambahkan contoh kode saham yang sering digunakan
+        const popularStocks = ['BBCA', 'TLKM', 'BBRI', 'ASII', 'UNVR'];
+        const popularContainer = document.getElementById('recentActions');
+        
+        // Tambah tombol untuk kode saham populer jika belum ada recent actions
+        if (recentActions.length === 0) {
+            let popularHtml = '<div style="font-size: 12px; color: var(--gray); margin-bottom: 8px;">Popular: </div>';
+            popularStocks.forEach(stock => {
+                popularHtml += `
+                    <div class="recent-badge" data-stock="${stock}" data-type="/tr-">
+                        <i class="fas fa-star"></i>
+                        <span>${stock}</span>
+                    </div>
+                `;
+            });
+            
+            // Tambah ke container jika kosong
+            if (popularContainer.innerHTML === '') {
+                popularContainer.innerHTML = popularHtml;
+                
+                // Tambah event listener untuk popular stocks
+                document.querySelectorAll('.recent-badge[data-stock]').forEach(badge => {
+                    badge.addEventListener('click', function() {
+                        const stockCode = this.getAttribute('data-stock');
+                        const commandType = this.getAttribute('data-type') || '/tr-';
+                        
+                        // Set input dengan kode saham
+                        document.getElementById('stockInput').value = stockCode;
+                        document.getElementById('stockInput').classList.add('persistent');
+                        
+                        // Kirim perintah
+                        sendTelegramCommand(`${commandType}${stockCode}`);
+                    });
+                });
+            }
         }
     });
   </script>
