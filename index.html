@@ -850,6 +850,176 @@
       // Telegram viewport changes
       tg.onEvent('viewportChanged', tg.expand);
     }
+
+    // Fungsi untuk handle klik tombol screener
+document.addEventListener('DOMContentLoaded', function() {
+  const screenerBtn = document.querySelector('[data-cmd="/scr"]');
+  
+  if (screenerBtn) {
+    screenerBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      executeCommand('/scr');
+    });
+  }
+});
+
+// Fungsi utama untuk execute command
+async function executeCommand(command) {
+  const loadingId = 'loading-' + Date.now();
+  showLoading(loadingId, 'Mengambil data screener...');
+  
+  try {
+    // URL GAS Anda
+    const gasUrl = 'https://script.google.com/macros/s/AKfycbx0lQNDNGm5nIe5iwZx3MlHMmNWFcYbf32bwmrf2sPkz6Pp13i2ZGuU-wkypVT3yqGHkw/exec';
+    
+    // Data yang dikirim
+    const requestData = {
+      command: command,
+      userId: getUserId(), // Fungsi untuk mendapatkan user ID
+      chatId: getChatId(), // Jika di Telegram Mini App
+      timestamp: new Date().toISOString()
+    };
+    
+    console.log('Sending request to GAS:', requestData);
+    
+    // Gunakan fetch dengan timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 detik timeout
+    
+    const response = await fetch(gasUrl, {
+      method: 'POST',
+      mode: 'cors', // Penting untuk CORS
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData),
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    console.log('Response status:', response.status);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    console.log('Response from GAS:', result);
+    
+    // Tampilkan hasil di frontend
+    displayResult(result.html || result.message);
+    
+  } catch (error) {
+    console.error('Error executing command:', error);
+    
+    let errorMessage = 'Terjadi kesalahan: ';
+    if (error.name === 'AbortError') {
+      errorMessage += 'Timeout - Server terlalu lama merespon';
+    } else {
+      errorMessage += error.message;
+    }
+    
+    displayError(errorMessage);
+    
+  } finally {
+    hideLoading(loadingId);
+  }
+}
+
+// Fungsi helper untuk display
+function displayResult(html) {
+  const outputDiv = document.getElementById('command-output') || createOutputDiv();
+  outputDiv.innerHTML = html;
+  
+  // Re-attach event listeners untuk tombol di dalam HTML
+  setTimeout(() => {
+    attachButtonListeners();
+  }, 100);
+}
+
+function displayError(message) {
+  const errorHTML = `
+    <div class="error-message" style="
+      padding: 20px;
+      margin: 10px 0;
+      background: #ffebee;
+      border-left: 4px solid #f44336;
+      border-radius: 4px;
+      color: #c62828;
+    ">
+      <strong><i class="fas fa-exclamation-circle"></i> Error:</strong>
+      <p>${message}</p>
+      <button onclick="executeCommand('/scr')" style="
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: #f44336;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      ">
+        <i class="fas fa-redo"></i> Coba Lagi
+      </button>
+    </div>
+  `;
+  
+  const outputDiv = document.getElementById('command-output') || createOutputDiv();
+  outputDiv.innerHTML = errorHTML;
+}
+
+function createOutputDiv() {
+  let div = document.getElementById('command-output');
+  if (!div) {
+    div = document.createElement('div');
+    div.id = 'command-output';
+    div.className = 'command-output';
+    document.querySelector('.container').appendChild(div);
+  }
+  return div;
+}
+
+function showLoading(id, message) {
+  const loadingDiv = document.createElement('div');
+  loadingDiv.id = id;
+  loadingDiv.className = 'loading-overlay';
+  loadingDiv.innerHTML = `
+    <div class="loading-spinner"></div>
+    <div class="loading-text">${message}</div>
+  `;
+  document.body.appendChild(loadingDiv);
+}
+
+function hideLoading(id) {
+  const loadingDiv = document.getElementById(id);
+  if (loadingDiv) {
+    loadingDiv.remove();
+  }
+}
+
+// Fungsi untuk mendapatkan user ID (sesuaikan dengan aplikasi Anda)
+function getUserId() {
+  // Jika di Telegram Mini App
+  if (window.Telegram?.WebApp?.initDataUnsafe?.user?.id) {
+    return window.Telegram.WebApp.initDataUnsafe.user.id;
+  }
+  
+  // Fallback: generate atau ambil dari storage
+  let userId = localStorage.getItem('user_id');
+  if (!userId) {
+    userId = 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('user_id', userId);
+  }
+  return userId;
+}
+
+function getChatId() {
+  // Jika di Telegram Mini App
+  if (window.Telegram?.WebApp?.initDataUnsafe?.chat?.id) {
+    return window.Telegram.WebApp.initDataUnsafe.chat.id;
+  }
+  return null;
+}
     
     // ============================================================================
     // MAIN COMMAND EXECUTION
