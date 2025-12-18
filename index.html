@@ -4,385 +4,602 @@
   <meta charset="UTF-8">
   <title>Holistik Pro Investment</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  
   <!-- Telegram Mini App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
+  
+  <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    /* ===== VARIABLES ===== */
+    /* ===== VARIABLES & RESET ===== */
     :root {
-        /* Primary Colors */
-        --primary-color: #2563eb;
-        --primary-dark: #1d4ed8;
-        --primary-light: #3b82f6;
-        
-        /* Secondary Colors */
-        --secondary-color: #10b981;
-        --secondary-dark: #0d9668;
-        
-        /* Status Colors */
-        --success-color: #10b981;
-        --warning-color: #f59e0b;
-        --danger-color: #ef4444;
-        --info-color: #3b82f6;
-        
-        /* Neutral Colors */
-        --bg-primary: #0f172a;
-        --bg-secondary: #1e293b;
-        --bg-card: #334155;
-        --text-primary: #f1f5f9;
-        --text-secondary: #94a3b8;
-        --text-muted: #64748b;
-        --border-color: #475569;
-        
-        /* Spacing */
-        --spacing-xs: 0.5rem;
-        --spacing-sm: 1rem;
-        --spacing-md: 1.5rem;
-        --spacing-lg: 2rem;
-        --spacing-xl: 3rem;
-        
-        /* Border Radius */
-        --radius-sm: 0.5rem;
-        --radius-md: 0.75rem;
-        --radius-lg: 1rem;
-        
-        /* Shadows */
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        
-        /* Transitions */
-        --transition-fast: 150ms ease;
-        --transition-normal: 300ms ease;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #10b981;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --dark: #0f172a;
+      --darker: #020617;
+      --light: #f8fafc;
+      --gray: #94a3b8;
+      --dark-gray: #475569;
+      --card-bg: rgba(30, 41, 59, 0.9);
+      --card-border: rgba(71, 85, 105, 0.3);
     }
-
-    /* ===== RESET & BASE ===== */
+    
     * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
+    
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-        line-height: 1.6;
-        min-height: 100vh;
-        padding: var(--spacing-md);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+      color: var(--light);
+      min-height: 100vh;
+      padding: 16px;
+      line-height: 1.6;
     }
-
+    
     .container {
-        max-width: 800px;
-        margin: 0 auto;
+      max-width: 100%;
+      margin: 0 auto;
     }
-
+    
     /* ===== HEADER ===== */
     .header {
-        text-align: center;
-        margin-bottom: var(--spacing-xl);
-        padding: var(--spacing-lg);
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-        position: relative;
-        overflow: hidden;
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-
-    .header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.1) 50%);
-        background-size: 20px 20px;
-        opacity: 0.2;
-    }
-
+    
     .header h1 {
-        font-size: 2.5rem;
-        margin-bottom: var(--spacing-sm);
-        color: white;
-        position: relative;
-        z-index: 1;
+      font-size: 24px;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-
+    
     .header p {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1.1rem;
-        position: relative;
-        z-index: 1;
+      color: var(--gray);
+      font-size: 14px;
     }
-
-    /* ===== BUTTONS ===== */
-    .btn-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: var(--spacing-md);
-        margin-bottom: var(--spacing-xl);
+    
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 20px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--light);
     }
-
-    .btn {
-        padding: var(--spacing-md) var(--spacing-lg);
-        border: none;
-        border-radius: var(--radius-md);
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all var(--transition-normal);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--spacing-sm);
-        position: relative;
-        overflow: hidden;
-        min-height: 70px;
+    
+    /* ===== COMMAND SECTIONS ===== */
+    .section {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1px solid var(--card-border);
     }
-
-    .btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 30%, rgba(255, 255, 255, 0.1) 70%, transparent 70%);
-        background-size: 300% 300%;
-        opacity: 0;
-        transition: opacity var(--transition-normal);
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      color: var(--light);
+      font-size: 16px;
+      font-weight: 600;
     }
-
-    .btn:hover::before {
-        opacity: 1;
-        animation: shine 2s infinite;
+    
+    .section-title i {
+      color: var(--primary);
+      width: 20px;
     }
-
-    @keyframes shine {
-        0% { background-position: -100% -100%; }
-        100% { background-position: 200% 200%; }
+    
+    /* ===== COMMAND BUTTONS ===== */
+    .command-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
     }
-
-    .btn-primary {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        color: white;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+    
+    @media (max-width: 640px) {
+      .command-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    
+    .command-btn {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--light);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-
-    .btn-secondary {
-        background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
-        color: white;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    
+    .command-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
     }
-
-    .btn-secondary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+    
+    .command-btn:active {
+      transform: translateY(0);
     }
-
-    .btn-warning {
-        background: linear-gradient(135deg, var(--warning-color), #e69b00);
-        color: white;
-        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    
+    .command-btn i {
+      font-size: 20px;
+      color: var(--primary);
     }
-
-    .btn-warning:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+    
+    .command-btn .command-text {
+      font-size: 13px;
+      font-weight: 600;
     }
-
-    .btn-danger {
-        background: linear-gradient(135deg, var(--danger-color), #dc2626);
-        color: white;
-        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    
+    .command-btn .description {
+      font-size: 11px;
+      color: var(--gray);
+      opacity: 0.8;
     }
-
-    .btn-danger:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+    
+    /* Button Variants */
+    .command-btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
     }
-
-    .btn i {
-        font-size: 1.2em;
+    
+    .command-btn.primary i {
+      color: white;
     }
-
-    /* ===== FORM INPUT ===== */
-    .input-section {
-        background: var(--bg-card);
-        border-radius: var(--radius-lg);
-        padding: var(--spacing-lg);
-        margin-bottom: var(--spacing-xl);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
+    
+    .command-btn.secondary {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.2);
     }
-
-    .input-section h3 {
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-md);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
+    
+    .command-btn.secondary i {
+      color: var(--secondary);
     }
-
-    .input-section h3 i {
-        color: var(--primary-color);
+    
+    .command-btn.warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.2);
     }
-
-    .input-group {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: var(--spacing-md);
-        align-items: center;
+    
+    .command-btn.warning i {
+      color: var(--warning);
     }
-
-    @media (max-width: 768px) {
-        .input-group {
-            grid-template-columns: 1fr;
-        }
+    
+    /* ===== SEARCH SECTION ===== */
+    .search-section {
+      margin-bottom: 20px;
     }
-
-    .input-field {
-        padding: var(--spacing-md);
-        background: var(--bg-secondary);
-        border: 2px solid var(--border-color);
-        border-radius: var(--radius-md);
-        color: var(--text-primary);
-        font-size: 1rem;
-        transition: all var(--transition-fast);
+    
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
     }
-
-    .input-field:focus {
-        outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    
+    .search-input {
+      flex: 1;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--light);
+      font-size: 14px;
+      transition: all 0.2s;
     }
-
-    .input-field::placeholder {
-        color: var(--text-muted);
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
-
-    /* ===== COMMANDS SECTION ===== */
-    .commands-section {
-        background: var(--bg-card);
-        border-radius: var(--radius-lg);
-        padding: var(--spacing-lg);
-        margin-bottom: var(--spacing-xl);
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--border-color);
+    
+    .search-input::placeholder {
+      color: var(--gray);
     }
-
-    .commands-section h3 {
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-md);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
+    
+    .search-btn {
+      padding: 0 20px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
     }
-
-    .commands-section h3 i {
-        color: var(--secondary-color);
+    
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     }
-
-    .commands-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: var(--spacing-md);
+    
+    /* ===== RESULT DISPLAY ===== */
+    .result-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid var(--card-border);
+      display: none;
+      animation: slideUp 0.3s ease;
     }
-
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .result-container.active {
+      display: block;
+    }
+    
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    .result-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--light);
+    }
+    
+    .result-title i {
+      color: var(--primary);
+    }
+    
+    .close-result {
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    
+    .close-result:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--light);
+    }
+    
+    /* Analysis Cards */
+    .analysis-card {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border-left: 4px solid var(--primary);
+      transition: transform 0.2s;
+    }
+    
+    .analysis-card:hover {
+      transform: translateX(2px);
+    }
+    
+    .analysis-card.success {
+      border-left-color: var(--success);
+    }
+    
+    .analysis-card.warning {
+      border-left-color: var(--warning);
+    }
+    
+    .analysis-card.danger {
+      border-left-color: var(--danger);
+    }
+    
+    .analysis-card.info {
+      border-left-color: var(--info);
+    }
+    
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--light);
+    }
+    
+    .card-title i {
+      font-size: 16px;
+    }
+    
+    .card-content {
+      color: var(--gray);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    
+    .card-content p {
+      margin-bottom: 8px;
+    }
+    
+    /* Metric Grid */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    .metric {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .metric-label {
+      font-size: 11px;
+      color: var(--gray);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .metric-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--light);
+    }
+    
+    .metric-value.positive {
+      color: var(--success);
+    }
+    
+    .metric-value.negative {
+      color: var(--danger);
+    }
+    
+    .metric-value.neutral {
+      color: var(--warning);
+    }
+    
+    /* Recommendation Badge */
+    .recommendation {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--success);
+      color: white;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+    
+    .recommendation.buy {
+      background: var(--success);
+    }
+    
+    .recommendation.sell {
+      background: var(--danger);
+    }
+    
+    .recommendation.hold {
+      background: var(--warning);
+    }
+    
+    /* ===== LOADING INDICATOR ===== */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .loading.active {
+      display: block;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      color: var(--gray);
+      font-size: 14px;
+    }
+    
     /* ===== NOTIFICATION ===== */
     .notification {
-        position: fixed;
-        bottom: var(--spacing-lg);
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: var(--bg-card);
-        color: var(--text-primary);
-        padding: var(--spacing-md) var(--spacing-lg);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-        z-index: 1000;
-        opacity: 0;
-        transition: all var(--transition-normal);
-        display: flex;
-        align-items: center;
-        gap: var(--spacing-sm);
-        max-width: 400px;
-        width: 90%;
-        border-left: 4px solid var(--primary-color);
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      color: var(--light);
+      font-size: 14px;
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
-
+    
     .notification.show {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
     }
-
-    .notification.success {
-        border-left-color: var(--success-color);
-    }
-
-    .notification.error {
-        border-left-color: var(--danger-color);
-    }
-
-    .notification.info {
-        border-left-color: var(--info-color);
-    }
-
+    
     .notification i {
-        font-size: 1.2em;
+      font-size: 16px;
     }
-
-    /* ===== FOOTER ===== */
-    .footer {
-        text-align: center;
-        padding: var(--spacing-lg);
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        border-top: 1px solid var(--border-color);
-        margin-top: var(--spacing-xl);
+    
+    .notification.success {
+      border-left: 4px solid var(--success);
     }
-
-    /* ===== LOADING STATE ===== */
-    .btn:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none !important;
-        box-shadow: none !important;
+    
+    .notification.error {
+      border-left: 4px solid var(--danger);
     }
-
+    
+    .notification.info {
+      border-left: 4px solid var(--info);
+    }
+    
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+      
+      .header {
+        padding: 16px;
+        margin-bottom: 20px;
+      }
+      
+      .section {
+        padding: 16px;
+      }
+      
+      .command-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      
+      .search-box {
+        flex-direction: column;
+      }
+      
+      .search-btn {
+        justify-content: center;
+        padding: 14px;
+      }
+      
+      .metric-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    /* ===== UTILITIES ===== */
+    .hidden {
+      display: none !important;
+    }
+    
+    .text-center {
+      text-align: center;
+    }
+    
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
+    
+    /* Loading Dots dari kode pertama */
     .loading-dots {
-        display: inline-block;
-        position: relative;
-        width: 20px;
-        height: 20px;
+      display: inline-block;
+      position: relative;
+      width: 20px;
+      height: 20px;
     }
-
+    
     .loading-dots::after {
-        content: " ";
-        display: block;
-        border-radius: 50%;
-        width: 0;
-        height: 0;
-        margin: 8px;
-        box-sizing: border-box;
-        border: 8px solid currentColor;
-        border-color: currentColor transparent currentColor transparent;
-        animation: loading-dots 1.2s infinite;
+      content: " ";
+      display: block;
+      border-radius: 50%;
+      width: 0;
+      height: 0;
+      margin: 8px;
+      box-sizing: border-box;
+      border: 8px solid currentColor;
+      border-color: currentColor transparent currentColor transparent;
+      animation: loading-dots 1.2s infinite;
     }
-
+    
     @keyframes loading-dots {
-        0% { transform: rotate(0); animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
-        50% { transform: rotate(900deg); animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
-        100% { transform: rotate(1800deg); }
+      0% { transform: rotate(0); animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+      50% { transform: rotate(900deg); animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+      100% { transform: rotate(1800deg); }
     }
   </style>
 </head>
@@ -390,77 +607,157 @@
   <div class="container">
     <!-- Header -->
     <header class="header">
-      <h1><i class="fas fa-chart-network"></i> Holistik Pro</h1>
-      <p>Advanced Investment Analysis Tools</p>
+      <h1><i class="fas fa-chart-network"></i> Holistik Pro Investment</h1>
+      <p>Advanced Technical Analysis Tools for Telegram</p>
+      <div class="user-badge" id="userBadge">
+        <i class="fas fa-user"></i>
+        <span id="userName">Loading...</span>
+      </div>
     </header>
-
-    <!-- Button Grid -->
-    <div class="btn-grid">
-      <button class="btn btn-primary" data-cmd="/start">
-        <i class="fas fa-play"></i> /start
-      </button>
-      <button class="btn btn-secondary" data-cmd="/help">
-        <i class="fas fa-question-circle"></i> /help
-      </button>
-      <button class="btn btn-warning" data-cmd="/scr">
-        <i class="fas fa-filter"></i> /scr
-      </button>
-      <button class="btn btn-danger" data-cmd="/tng">
-        <i class="fas fa-chart-line"></i> /tng
-      </button>
-    </div>
-
-    <!-- Form Input Section -->
-    <section class="input-section">
-      <h3><i class="fas fa-search"></i> Custom Analysis</h3>
-      <div class="input-group">
+    
+    <!-- Quick Actions Section -->
+    <section class="section">
+      <div class="section-title">
+        <i class="fas fa-bolt"></i>
+        <span>Quick Actions</span>
+      </div>
+      <div class="command-grid">
+        <button class="command-btn primary" data-cmd="/start">
+          <i class="fas fa-play"></i>
+          <span class="command-text">Start Bot</span>
+          <span class="description">Initialize bot</span>
+        </button>
+        
+        <button class="command-btn primary" data-cmd="/help">
+          <i class="fas fa-question-circle"></i>
+          <span class="command-text">Help Guide</span>
+          <span class="description">Show help</span>
+        </button>
+        
+        <button class="command-btn warning" data-cmd="/scr">
+          <i class="fas fa-filter"></i>
+          <span class="command-text">Screener</span>
+          <span class="description">Stock screener</span>
+        </button>
+        
+        <button class="command-btn warning" data-cmd="/tng">
+          <i class="fas fa-fire"></i>
+          <span class="command-text">Top Nego</span>
+          <span class="description">Running trade</span>
+        </button>
+      </div>
+    </section>
+    
+    <!-- Custom Analysis Section -->
+    <section class="section search-section">
+      <div class="section-title">
+        <i class="fas fa-search"></i>
+        <span>Custom Analysis</span>
+      </div>
+      
+      <div class="search-box">
         <input type="text" 
-               class="input-field" 
-               id="stock-input" 
+               class="search-input" 
+               id="stockInput" 
                placeholder="Enter stock code (BBCA, TLKM, BBRI...)"
-               maxlength="10">
-        <button class="btn btn-primary" id="analyze-btn">
-          <i class="fas fa-chart-line"></i> Analyze
+               autocomplete="off"
+               autocapitalize="characters">
+        <button class="search-btn" id="analyzeBtn">
+          <i class="fas fa-chart-line"></i>
+          <span>Analyze</span>
+        </button>
+      </div>
+      
+      <div class="command-grid">
+        <button class="command-btn" data-prefix="/fc-">
+          <i class="fas fa-chart-pie"></i>
+          <span class="command-text">FundaChart</span>
+          <span class="description">Fundamental</span>
+        </button>
+        
+        <button class="command-btn" data-prefix="/tr-">
+          <i class="fas fa-chart-line"></i>
+          <span class="command-text">Trendlines</span>
+          <span class="description">Technical</span>
+        </button>
+        
+        <button class="command-btn" data-prefix="/bsd-">
+          <i class="fas fa-balance-scale"></i>
+          <span class="command-text">Buyer/Seller</span>
+          <span class="description">Volume</span>
+        </button>
+        
+        <button class="command-btn" data-prefix="/rrg-">
+          <i class="fas fa-rocket"></i>
+          <span class="command-text">RRG Matrix</span>
+          <span class="description">Rotation</span>
         </button>
       </div>
     </section>
-
-    <!-- Quick Commands Section -->
-    <section class="commands-section">
-      <h3><i class="fas fa-bolt"></i> Quick Commands</h3>
-      <div class="commands-grid">
-        <button class="btn btn-secondary" data-cmd="/tr-DGIK">
-          <i class="fas fa-chart-line"></i> Trendlines DGIK
+    
+    <!-- Popular Stocks Section -->
+    <section class="section">
+      <div class="section-title">
+        <i class="fas fa-star"></i>
+        <span>Popular Analysis</span>
+      </div>
+      <div class="command-grid">
+        <button class="command-btn secondary" data-cmd="/fc-BUMI">
+          <i class="fas fa-chart-pie"></i>
+          <span class="command-text">BUMI</span>
+          <span class="description">FundaChart</span>
         </button>
-        <button class="btn btn-secondary" data-cmd="/fc-BUMI">
-          <i class="fas fa-chart-pie"></i> FundaChart BUMI
+        
+        <button class="command-btn secondary" data-cmd="/tr-DGIK">
+          <i class="fas fa-chart-line"></i>
+          <span class="command-text">DGIK</span>
+          <span class="description">Trendlines</span>
         </button>
-        <button class="btn btn-secondary" data-cmd="/bsd-GULA">
-          <i class="fas fa-balance-scale"></i> BSD GULA
+        
+        <button class="command-btn secondary" data-cmd="/bsd-GULA">
+          <i class="fas fa-balance-scale"></i>
+          <span class="command-text">GULA</span>
+          <span class="description">Buyer/Seller</span>
         </button>
-        <button class="btn btn-secondary" data-cmd="/t5-DGIK">
-          <i class="fas fa-users"></i> Top 5 Brokers
-        </button>
-        <button class="btn btn-secondary" data-cmd="/fl-DGIK-2025-12-15">
-          <i class="fas fa-water"></i> Flow Analysis
-        </button>
-        <button class="btn btn-secondary" data-cmd="/rrg-DGIK">
-          <i class="fas fa-rocket"></i> RRG Matrix
+        
+        <button class="command-btn secondary" data-cmd="/t5-DGIK">
+          <i class="fas fa-users"></i>
+          <span class="command-text">DGIK</span>
+          <span class="description">Top Brokers</span>
         </button>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <p><i class="fas fa-robot"></i> Holistik Pro Investment Bot • Powered by ❤️</p>
-      <p>Commands will be sent to your Telegram chat</p>
-    </footer>
+    
+    
+    
+    <!-- Loading Indicator -->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingText">Processing analysis...</div>
+    </div>
+    
+    <!-- Results Display -->
+    <div class="result-container" id="resultContainer">
+      <div class="result-header">
+        <div class="result-title">
+          <i class="fas fa-chart-bar" id="resultIcon"></i>
+          <span id="resultTitle">Analysis Results</span>
+        </div>
+        <button class="close-result" id="closeResult">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="result-content" id="resultContent">
+        <!-- Results will be dynamically inserted here -->
+      </div>
+    </div>
   </div>
-
+  
   <!-- Notification -->
   <div class="notification" id="notification">
-    <i class="fas fa-check-circle"></i>
-    <span id="notification-text">Command sent successfully!</span>
+    <i class="fas fa-info-circle"></i>
+    <span id="notificationText">Message</span>
   </div>
 
   <script>
@@ -475,7 +772,7 @@
 
     function showNotification(message, type = 'info', duration = 3000) {
         const notification = document.getElementById('notification');
-        const notificationText = document.getElementById('notification-text');
+        const notificationText = document.getElementById('notificationText');
         const icon = notification.querySelector('i');
         
         // Set message and type
@@ -511,7 +808,7 @@
         }
         
         // Tampilkan loading state
-        const buttons = document.querySelectorAll('.btn[data-cmd], #analyze-btn');
+        const buttons = document.querySelectorAll('.command-btn, .search-btn');
         buttons.forEach(btn => {
             btn.disabled = true;
             const originalText = btn.innerHTML;
@@ -551,7 +848,7 @@
             }
             
             // Clear input field
-            document.getElementById('stock-input').value = '';
+            document.getElementById('stockInput').value = '';
             
         } catch (error) {
             console.error('Error:', error);
@@ -577,8 +874,15 @@
         // Setup Telegram WebApp
         tg.expand();
         
-        // Setup command buttons
-        document.querySelectorAll('.btn[data-cmd]').forEach(button => {
+        // Update user info
+        const user = tg.initDataUnsafe.user;
+        if (user) {
+            const userName = user.username || user.first_name || 'User';
+            document.getElementById('userName').textContent = userName;
+        }
+        
+        // Setup command buttons dengan data-cmd
+        document.querySelectorAll('.command-btn[data-cmd]').forEach(button => {
             button.addEventListener('click', function() {
                 const command = this.getAttribute('data-cmd');
                 if (command) {
@@ -587,9 +891,22 @@
             });
         });
         
+        // Setup command buttons dengan data-prefix
+        document.querySelectorAll('.command-btn[data-prefix]').forEach(button => {
+            button.addEventListener('click', function() {
+                const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
+                if (!stockCode) {
+                    showNotification("Please enter a stock code first!", "warning");
+                    return;
+                }
+                const prefix = this.getAttribute('data-prefix');
+                sendTelegramCommand(`${prefix}${stockCode}`);
+            });
+        });
+        
         // Setup analyze button
-        document.getElementById('analyze-btn').addEventListener('click', function() {
-            const stockCode = document.getElementById('stock-input').value.trim().toUpperCase();
+        document.getElementById('analyzeBtn').addEventListener('click', function() {
+            const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
             if (!stockCode) {
                 showNotification("Please enter a stock code first!", "warning");
                 return;
@@ -598,10 +915,15 @@
         });
         
         // Enter key support
-        document.getElementById('stock-input').addEventListener('keypress', function(e) {
+        document.getElementById('stockInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
-                document.getElementById('analyze-btn').click();
+                document.getElementById('analyzeBtn').click();
             }
+        });
+        
+        // Close result button
+        document.getElementById('closeResult').addEventListener('click', function() {
+            document.getElementById('resultContainer').classList.remove('active');
         });
         
         // Telegram Main Button
