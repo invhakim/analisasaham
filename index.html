@@ -766,7 +766,7 @@
           <span class="description">Volume</span>
         </button>
 
-        <button class="command-btn" data-prefix="/t5-">
+        <button class="command-btn" data-prefix="/t5">
           <i class="fas fa-users"></i>
           <span class="command-text">Top 5 Brokers</span>
           <span class="description">Broker Ranking</span>
@@ -822,7 +822,7 @@
           <span class="description">Buyer/Seller</span>
         </button>
         
-        <button class="command-btn secondary" data-cmd="/t5-DGIK">
+        <button class="command-btn secondary" data-cmd="/t5DGIK">
           <i class="fas fa-users"></i>
           <span class="command-text">DGIK</span>
           <span class="description">Top Brokers</span>
@@ -982,7 +982,7 @@
             '/tr-': 'Trendlines',
             '/bsd-': 'Buyer/Seller',
             '/rrg-': 'RRG Matrix',
-            '/t5-': 'Top 5 Brokers',
+            '/t5': 'Top 5 Brokers',
             '/fl-': 'Flow Analysis'
         };
         
@@ -1026,7 +1026,7 @@
         
         if (stockCode && (commandText.includes('/fc-') || commandText.includes('/tr-') || 
             commandText.includes('/bsd-') || commandText.includes('/rrg-') || 
-            commandText.includes('/t5-') || commandText.includes('/fl-'))) {
+            commandText.includes('/t5') || commandText.includes('/fl-'))) {
             saveRecentAction(stockCode, commandType);
         }
         
