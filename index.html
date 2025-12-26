@@ -782,7 +782,7 @@
         </button>
         
         <!-- Flow Analysis dengan icon yang lebih deskriptif -->
-        <button class="command-btn" data-prefix="/fl-">
+        <button class="command-btn" data-prefix="/fl">
           <i class="fas fa-project-diagram"></i>
           <span class="command-text">Flow Analysis</span>
           <span class="description">Broker Flow</span>
@@ -1148,7 +1148,7 @@
                 showNotification("Please enter a stock code first!", "warning");
                 return;
             }
-            sendTelegramCommand(`/tr-${stockCode}`);
+            sendTelegramCommand(`/${stockCode}`);
         });
         
         // Enter key support
