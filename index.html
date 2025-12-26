@@ -781,7 +781,6 @@
           <span class="description">Broker Ranking</span>
         </button>
         
-        <!-- Flow Analysis dengan icon yang lebih deskriptif -->
         <button class="command-btn" data-prefix="/fl">
           <i class="fas fa-project-diagram"></i>
           <span class="command-text">Flow Analysis</span>
@@ -992,7 +991,7 @@
             '/bsd-': 'Buyer/Seller',
             '/rrg-': 'RRG Matrix',
             '/t5': 'Top 5 Brokers',
-            '/fl-': 'Flow Analysis'
+            '/fl': 'Flow Analysis'
         };
         
         return commandMap[commandType] || 'Analysis';
@@ -1035,7 +1034,7 @@
         
         if (stockCode && (commandText.includes('/fc-') || commandText.includes('/tr-') || 
             commandText.includes('/bsd-') || commandText.includes('/rrg-') || 
-            commandText.includes('/t5') || commandText.includes('/fl-'))) {
+            commandText.includes('/t5') || commandText.includes('/fl'))) {
             saveRecentAction(stockCode, commandType);
         }
         
