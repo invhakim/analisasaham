@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Screener Slingshot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #loading {
+      display: none;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background: #222;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="btnScreener">Screener Slingshot</button>
+  <div id="loading">⏳ Loading data...</div>
+
+  <table id="resultTable"></table>
+
+  <script>const CSV_URL = 'https://drive.google.com/uc?export=download&id=1RZqNuD3Uk-YpDyd5-miyD35o_CYr-v3j';
+
+const btn = document.getElementById('btnScreener');
+const loading = document.getElementById('loading');
+const table = document.getElementById('resultTable');
+
+btn.addEventListener('click', async () => {
+  loading.style.display = 'block';
+  table.innerHTML = '';
+
+  try {
+    const response = await fetch(CSV_URL);
+    const csvText = await response.text();
+
+    const rows = csvText.trim().split('\n').map(r => r.split(','));
+
+    renderTable(rows);
+  } catch (err) {
+    alert('Gagal mengambil data CSV');
+    console.error(err);
+  } finally {
+    loading.style.display = 'none';
+  }
+});
+
+function renderTable(data) {
+  if (!data.length) return;
+
+  // Header
+  let thead = '<tr>';
+  data[0].forEach(col => {
+    thead += `<th>${col}</th>`;
+  });
+  thead += '</tr>';
+
+  // Body
+  let tbody = '';
+  for (let i = 1; i < data.length; i++) {
+    tbody += '<tr>';
+    data[i].forEach(col => {
+      tbody += `<td>${col}</td>`;
+    });
+    tbody += '</tr>';
+  }
+
+  table.innerHTML = thead + tbody;
+}
+</script>
+</body>
+</html>
