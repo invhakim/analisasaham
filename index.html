@@ -256,6 +256,190 @@
       box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     }
     
+    /* ===== SLINGSHOT SCREENER SECTION ===== */
+    .slingshot-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    
+    .slingshot-controls .search-input {
+      flex: 1;
+    }
+    
+    .slingshot-btn {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      border: none;
+      color: white;
+      padding: 0 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    
+    .slingshot-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+    }
+    
+    /* ===== TABLE STYLES ===== */
+    .data-table-container {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      margin-top: 16px;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 800px;
+    }
+    
+    .data-table thead {
+      background: rgba(15, 23, 42, 0.8);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .data-table th {
+      padding: 14px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--light);
+      border-bottom: 2px solid var(--primary);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .data-table th:hover {
+      background: rgba(37, 99, 235, 0.1);
+    }
+    
+    .data-table th.sort-asc::after {
+      content: " ↑";
+      font-weight: bold;
+      color: var(--secondary);
+    }
+    
+    .data-table th.sort-desc::after {
+      content: " ↓";
+      font-weight: bold;
+      color: var(--danger);
+    }
+    
+    .data-table td {
+      padding: 12px;
+      font-size: 13px;
+      color: var(--gray);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .data-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    
+    .data-table tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    
+    /* Table cell styling */
+    .positive {
+      color: var(--success) !important;
+      font-weight: 600;
+    }
+    
+    .negative {
+      color: var(--danger) !important;
+      font-weight: 600;
+    }
+    
+    .neutral {
+      color: var(--warning) !important;
+      font-weight: 600;
+    }
+    
+    .stock-code {
+      font-weight: 700;
+      color: var(--light) !important;
+    }
+    
+    /* ===== PAGINATION ===== */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .page-btn {
+      padding: 8px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--light);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .page-btn:hover:not(.active):not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+    }
+    
+    .page-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-color: var(--primary);
+      color: white;
+    }
+    
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* ===== LOADING INDICATOR ===== */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    
+    .loading.active {
+      display: block;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      color: var(--gray);
+      font-size: 14px;
+    }
+    
     /* ===== RESULT DISPLAY ===== */
     .result-container {
       background: var(--card-bg);
@@ -313,155 +497,6 @@
     .close-result:hover {
       background: rgba(255, 255, 255, 0.1);
       color: var(--light);
-    }
-    
-    /* Analysis Cards */
-    .analysis-card {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      border-left: 4px solid var(--primary);
-      transition: transform 0.2s;
-    }
-    
-    .analysis-card:hover {
-      transform: translateX(2px);
-    }
-    
-    .analysis-card.success {
-      border-left-color: var(--success);
-    }
-    
-    .analysis-card.warning {
-      border-left-color: var(--warning);
-    }
-    
-    .analysis-card.danger {
-      border-left-color: var(--danger);
-    }
-    
-    .analysis-card.info {
-      border-left-color: var(--info);
-    }
-    
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--light);
-    }
-    
-    .card-title i {
-      font-size: 16px;
-    }
-    
-    .card-content {
-      color: var(--gray);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    
-    .card-content p {
-      margin-bottom: 8px;
-    }
-    
-    /* Metric Grid */
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin-top: 12px;
-    }
-    
-    .metric {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 10px;
-      border-radius: 8px;
-      text-align: center;
-    }
-    
-    .metric-label {
-      font-size: 11px;
-      color: var(--gray);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    .metric-value {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--light);
-    }
-    
-    .metric-value.positive {
-      color: var(--success);
-    }
-    
-    .metric-value.negative {
-      color: var(--danger);
-    }
-    
-    .metric-value.neutral {
-      color: var(--warning);
-    }
-    
-    /* Recommendation Badge */
-    .recommendation {
-      display: inline-block;
-      padding: 4px 10px;
-      background: var(--success);
-      color: white;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 8px;
-    }
-    
-    .recommendation.buy {
-      background: var(--success);
-    }
-    
-    .recommendation.sell {
-      background: var(--danger);
-    }
-    
-    .recommendation.hold {
-      background: var(--warning);
-    }
-    
-    /* ===== LOADING INDICATOR ===== */
-    .loading {
-      display: none;
-      text-align: center;
-      padding: 40px;
-    }
-    
-    .loading.active {
-      display: block;
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 16px;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .loading-text {
-      color: var(--gray);
-      font-size: 14px;
     }
     
     /* ===== NOTIFICATION ===== */
@@ -533,7 +568,11 @@
         flex-direction: column;
       }
       
-      .search-btn {
+      .slingshot-controls {
+        flex-direction: column;
+      }
+      
+      .search-btn, .slingshot-btn {
         justify-content: center;
         padding: 14px;
       }
@@ -546,6 +585,7 @@
     /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
     
     ::-webkit-scrollbar-track {
@@ -575,7 +615,7 @@
     .mt-3 { margin-top: 12px; }
     .mt-4 { margin-top: 16px; }
     
-    /* Loading Dots dari kode pertama */
+    /* Loading Dots */
     .loading-dots {
       display: inline-block;
       position: relative;
@@ -602,7 +642,7 @@
       100% { transform: rotate(1800deg); }
     }
     
-    /* ===== INPUT PERSISTENT ===== */
+    /* Input Persistent */
     .search-input.persistent {
       border-color: var(--primary);
       background: rgba(37, 99, 235, 0.1);
@@ -723,13 +763,26 @@
         <button class="command-btn warning" data-cmd="/scr-ara">
           <i class="fa-solid fa-rocket"></i>
           <span class="command-text">Calon ARA</span>
-          <span class="description">Mencari saham yang mulai dipanaskan: volume, akumulasi, dan harga tetap di atas MA50.
-</span>
+          <span class="description">Mencari saham yang mulai dipanaskan: volume, akumulasi, dan harga tetap di atas MA50.</span>
+        </button>
+        
+        <!-- Slingshot Screener Button -->
+        <button class="command-btn warning" id="btnScreener">
+          <i class="fas fa-slingshot"></i>
+          <span class="command-text">Slingshot</span>
+          <span class="description">Screener momentum</span>
+        </button>
+      </div>
+      
+      <!-- Slingshot Controls -->
+      <div class="slingshot-controls hidden" id="slingshotControls">
+        <input type="text" id="filterInput" class="search-input" placeholder="Filter saham...">
+        <button class="slingshot-btn" id="refreshScreener">
+          <i class="fas fa-sync-alt"></i>
+          <span>Refresh</span>
         </button>
       </div>
     </section>
-    
-    
     
     <!-- Custom Analysis Section -->
     <section class="section search-section">
@@ -798,10 +851,6 @@
           <span class="command-text">RRG Matrix</span>
           <span class="description">Rotation</span>
         </button>
-
-        
-
-        
       </div>
     </section>
     
@@ -841,15 +890,35 @@
     <!-- Loading Indicator -->
     <div class="loading" id="loading">
       <div class="spinner"></div>
-      <div class="loading-text" id="loadingText">Processing analysis...</div>
+      <div class="loading-text" id="loadingText">Loading screener data...</div>
     </div>
     
-    <!-- Results Display -->
+    <!-- Slingshot Results Display -->
+    <div class="result-container" id="slingshotResultContainer">
+      <div class="result-header">
+        <div class="result-title">
+          <i class="fas fa-slingshot"></i>
+          <span id="resultTitle">Slingshot Screener Results</span>
+        </div>
+        <button class="close-result" id="closeSlingshotResult">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="result-content">
+        <div class="data-table-container">
+          <table class="data-table" id="resultTable"></table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+    
+    <!-- Results Display for Other Analysis -->
     <div class="result-container" id="resultContainer">
       <div class="result-header">
         <div class="result-title">
           <i class="fas fa-chart-bar" id="resultIcon"></i>
-          <span id="resultTitle">Analysis Results</span>
+          <span id="resultTitle2">Analysis Results</span>
         </div>
         <button class="close-result" id="closeResult">
           <i class="fas fa-times"></i>
@@ -871,6 +940,7 @@
   <script>
     // ===== KONFIGURASI =====
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwJ6vG2jOQZkzOsCgLRLkEwsKue9n_PtIkWqdWhkCA8x7-7PQkAOYe2kA7R2toDZg_e/exec';
+    const SLINGSHOT_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0WOo8T_vpgXMdyOgtr2YQQyNSBnB4Xg-l-JhE7M048OcC4WjcwjG-GTXrBi7FkYAGIooL6hvslITF/pub?output=csv";
 
     // ===== INISIALISASI =====
     const tg = window.Telegram.WebApp;
@@ -878,6 +948,14 @@
     // ===== VARIABEL GLOBAL =====
     let recentActions = JSON.parse(localStorage.getItem('holistik_recent_actions') || '[]');
     let currentStockCode = '';
+    
+    // ===== SLINGSHOT VARIABLES =====
+    let rawData = [];
+    let filteredData = [];
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    let sortColumn = null;
+    let sortDirection = "asc";
 
     // ===== NOTIFICATION SYSTEM =====
     let notificationTimeout;
@@ -1011,7 +1089,7 @@
         return `${days}d ago`;
     }
 
-    // ===== FUNGSI UTAMA =====
+    // ===== FUNGSI UTAMA TELEGRAM =====
     async function sendTelegramCommand(commandText) {
         const user = tg.initDataUnsafe.user;
         
@@ -1078,8 +1156,7 @@
                 console.log('Haptic feedback not available');
             }
             
-            // JANGAN HAPUS INPUT - Biarkan input tetap ada
-            // Hanya highlight input field
+            // Highlight input field
             const stockInput = document.getElementById('stockInput');
             stockInput.classList.add('persistent');
             
@@ -1097,6 +1174,235 @@
                 });
             }, 500);
         }
+    }
+
+    // ===== SLINGSHOT FUNCTIONS =====
+    async function loadCSV() {
+        const loading = document.getElementById('loading');
+        const table = document.getElementById('resultTable');
+        const paginationDiv = document.getElementById('pagination');
+        
+        loading.classList.add('active');
+        table.innerHTML = "";
+        paginationDiv.innerHTML = "";
+
+        try {
+            const response = await fetch(SLINGSHOT_CSV_URL);
+            const csvText = await response.text();
+
+            rawData = csvText.trim().split("\n").map(r => {
+                // Handle quoted CSV values
+                const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+                const matches = r.match(regex) || [];
+                return matches.map(cell => cell.replace(/^"|"$/g, '').trim());
+            });
+            
+            filteredData = [...rawData];
+            currentPage = 1;
+            
+            // Show controls
+            document.getElementById('slingshotControls').classList.remove('hidden');
+            
+            // Show results
+            document.getElementById('slingshotResultContainer').classList.add('active');
+            
+            render();
+            showNotification("✅ Data Slingshot berhasil dimuat", "success");
+            
+        } catch (err) {
+            console.error(err);
+            showNotification("❌ Gagal mengambil data CSV", "error");
+        } finally {
+            loading.classList.remove('active');
+        }
+    }
+
+    function applyFilter() {
+        const keyword = document.getElementById('filterInput').value.toLowerCase();
+
+        filteredData = [
+            rawData[0],
+            ...rawData.slice(1).filter(row =>
+                row.join(" ").toLowerCase().includes(keyword)
+            )
+        ];
+
+        currentPage = 1;
+        render();
+    }
+
+    function render() {
+        renderTable();
+        renderPagination();
+    }
+
+    function renderTable() {
+        const table = document.getElementById('resultTable');
+        table.innerHTML = "";
+
+        if (filteredData.length === 0) {
+            table.innerHTML = "<tr><td colspan='100%' class='text-center'>Tidak ada data</td></tr>";
+            return;
+        }
+
+        // HEADER
+        const header = filteredData[0];
+        let thead = "<tr>";
+
+        header.forEach((col, idx) => {
+            let cls = "";
+            if (sortColumn === idx) {
+                cls = sortDirection === "asc" ? "sort-asc" : "sort-desc";
+            }
+            
+            // Style first column as stock code
+            if (idx === 0) {
+                thead += `<th class="${cls}" onclick="sortScreenerTable(${idx})">${col}</th>`;
+            } else {
+                thead += `<th class="${cls}" onclick="sortScreenerTable(${idx})">${col}</th>`;
+            }
+        });
+
+        thead += "</tr>";
+        table.innerHTML = thead;
+
+        // BODY
+        const start = (currentPage - 1) * rowsPerPage + 1;
+        const end = start + rowsPerPage;
+        const rows = filteredData.slice(start, end);
+
+        rows.forEach(row => {
+            let tr = "<tr>";
+            row.forEach((col, idx) => {
+                // Style first column as stock code
+                if (idx === 0) {
+                    tr += `<td class="stock-code">${col}</td>`;
+                } else {
+                    // Check if value is numeric and apply color coding
+                    const numVal = parseFloat(col);
+                    if (!isNaN(numVal)) {
+                        let cellClass = '';
+                        if (numVal > 0) cellClass = 'positive';
+                        else if (numVal < 0) cellClass = 'negative';
+                        else cellClass = 'neutral';
+                        
+                        tr += `<td class="${cellClass}">${col}</td>`;
+                    } else {
+                        tr += `<td>${col}</td>`;
+                    }
+                }
+            });
+            tr += "</tr>";
+            table.innerHTML += tr;
+        });
+    }
+
+    function renderPagination() {
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = "";
+
+        const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
+        
+        if (totalPages <= 1) return;
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-btn';
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+                updatePaginationButtons();
+            }
+        };
+        paginationDiv.appendChild(prevBtn);
+
+        // Page numbers
+        const maxVisible = 5;
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+        if (endPage - startPage + 1 < maxVisible) {
+            startPage = Math.max(1, endPage - maxVisible + 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            const btn = document.createElement('button');
+            btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+            btn.textContent = i;
+            btn.onclick = () => {
+                currentPage = i;
+                renderTable();
+                updatePaginationButtons();
+            };
+            paginationDiv.appendChild(btn);
+        }
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-btn';
+        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+                updatePaginationButtons();
+            }
+        };
+        paginationDiv.appendChild(nextBtn);
+    }
+
+    function updatePaginationButtons() {
+        const buttons = document.querySelectorAll('#pagination .page-btn');
+        const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
+        
+        buttons.forEach((btn, index) => {
+            if (btn.textContent === '<' || btn.textContent === '>') {
+                // Previous/Next buttons
+                if (btn.textContent === '<') {
+                    btn.disabled = currentPage === 1;
+                } else {
+                    btn.disabled = currentPage === totalPages;
+                }
+            } else {
+                // Page number buttons
+                const pageNum = parseInt(btn.textContent);
+                btn.className = `page-btn ${pageNum === currentPage ? 'active' : ''}`;
+            }
+        });
+    }
+
+    function sortScreenerTable(columnIndex) {
+        if (sortColumn === columnIndex) {
+            sortDirection = sortDirection === "asc" ? "desc" : "asc";
+        } else {
+            sortColumn = columnIndex;
+            sortDirection = "asc";
+        }
+
+        const header = filteredData[0];
+        const body = filteredData.slice(1);
+
+        body.sort((a, b) => {
+            const valA = a[columnIndex]?.trim();
+            const valB = b[columnIndex]?.trim();
+
+            if (!isNaN(valA) && !isNaN(valB)) {
+                const numA = parseFloat(valA);
+                const numB = parseFloat(valB);
+                return sortDirection === "asc" ? numA - numB : numB - numA;
+            }
+
+            return sortDirection === "asc" 
+                ? (valA || "").localeCompare(valB || "")
+                : (valB || "").localeCompare(valA || "");
+        });
+
+        filteredData = [header, ...body];
+        renderTable();
     }
 
     // ===== SETUP EVENT LISTENERS =====
@@ -1162,9 +1468,13 @@
             this.classList.remove('persistent');
         });
         
-        // Close result button
+        // Close result buttons
         document.getElementById('closeResult').addEventListener('click', function() {
             document.getElementById('resultContainer').classList.remove('active');
+        });
+        
+        document.getElementById('closeSlingshotResult').addEventListener('click', function() {
+            document.getElementById('slingshotResultContainer').classList.remove('active');
         });
         
         // Telegram Main Button
@@ -1173,6 +1483,15 @@
             tg.close();
         });
         tg.MainButton.show();
+        
+        // Slingshot Screener Button
+        document.getElementById('btnScreener').addEventListener('click', loadCSV);
+        
+        // Filter input for Slingshot
+        document.getElementById('filterInput').addEventListener('input', applyFilter);
+        
+        // Refresh button for Slingshot
+        document.getElementById('refreshScreener').addEventListener('click', loadCSV);
         
         // Handle deep linking
         const startParam = tg.initDataUnsafe.start_param;
@@ -1183,7 +1502,7 @@
         
         // Tambahkan contoh kode saham yang sering digunakan
         const popularStocks = ['BBCA', 'TLKM', 'BBRI', 'ASII', 'UNVR'];
-        const popularContainer = document.getElementById('recentActions');
+        const recentContainer = document.getElementById('recentActions');
         
         // Tambah tombol untuk kode saham populer jika belum ada recent actions
         if (recentActions.length === 0) {
@@ -1198,8 +1517,8 @@
             });
             
             // Tambah ke container jika kosong
-            if (popularContainer.innerHTML === '') {
-                popularContainer.innerHTML = popularHtml;
+            if (recentContainer.innerHTML === '') {
+                recentContainer.innerHTML = popularHtml;
                 
                 // Tambah event listener untuk popular stocks
                 document.querySelectorAll('.recent-badge[data-stock]').forEach(badge => {
@@ -1219,158 +1538,5 @@
         }
     });
   </script>
-
-  <button id="btnScreener">Screener Slingshot</button>
-  <input id="filterInput" type="text" placeholder="Filter saham...">
-
-  <div id="loading">⏳ Loading data...</div>
-
-  <table id="resultTable"></table>
-  <div id="pagination"></div>
-
-  <script>
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0WOo8T_vpgXMdyOgtr2YQQyNSBnB4Xg-l-JhE7M048OcC4WjcwjG-GTXrBi7FkYAGIooL6hvslITF/pub?output=csv";
-
-const btn = document.getElementById("btnScreener");
-const loading = document.getElementById("loading");
-const table = document.getElementById("resultTable");
-const paginationDiv = document.getElementById("pagination");
-const filterInput = document.getElementById("filterInput");
-
-let rawData = [];
-let filteredData = [];
-let currentPage = 1;
-let rowsPerPage = 10;
-let sortColumn = null;
-let sortDirection = "asc";
-
-btn.addEventListener("click", loadCSV);
-filterInput.addEventListener("input", applyFilter);
-
-async function loadCSV() {
-  loading.style.display = "block";
-  table.innerHTML = "";
-  paginationDiv.innerHTML = "";
-
-  try {
-    const response = await fetch(CSV_URL);
-    const csvText = await response.text();
-
-    rawData = csvText.trim().split("\n").map(r => r.split(","));
-    filteredData = [...rawData];
-
-    currentPage = 1;
-    render();
-  } catch (err) {
-    alert("Gagal mengambil data CSV");
-    console.error(err);
-  } finally {
-    loading.style.display = "none";
-  }
-}
-
-function applyFilter() {
-  const keyword = filterInput.value.toLowerCase();
-
-  filteredData = [
-    rawData[0],
-    ...rawData.slice(1).filter(row =>
-      row.join(" ").toLowerCase().includes(keyword)
-    )
-  ];
-
-  currentPage = 1;
-  render();
-}
-
-function render() {
-  renderTable();
-  renderPagination();
-}
-
-function renderTable() {
-  table.innerHTML = "";
-
-  if (filteredData.length === 0) {
-    table.innerHTML = "<tr><td colspan='100%'>Tidak ada data</td></tr>";
-    return;
-  }
-
-  // HEADER
-  const header = filteredData[0];
-  let thead = "<tr>";
-
-  header.forEach((col, idx) => {
-    let cls = "";
-    if (sortColumn === idx) {
-      cls = sortDirection === "asc" ? "sort-asc" : "sort-desc";
-    }
-    thead += `<th class="${cls}" onclick="sortTable(${idx})">${col}</th>`;
-  });
-
-  thead += "</tr>";
-  table.innerHTML += thead;
-
-  // BODY
-  const start = (currentPage - 1) * rowsPerPage + 1;
-  const end = start + rowsPerPage;
-  const rows = filteredData.slice(start, end);
-
-  rows.forEach(row => {
-    let tr = "<tr>";
-    row.forEach(col => tr += `<td>${col}</td>`);
-    tr += "</tr>";
-    table.innerHTML += tr;
-  });
-}
-
-function renderPagination() {
-  paginationDiv.innerHTML = "";
-
-  const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-    btn.disabled = i === currentPage;
-    btn.onclick = () => {
-      currentPage = i;
-      renderTable();
-    };
-    paginationDiv.appendChild(btn);
-  }
-}
-
-window.sortTable = function (columnIndex) {
-  if (sortColumn === columnIndex) {
-    sortDirection = sortDirection === "asc" ? "desc" : "asc";
-  } else {
-    sortColumn = columnIndex;
-    sortDirection = "asc";
-  }
-
-  const header = filteredData[0];
-  const body = filteredData.slice(1);
-
-  body.sort((a, b) => {
-    const valA = a[columnIndex]?.trim();
-    const valB = b[columnIndex]?.trim();
-
-    if (!isNaN(valA) && !isNaN(valB)) {
-      return sortDirection === "asc"
-        ? valA - valB
-        : valB - valA;
-    }
-
-    return sortDirection === "asc"
-      ? valA.localeCompare(valB)
-      : valB.localeCompare(valA);
-  });
-
-  filteredData = [header, ...body];
-  renderTable();
-};
-
-</script>
 </body>
 </html>
