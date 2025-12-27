@@ -768,7 +768,7 @@
         
         <!-- Slingshot Screener Button -->
         <button class="command-btn warning" id="btnScreener">
-          <i class="fas fa-slingshot"></i>
+          <i class="fa-solid fa-mug-hot"></i>
           <span class="command-text">Slingshot</span>
           <span class="description">Screener momentum</span>
         </button>
@@ -783,6 +783,34 @@
         </button>
       </div>
     </section>
+
+    <!-- Loading Indicator slingshot-->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingText">Loading screener data...</div>
+    </div>
+    
+    <!-- Slingshot Results Display -->
+    <div class="result-container" id="slingshotResultContainer">
+      <div class="result-header">
+        <div class="result-title">
+          <i class="fas fa-slingshot"></i>
+          <span id="resultTitle">Slingshot Screener Results</span>
+        </div>
+        <button class="close-result" id="closeSlingshotResult">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="result-content">
+        <div class="data-table-container">
+          <table class="data-table" id="resultTable"></table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+
+    <!--end slingshot---->
     
     <!-- Custom Analysis Section -->
     <section class="section search-section">
@@ -887,32 +915,7 @@
       </div>
     </section>
     
-    <!-- Loading Indicator -->
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <div class="loading-text" id="loadingText">Loading screener data...</div>
-    </div>
-    
-    <!-- Slingshot Results Display -->
-    <div class="result-container" id="slingshotResultContainer">
-      <div class="result-header">
-        <div class="result-title">
-          <i class="fas fa-slingshot"></i>
-          <span id="resultTitle">Slingshot Screener Results</span>
-        </div>
-        <button class="close-result" id="closeSlingshotResult">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      
-      <div class="result-content">
-        <div class="data-table-container">
-          <table class="data-table" id="resultTable"></table>
-        </div>
-        <div class="pagination" id="pagination"></div>
-      </div>
-    </div>
-    
+        
     <!-- Results Display for Other Analysis -->
     <div class="result-container" id="resultContainer">
       <div class="result-header">
