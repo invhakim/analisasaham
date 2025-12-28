@@ -369,6 +369,7 @@
     .stock-code {
       font-weight: 700;
       color: var(--light) !important;
+      cursor: pointer;
     }
     
     /* ===== PAGINATION ===== */
@@ -940,6 +941,74 @@
     <span id="notificationText">Message</span>
   </div>
 
+  <!-- Modal Chart -->
+  <style>
+    .modal_chart { display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+             width: 100%; height: 100%; overflow: auto;
+             background-color: rgba(0,0,0,0.6); }
+    .modal-content_chart { background-color: #fff; margin: 5% auto; padding: 10px;
+                     border: 1px solid #888;     width: 50%;
+                     max-width: 50%;
+                     border-radius: 8px; }
+    .close_chart { color: #aaa; float: right; font-size: 24px; font-weight: bold; cursor: pointer; }
+    .close_chart:hover { color: #000; }
+  </style>
+
+  <!-- Modal Chart -->
+  <div id="chartModal" class="modal_chart">
+    <div class="modal-content_chart">
+        <span class="close_chart" onclick="closeModal()">&times;</span>
+        <div id="chartContainer"></div>
+    </div>
+  </div>
+
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script>
+  // Pastikan fungsi global
+  window.showChart = function(kode) {
+    document.getElementById("chartModal").style.display = "block";
+
+    // Kosongkan kontainer dan buat div baru untuk chart
+    const container = document.getElementById("chartContainer");
+    container.innerHTML = `<div id="tradingview_${kode}" style="height:800px;"></div>`;
+
+    // Buat widget TradingView
+    new TradingView.widget({
+        "width": "100%",
+        "height": 800,
+        "symbol": "IDX:" + kode,
+        "interval": "D",
+        "timezone": "Asia/Jakarta",
+        "theme": "dark",
+        "style": "1",
+        "locale": "id",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "allow_symbol_change": true,
+        "container_id": "tradingview_" + kode,
+        "studies": [
+          "STD;MACD",
+          "STD;RSI",
+          "STD;Divergence%1Indicator"
+        ],
+    });
+  }
+
+  window.closeModal = function() {
+    document.getElementById("chartModal").style.display = "none";
+    document.getElementById("chartContainer").innerHTML = "";
+  }
+
+  // Tutup modal jika klik luar
+  window.onclick = function(event) {
+    const modal = document.getElementById("chartModal");
+    if (event.target == modal) {
+        window.closeModal();
+    }
+  }
+  </script>
+<!-- End Modal Chart -->
+
   <script>
     // ===== KONFIGURASI =====
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwJ6vG2jOQZkzOsCgLRLkEwsKue9n_PtIkWqdWhkCA8x7-7PQkAOYe2kA7R2toDZg_e/exec';
@@ -1279,7 +1348,7 @@
             row.forEach((col, idx) => {
                 // Style first column as stock code
                 if (idx === 0) {
-                    tr += `<td class="stock-code">${col}</td>`;
+                    tr += `<td class="stock-code" onclick="showChart('${col}')">${col}</td>`;
                 } else {
                     // Check if value is numeric and apply color coding
                     const numVal = parseFloat(col);
