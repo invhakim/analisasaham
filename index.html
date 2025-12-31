@@ -699,7 +699,105 @@
       align-items: center;
       justify-content: center;
     }
-        
+
+
+    /* top stock by broker*/
+    .search-box-broker {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: var(--transition);
+            box-sizing: border-box;
+            outline: none;
+            font-weight: 500;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .search-input:focus + .input-icon {
+            color: var(--secondary);
+        }
+
+        .radio-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            border-radius: 14px;
+        }
+
+        .radio-option {
+            position: relative;
+        }
+
+        .radio-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            color: var(--text-muted);
+        }
+
+        .radio-option input:checked + .radio-label.acc {
+            background: white;
+            color: #10b981;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .radio-option input:checked + .radio-label.dist {
+            background: white;
+            color: #ef4444;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }   
+   
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section {
+            animation: fadeIn 0.5s ease-out;
+        }
   </style>
 </head>
 <body>
@@ -880,60 +978,57 @@
           <span class="command-text">RRG Matrix</span>
           <span class="description">Rotation</span>
         </button>
-
-        <button class="command-btn secondary" data-prefix="/vol-">
-          <i class="fa-solid fa-arrows-to-eye"></i>
-          <span class="command-text">Broker Volume</span>
-          <span class="description">Broker Analyst</span>
-        </button>
-
-        <button class="command-btn secondary" data-prefix="/val-">
-          <i class="fa-solid fa-arrows-to-circle"></i>
-          <span class="command-text">Broker Value</span>
-          <span class="description">Broker Analyst</span>
-        </button>
         
       </div>
     </section>
 
-     <!-- Top Stock by Broker -->
+     
+         <!-- Top Stock by Broker -->
     <section class="section search-section">
       <div class="section-title">
-        <i class="fas fa-search"></i>
-        <span>Top Stock by Broker Acc/Dist</span>
-      </div>
-      
-      <div class="search-box">
-        <input type="text" 
-               class="search-input" 
-               id="stockInput" 
-               placeholder="Enter stock code (BBCA, TLKM, BBRI...)"
-               autocomplete="off"
-               autocapitalize="characters"
-               value="">
-        <button class="search-btn" id="analyzeBtn">
           <i class="fas fa-chart-line"></i>
-          <span>Analyze</span>
-        </button>
+          <span>Top Stock by Broker</span>
       </div>
       
-      <div class="recent-actions" id="recentActions">
-        <!-- Recent actions akan ditampilkan di sini -->
+      <div class="search-box-broker">
+          <div class="input-wrapper">
+              <input type="text" 
+                     class="search-input" 
+                     id="brokerInput" 
+                     placeholder="Enter broker code (AK, ZP, BK)"
+                     autocomplete="off"
+                     autocapitalize="characters">
+              <i class="fas fa-search input-icon"></i>
+          </div>
+          
+          <div class="radio-group">
+              <div class="radio-option">
+                  <input type="radio" name="type" id="Acc" value="Acc" checked>
+                  <label for="Acc" class="radio-label acc">
+                      <i class="fa-solid fa-arrow-trend-up"></i> Accumulation
+                  </label>
+              </div>
+              <div class="radio-option">
+                  <input type="radio" name="type" id="Dist" value="Dist">
+                  <label for="Dist" class="radio-label dist">
+                      <i class="fa-solid fa-arrow-trend-down"></i> Distribution
+                  </label>
+              </div>
+          </div>
       </div>
       
       <div class="command-grid">
-        <button class="command-btn secondary" data-prefix="/vol-">
-          <i class="fa-solid fa-arrows-to-eye"></i>
-          <span class="command-text">Broker Volume</span>
-          <span class="description">Broker Analyst</span>
-        </button>
-
-        <button class="command-btn secondary" data-prefix="/val-">
-          <i class="fa-solid fa-arrows-to-circle"></i>
-          <span class="command-text">Broker Value</span>
-          <span class="description">Broker Analyst</span>
-        </button>
-        
+          <button class="command-btn" data-prefix="/vol-">
+              <i class="fa-solid fa-arrows-to-eye"></i>
+              <span class="command-text">Broker Volume</span>
+              <span class="description">Volume Analysis</span>
+          </button>
+    
+          <button class="command-btn" data-prefix="/val-">
+              <i class="fa-solid fa-arrows-to-circle"></i>
+              <span class="command-text">Broker Value</span>
+              <span class="description">Value Analysis</span>
+          </button>
       </div>
     </section>
     
