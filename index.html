@@ -895,6 +895,47 @@
         
       </div>
     </section>
+
+     <!-- Top Stock by Broker -->
+    <section class="section search-section">
+      <div class="section-title">
+        <i class="fas fa-search"></i>
+        <span>Top Stock by Broker Acc/Dist</span>
+      </div>
+      
+      <div class="search-box">
+        <input type="text" 
+               class="search-input" 
+               id="stockInput" 
+               placeholder="Enter stock code (BBCA, TLKM, BBRI...)"
+               autocomplete="off"
+               autocapitalize="characters"
+               value="">
+        <button class="search-btn" id="analyzeBtn">
+          <i class="fas fa-chart-line"></i>
+          <span>Analyze</span>
+        </button>
+      </div>
+      
+      <div class="recent-actions" id="recentActions">
+        <!-- Recent actions akan ditampilkan di sini -->
+      </div>
+      
+      <div class="command-grid">
+        <button class="command-btn secondary" data-prefix="/vol-">
+          <i class="fa-solid fa-arrows-to-eye"></i>
+          <span class="command-text">Broker Volume</span>
+          <span class="description">Broker Analyst</span>
+        </button>
+
+        <button class="command-btn secondary" data-prefix="/val-">
+          <i class="fa-solid fa-arrows-to-circle"></i>
+          <span class="command-text">Broker Value</span>
+          <span class="description">Broker Analyst</span>
+        </button>
+        
+      </div>
+    </section>
     
     <!-- Popular Stocks Section -->
     <section class="section">
