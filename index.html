@@ -798,6 +798,39 @@
         .section {
             animation: fadeIn 0.5s ease-out;
         }
+
+        .date-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .date-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .date-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--light);
+            outline: none;
+            transition: var(--transition);
+            box-sizing: border-box;
+            font-family: inherit;
+        }
   </style>
 </head>
 <body>
@@ -1000,8 +1033,23 @@
                        autocapitalize="characters">
                 <i class="fas fa-search input-icon"></i>
             </div>
-            
+
+          <div class="date-group">
+            <div class="date-input-container">
+                <label class="date-label" for="min">Start Date</label>
+                <input type="date" id="min" name="min" value="" min="2024-01-01" max="2025-12-31" class="form-control"
+              placeholder="Start Date" aria-label="Start Date">
+            </div>
+            <div class="date-input-container">
+                <label class="date-label" for="max">End Date</label>
+                <input type="date" id="max" name="max" value="" min="2024-01-01" max="2025-12-31" format="dd-mm-yyyy"
+              class="form-control" placeholder="End Date" aria-label="End Date">
+            </div>
         </div>
+          
+        </div>
+
+        
         
         <div class="command-grid">
             <button class="command-btn" data-prefix="/vol20-" data-action="broker">
@@ -1753,7 +1801,38 @@
     function setupBrokerAnalysis() {
       // Get DOM elements
       const brokerInput = document.getElementById('brokerInput');
-  
+      const minDateInput = document.getElementById('min');
+      const maxDateInput = document.getElementById('max');
+     
+      // Set default date values to today
+      function setDefaultDates() {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const formatDate = (date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        };
+
+        if (!minDateInput.value) {
+          minDateInput.value = formatDate(yesterday);
+        }
+
+        if (!maxDateInput.value) {
+          maxDateInput.value = formatDate(today);
+        }
+
+        // Set max attribute to today
+        maxDateInput.max = formatDate(today);
+        minDateInput.max = formatDate(today);
+      }
+
+      // Initialize dates on load
+      setDefaultDates();
+
       // Function to format broker codes
       function formatBrokerCodes(input) {
         // Trim the input and convert to uppercase
@@ -1778,6 +1857,50 @@
         return formatBrokerCodes(rawInput);
       }
 
+      // Function to validate and format date range
+      function getFormattedDateRange() {
+        const minDate = minDateInput.value;
+        const maxDate = maxDateInput.value;
+
+        // If no dates provided, return empty string
+        if (!minDate && !maxDate) {
+          return '';
+        }
+
+        // If only one date provided, use it for both
+        if (minDate && !maxDate) {
+          return `${minDate}+${minDate}`;
+        }
+
+        if (!minDate && maxDate) {
+          return `${maxDate}+${maxDate}`;
+        }
+
+        // If both dates provided, return range
+        return `${minDate}+${maxDate}`;
+      }
+
+      // Function to build complete broker command
+      function buildBrokerCommand(prefix) {
+        const brokerCodes = getFormattedBrokerCodes();
+        if (!brokerCodes) {
+          showNotification('Please enter broker code(s) first!', 'warning');
+          return null;
+        }
+
+        const dateRange = getFormattedDateRange();
+
+        // Build command: /vol20-AK-BK-2025-12-31+2025-12-31
+        let command = `${prefix}${brokerCodes}`;
+
+        if (dateRange) {
+          command += `-${dateRange}`;
+        }
+
+        return command;
+      }
+
+    
       // Handle broker buttons with data-action="broker"
       function setupBrokerButtons() {
         // Get all broker action buttons
@@ -1796,21 +1919,14 @@
           button.addEventListener('click', function(e) {
             e.preventDefault();
 
-            const formattedBrokerCodes = getFormattedBrokerCodes();
-            if (!formattedBrokerCodes) {
-              showNotification('Please enter broker code(s) first!', 'warning');
-              return;
+            const prefix = this.getAttribute('data-prefix');
+            const command = buildBrokerCommand(prefix);
+
+            if (!command) {
+              return; // Notification already shown in buildBrokerCommand
             }
 
-            // Get the command prefix from data-prefix
-            const prefix = this.getAttribute('data-prefix');
-
-            // Format: /vol20-BK or /vol20-BK-ZP-KK for multiple brokers
-            const command = `${prefix}${formattedBrokerCodes}`;
-
-            console.log('Broker command:', command); // Untuk debugging
-
-            // Send the command
+            console.log('Broker command:', command);
             sendTelegramCommand(command);
           });
         });
@@ -1822,17 +1938,13 @@
           if (e.key === 'Enter') {
             e.preventDefault();
 
-            const formattedBrokerCodes = getFormattedBrokerCodes();
-            if (!formattedBrokerCodes) {
-              showNotification('Please enter broker code(s) first!', 'warning');
+            const command = buildBrokerCommand('/vol20-');
+
+            if (!command) {
               return;
             }
 
-            // Default to volume analysis on Enter
-            const command = `/vol20-${formattedBrokerCodes}`;
-
-            console.log('Broker command (Enter):', command); // Untuk debugging
-
+            console.log('Broker command (Enter):', command);
             sendTelegramCommand(command);
           }
         });
@@ -1883,14 +1995,8 @@
       }
 
       // Call initialization
-      init();
-      
-      // Return functions for testing/debugging
-      return {
-        formatBrokerCodes,
-        getFormattedBrokerCodes,
-        updateRadioStyles
-      };
+      init();   
+     
     }
     
   </script>
