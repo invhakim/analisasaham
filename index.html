@@ -1753,6 +1753,30 @@
     function setupBrokerAnalysis() {
       // Get DOM elements
       const brokerInput = document.getElementById('brokerInput');
+  
+      // Function to format broker codes
+      function formatBrokerCodes(input) {
+        // Trim the input and convert to uppercase
+        const trimmedInput = input.trim().toUpperCase();
+
+        // If empty, return empty string
+        if (!trimmedInput) return '';
+
+        // Split by comma, trim each part, remove empty strings
+        const brokers = trimmedInput
+          .split(',')
+          .map(broker => broker.trim())
+          .filter(broker => broker.length > 0);
+
+        // Join with dash and return
+        return brokers.join('-');
+      }
+
+      // Function to get formatted broker codes for command
+      function getFormattedBrokerCodes() {
+        const rawInput = brokerInput.value;
+        return formatBrokerCodes(rawInput);
+      }
 
       // Handle broker buttons with data-action="broker"
       function setupBrokerButtons() {
@@ -1772,19 +1796,19 @@
           button.addEventListener('click', function(e) {
             e.preventDefault();
 
-            const brokerCode = brokerInput.value.trim().toUpperCase();
-            if (!brokerCode) {
-              showNotification('Please enter a broker code first!', 'warning');
+            const formattedBrokerCodes = getFormattedBrokerCodes();
+            if (!formattedBrokerCodes) {
+              showNotification('Please enter broker code(s) first!', 'warning');
               return;
             }
 
             // Get the command prefix from data-prefix
             const prefix = this.getAttribute('data-prefix');
 
-            // Format: /vol20-BK or /val20-BK
-            const command = `${prefix}${brokerCode}`;
-            
-            console.log(command)
+            // Format: /vol20-BK or /vol20-BK-ZP-KK for multiple brokers
+            const command = `${prefix}${formattedBrokerCodes}`;
+
+            console.log('Broker command:', command); // Untuk debugging
 
             // Send the command
             sendTelegramCommand(command);
@@ -1798,19 +1822,56 @@
           if (e.key === 'Enter') {
             e.preventDefault();
 
-            const brokerCode = brokerInput.value.trim().toUpperCase();
-            if (!brokerCode) {
-              showNotification('Please enter a broker code first!', 'warning');
+            const formattedBrokerCodes = getFormattedBrokerCodes();
+            if (!formattedBrokerCodes) {
+              showNotification('Please enter broker code(s) first!', 'warning');
               return;
             }
 
             // Default to volume analysis on Enter
-            const command = `/vol20-${brokerCode}`;
-            
-            console.log(command)
+            const command = `/vol20-${formattedBrokerCodes}`;
+
+            console.log('Broker command (Enter):', command); // Untuk debugging
 
             sendTelegramCommand(command);
           }
+        });
+      }
+
+      // Format broker input in real-time as user types
+      function setupRealTimeFormatting() {
+        let previousValue = '';
+
+        brokerInput.addEventListener('input', function() {
+          const currentValue = this.value;
+
+          // Don't format if the user is deleting or if the value is empty
+          if (currentValue.length < previousValue.length || !currentValue) {
+            previousValue = currentValue;
+            return;
+          }
+
+          // Format only when user types a comma
+          if (currentValue.endsWith(',')) {
+            // Get the formatted value
+            const formattedValue = formatBrokerCodes(currentValue.replace(/,$/, ''));
+
+            // Update the input with formatted value
+            this.value = formattedValue;
+
+            // Add a comma at the end if user is still typing multiple brokers
+            if (currentValue.trim().endsWith(',')) {
+              this.value += ',';
+            }
+          }
+
+          previousValue = this.value;
+        });
+
+        // Format on blur (when input loses focus)
+        brokerInput.addEventListener('blur', function() {
+          const formattedValue = formatBrokerCodes(this.value);
+          this.value = formattedValue;
         });
       }
 
@@ -1818,10 +1879,18 @@
       function init() {
         setupBrokerButtons();
         setupEnterKeySupport();
+        setupRealTimeFormatting();
       }
 
       // Call initialization
       init();
+      
+      // Return functions for testing/debugging
+      return {
+        formatBrokerCodes,
+        getFormattedBrokerCodes,
+        updateRadioStyles
+      };
     }
     
   </script>
