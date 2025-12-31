@@ -983,53 +983,39 @@
     </section>
 
      
-         <!-- Top Stock by Broker -->
+     <!-- Top Stock by Broker -->    
     <section class="section search-section">
-      <div class="section-title">
-          <i class="fas fa-chart-line"></i>
-          <span>Top Stock by Broker</span>
-      </div>
-      
-      <div class="search-box-broker">
-          <div class="input-wrapper">
-              <input type="text" 
-                     class="search-input" 
-                     id="brokerInput" 
-                     placeholder="Enter broker code (AK, ZP, BK)"
-                     autocomplete="off"
-                     autocapitalize="characters">
-              <i class="fas fa-search input-icon"></i>
-          </div>
-          
-          <div class="radio-group">
-              <div class="radio-option">
-                  <input type="radio" name="type" id="Acc" value="Acc" checked>
-                  <label for="Acc" class="radio-label acc">
-                      <i class="fa-solid fa-arrow-trend-up"></i> Accumulation
-                  </label>
-              </div>
-              <div class="radio-option">
-                  <input type="radio" name="type" id="Dist" value="Dist">
-                  <label for="Dist" class="radio-label dist">
-                      <i class="fa-solid fa-arrow-trend-down"></i> Distribution
-                  </label>
-              </div>
-          </div>
-      </div>
-      
-      <div class="command-grid">
-          <button class="command-btn" data-prefix="/vol-">
-              <i class="fa-solid fa-arrows-to-eye"></i>
-              <span class="command-text">Broker Volume</span>
-              <span class="description">Volume Analysis</span>
-          </button>
-    
-          <button class="command-btn" data-prefix="/val-">
-              <i class="fa-solid fa-arrows-to-circle"></i>
-              <span class="command-text">Broker Value</span>
-              <span class="description">Value Analysis</span>
-          </button>
-      </div>
+        <div class="section-title">
+            <i class="fas fa-chart-line"></i>
+            <span>Top Stock by Broker</span>
+        </div>
+        
+        <div class="search-box-broker">
+            <div class="input-wrapper">
+                <input type="text" 
+                       class="search-input" 
+                       id="brokerInput" 
+                       placeholder="Enter broker code (AK, ZP, BK)"
+                       autocomplete="off"
+                       autocapitalize="characters">
+                <i class="fas fa-search input-icon"></i>
+            </div>
+            
+        </div>
+        
+        <div class="command-grid">
+            <button class="command-btn" data-prefix="/vol20-" data-action="broker">
+                <i class="fa-solid fa-arrows-to-eye"></i>
+                <span class="command-text">Broker Volume</span>
+                <span class="description">Volume Analysis</span>
+            </button>
+
+            <button class="command-btn" data-prefix="/val20-" data-action="broker">
+                <i class="fa-solid fa-arrows-to-circle"></i>
+                <span class="command-text">Broker Value</span>
+                <span class="description">Value Analysis</span>
+            </button>
+        </div>
     </section>
     
     <!-- Popular Stocks Section -->
@@ -1643,6 +1629,9 @@
         
         // Tampilkan recent actions
         updateRecentActions();
+
+        // Setup broker analysis
+        setupBrokerAnalysis();
         
         // Setup command buttons dengan data-cmd
         document.querySelectorAll('.command-btn[data-cmd]').forEach(button => {
@@ -1655,7 +1644,7 @@
         });
         
         // Setup command buttons dengan data-prefix
-        document.querySelectorAll('.command-btn[data-prefix]').forEach(button => {
+        document.querySelectorAll('.command-btn[data-prefix]:not([data-action="broker"])').forEach(button => {
             button.addEventListener('click', function() {
                 const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
                 if (!stockCode) {
@@ -1758,6 +1747,83 @@
             }
         }
     });
+
+    //top stock by broker
+    // ===== BROKER ANALYSIS FUNCTIONS =====
+    function setupBrokerAnalysis() {
+      // Get DOM elements
+      const brokerInput = document.getElementById('brokerInput');
+
+      // Handle broker buttons with data-action="broker"
+      function setupBrokerButtons() {
+        // Get all broker action buttons
+        const brokerButtons = document.querySelectorAll('.command-btn[data-action="broker"]');
+
+        brokerButtons.forEach(button => {
+          // Remove existing click handlers to prevent duplicates
+          const newButton = button.cloneNode(true);
+          button.parentNode.replaceChild(newButton, button);
+        });
+
+        // Get fresh references after cloning
+        const freshBrokerButtons = document.querySelectorAll('.command-btn[data-action="broker"]');
+
+        freshBrokerButtons.forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const brokerCode = brokerInput.value.trim().toUpperCase();
+            if (!brokerCode) {
+              showNotification('Please enter a broker code first!', 'warning');
+              return;
+            }
+
+            // Get the command prefix from data-prefix
+            const prefix = this.getAttribute('data-prefix');
+
+            // Format: /vol20-BK or /val20-BK
+            const command = `${prefix}${brokerCode}`;
+            
+            console.log(command)
+
+            // Send the command
+            sendTelegramCommand(command);
+          });
+        });
+      }
+
+      // Enter key support for broker input
+      function setupEnterKeySupport() {
+        brokerInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const brokerCode = brokerInput.value.trim().toUpperCase();
+            if (!brokerCode) {
+              showNotification('Please enter a broker code first!', 'warning');
+              return;
+            }
+
+            // Default to volume analysis on Enter
+            const command = `/vol20-${brokerCode}`;
+            
+            console.log(command)
+
+            sendTelegramCommand(command);
+          }
+        });
+      }
+
+      // Initialize all broker functions
+      function init() {
+        setupBrokerButtons();
+        setupEnterKeySupport();
+      }
+
+      // Call initialization
+      init();
+    }
+    
   </script>
 </body>
 </html>
