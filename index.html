@@ -970,6 +970,29 @@
       opacity: 0;
       pointer-events: none;
     }
+
+    /* ===== MONTHLY TRACKING STYLES ===== */
+    .monthly-tracking {
+        margin-bottom: 16px;
+    }
+    
+    .monthly-tracking .search-box-broker {
+        margin-bottom: 0;
+    }
+    
+    .monthly-tracking .date-group {
+        grid-template-columns: 1fr auto;
+        align-items: end;
+    }
+    
+    .monthly-tracking .search-btn {
+        height: 46px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -1237,37 +1260,34 @@
         </div>
     </section>
     
-    <!-- Broker Monthly Tracking -->
-    <section class="section">
+     <!-- Broker Monthly Tracking -->
+    <section class="section monthly-tracking">
       <div class="section-title">
        <i class="fa-solid fa-hat-cowboy"></i>
         <span>Broker Monthly Tracking</span>
       </div>
       
       <div class="search-box-broker">
-       <div class="input-wrapper">
-                    <input type="text" 
-                           class="search-input" 
-                           id="brokerInput" 
-                           placeholder="Enter broker code (AK, ZP, BK)"
-                           value="AK-ASII"
-                           autocomplete="off">
-                    <i class="fas fa-search input-icon"></i>
-                </div>
-              
-                <div class="date-group">
-                    <div class="date-input-container">
-                      <label class="date-label">Start Date</label>
-                      <input type="month" id="min" value="2025-10" class="form-control">
-                  </div>
-                              <button class="search-btn" id="analyzeBtn">
-                      <i class="fas fa-chart-line"></i>
-                      <span>Analyze</span>
-                    </button>
-                </div>
-  
-
-      
+        <div class="input-wrapper">
+          <input type="text" 
+                 class="search-input" 
+                 id="brokerInputMonthly" 
+                 placeholder="Enter broker code (AK, ZP, BK)"
+                 value="AK-ASII"
+                 autocomplete="off">
+          <i class="fas fa-search input-icon"></i>
+        </div>
+        
+        <div class="date-group">
+          <div class="date-input-container">
+            <label class="date-label">Start Month</label>
+            <input type="month" id="startMonth" value="2025-10" class="form-control">
+          </div>
+          <button class="search-btn" id="analyzeMonthlyBtn">
+            <i class="fas fa-chart-line"></i>
+            <span>Analyze</span>
+          </button>
+        </div>
       </div>
     </section>
     
@@ -2350,6 +2370,58 @@
           options[nextIndex].focus();
         }
       });
+    });
+
+    // Setup Monthly Tracking Button
+      const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
+      const brokerInputMonthly = document.getElementById('brokerInputMonthly');
+      const startMonthInput = document.getElementById('startMonth');
+      
+      analyzeMonthlyBtn.addEventListener('click', function() {
+        const brokerCode = brokerInputMonthly.value.trim().toUpperCase();
+        const month = startMonthInput.value;
+        
+        if (!brokerCode) {
+          showNotification('Please enter broker code(s)!', 'warning');
+          return;
+        }
+        
+        if (!month) {
+          showNotification('Please select a month!', 'warning');
+          return;
+        }
+        
+        // Format the month to YYYY-MM (already in correct format from input)
+        const formattedMonth = month;
+        
+        // Build command: /monthly-AK-ASII-2025-10
+        const command = `/monthly-${brokerCode}-${formattedMonth}`;
+        
+        console.log('Monthly tracking command:', command);
+        sendTelegramCommand(command);
+      });
+      
+      // Enter key support for monthly broker input
+      brokerInputMonthly.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          analyzeMonthlyBtn.click();
+        }
+      });
+      
+      // Set default month to current month
+      function setDefaultMonth() {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const defaultMonth = `${year}-${month}`;
+        
+        if (!startMonthInput.value) {
+          startMonthInput.value = defaultMonth;
+        }
+      }
+      
+      setDefaultMonth();
     });
     
   </script>
