@@ -1179,6 +1179,29 @@
                 <i class="fas fa-search input-icon"></i>
             </div>
 
+            <!-- Custom Dropdown -->
+              <div class="input-dropdown">
+                <select name="limitSelect" id="limitSelect" class="original-select">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+                
+                <div class="custom-select" id="customSelect">
+                  <div class="select-header" id="selectHeader">
+                    <span class="selected-value" id="selectedValue">5</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="select-options" id="selectOptions">
+                    <div class="select-option" data-value="5">5</div>
+                    <div class="select-option" data-value="10">10</div>
+                    <div class="select-option" data-value="20">20</div>
+                    <div class="select-option" data-value="50">50</div>
+                  </div>
+                </div>
+              </div>
+
             <div class="date-group">
               <div class="date-input-container">
                   <label class="date-label" for="min">Start Date</label>
@@ -1214,36 +1237,37 @@
         </div>
     </section>
     
-    <!-- Popular Stocks Section -->
+    <!-- Broker Monthly Tracking -->
     <section class="section">
       <div class="section-title">
-        <i class="fas fa-star"></i>
-        <span>Popular Analysis</span>
+       <i class="fa-solid fa-hat-cowboy"></i>
+        <span>Broker Monthly Tracking</span>
       </div>
-      <div class="command-grid">
-        <button class="command-btn" data-cmd="/fc-BUMI">
-          <i class="fas fa-chart-pie"></i>
-          <span class="command-text">BUMI</span>
-          <span class="description">FundaChart</span>
-        </button>
-        
-        <button class="command-btn" data-cmd="/tr-DGIK">
-          <i class="fas fa-chart-line"></i>
-          <span class="command-text">DGIK</span>
-          <span class="description">Trendlines</span>
-        </button>
-        
-        <button class="command-btn" data-cmd="/bsd-GULA">
-          <i class="fas fa-balance-scale"></i>
-          <span class="command-text">GULA</span>
-          <span class="description">Buyer/Seller</span>
-        </button>
-        
-        <button class="command-btn" data-cmd="/t5DGIK">
-          <i class="fas fa-users"></i>
-          <span class="command-text">DGIK</span>
-          <span class="description">Top Brokers</span>
-        </button>
+      
+      <div class="search-box-broker">
+       <div class="input-wrapper">
+                    <input type="text" 
+                           class="search-input" 
+                           id="brokerInput" 
+                           placeholder="Enter broker code (AK, ZP, BK)"
+                           value="AK-ASII"
+                           autocomplete="off">
+                    <i class="fas fa-search input-icon"></i>
+                </div>
+              
+                <div class="date-group">
+                    <div class="date-input-container">
+                      <label class="date-label">Start Date</label>
+                      <input type="month" id="min" value="2025-10" class="form-control">
+                  </div>
+                              <button class="search-btn" id="analyzeBtn">
+                      <i class="fas fa-chart-line"></i>
+                      <span>Analyze</span>
+                    </button>
+                </div>
+  
+
+      
       </div>
     </section>
     
