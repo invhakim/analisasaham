@@ -845,6 +845,131 @@
             color: var(--light);
             transition: all 0.2s;
         } 
+
+    /* ===== CUSTOM DROPDOWN STYLES ===== */
+    .input-dropdown {
+      position: relative;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+    
+    .select-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--light);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+    
+    .select-header:hover {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .select-header.active {
+      border-color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    
+    .select-header .selected-value {
+      color: var(--light);
+    }
+    
+    .select-header .arrow {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--gray);
+      font-size: 12px;
+    }
+    
+    .select-header.active .arrow {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+    
+    .select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .select-options.active {
+      max-height: 300px;
+      opacity: 1;
+      overflow-y: auto;
+    }
+    
+    .select-option {
+      padding: 14px 16px;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .select-option:last-child {
+      border-bottom: none;
+    }
+    
+    .select-option:hover {
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--light);
+    }
+    
+    .select-option.selected {
+      background: rgba(37, 99, 235, 0.15);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    /* Custom scrollbar for dropdown */
+    .select-options::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .select-options::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    
+    .select-options::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    /* Hide original select */
+    .original-select {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -1826,6 +1951,7 @@
       const brokerInput = document.getElementById('brokerInput');
       const minDateInput = document.getElementById('min');
       const maxDateInput = document.getElementById('max');
+      const originalSelect = document.getElementById('limitSelect'); // Original select element
 
       const recentActionsContainer = document.getElementById('recentBrokers');
       
@@ -1901,6 +2027,16 @@
         return brokers.join('-');
       }
 
+      // Function to get the limit value from dropdown
+      function getLimitValue() {
+        // Get value from the original select element
+        const limit = originalSelect.value;
+        
+        // Validate and return default if needed
+        const validLimits = ['5', '10', '20', '50'];
+        return validLimits.includes(limit) ? limit : '20';
+      }
+      
       // Function to get formatted broker codes for command
       function getFormattedBrokerCodes() {
         const rawInput = brokerInput.value;
@@ -1940,15 +2076,38 @@
         }
 
         const dateRange = getFormattedDateRange();
+         const limit = getLimitValue(); // Get limit from dropdown
 
-        // Build command: /vol20-AK-BK-2025-12-31+2025-12-31
-        let command = `${prefix}${brokerCodes}`;
+        // Replace the number in the prefix with the selected limit
+        // Example: /vol20- -> /vol5-, /vvsms20- -> /vvsms10-
+        const updatedPrefix = prefix.replace(/\d+/, limit);
+
+        // Build command: /vol5-AK-BK-2025-12-31+2025-12-31
+        let command = `${updatedPrefix}${brokerCodes}`;
 
         if (dateRange) {
           command += `-${dateRange}`;
         }
 
         return command;
+      }
+
+      // Function to update command button descriptions based on limit
+      function updateButtonDescriptions() {
+        const limit = getLimitValue();
+        const buttons = document.querySelectorAll('.command-btn[data-action="broker"]');
+        
+        buttons.forEach(button => {
+          const description = button.querySelector('.description');
+          if (description) {
+            // Update the description text
+            if (description.textContent.includes('Volume Analysis')) {
+              description.textContent = `Top ${limit} by Volume`;
+            } else if (description.textContent.includes('Value Analysis')) {
+              description.textContent = `Top ${limit} by Value`;
+            }
+          }
+        });
       }
 
     
@@ -1989,6 +2148,7 @@
           if (e.key === 'Enter') {
             e.preventDefault();
 
+            // Use default prefix for enter key (volume analysis)
             const command = buildBrokerCommand('/vol20-');
 
             if (!command) {
@@ -2038,18 +2198,135 @@
         });
       }
 
+      // Listen for limit selection changes
+      function setupLimitChangeListener() {
+        originalSelect.addEventListener('change', function() {
+          const limit = this.value;
+          console.log('Limit changed to:', limit);
+          
+          // Update button descriptions
+          updateButtonDescriptions();
+          
+          // Show notification if needed
+          showNotification(`Limit set to ${limit} stocks`, 'info');
+        });
+      }
+
       // Initialize all broker functions
       function init() {
         setupBrokerButtons();
         setupEnterKeySupport();
         setupRealTimeFormatting();
+        setupLimitChangeListener();
         updateRecentUI();
+        updateButtonDescriptions(); // Set initial button descriptions
       }
 
       // Call initialization
       init();   
      
     }
+
+     // Custom Dropdown Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const selectHeader = document.getElementById('selectHeader');
+      const selectOptions = document.getElementById('selectOptions');
+      const selectedValue = document.getElementById('selectedValue');
+      const originalSelect = document.getElementById('limitSelect');
+      const customSelect = document.getElementById('customSelect');
+      
+      // Open/close dropdown
+      selectHeader.addEventListener('click', function(e) {
+        e.stopPropagation();
+        selectOptions.classList.toggle('active');
+        selectHeader.classList.toggle('active');
+      });
+      
+      // Handle option selection
+      document.querySelectorAll('.select-option').forEach(option => {
+        option.addEventListener('click', function() {
+          const value = this.getAttribute('data-value');
+          const text = this.textContent;
+          
+          // Update custom dropdown display
+          selectedValue.textContent = text;
+          
+          // Update original select element
+          originalSelect.value = value;
+          
+          // Remove selected class from all options
+          document.querySelectorAll('.select-option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          
+          // Add selected class to clicked option
+          this.classList.add('selected');
+          
+          // Close dropdown
+          selectOptions.classList.remove('active');
+          selectHeader.classList.remove('active');
+          
+          // Trigger change event on original select
+          originalSelect.dispatchEvent(new Event('change'));
+        });
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(e) {
+        if (!customSelect.contains(e.target)) {
+          selectOptions.classList.remove('active');
+          selectHeader.classList.remove('active');
+        }
+      });
+      
+      // Initialize selected option
+      const initialValue = originalSelect.value;
+      const initialOption = document.querySelector(`.select-option[data-value="${initialValue}"]`);
+      if (initialOption) {
+        initialOption.classList.add('selected');
+      }
+      
+      // Handle keyboard navigation
+      selectHeader.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectOptions.classList.toggle('active');
+          selectHeader.classList.toggle('active');
+        }
+      });
+      
+      // Add keyboard navigation for options
+      selectOptions.addEventListener('keydown', function(e) {
+        const options = Array.from(document.querySelectorAll('.select-option'));
+        const currentIndex = options.findIndex(opt => opt.classList.contains('selected'));
+        let nextIndex;
+        
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0;
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          nextIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1;
+        } else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (currentIndex !== -1) {
+            options[currentIndex].click();
+          }
+          return;
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          selectOptions.classList.remove('active');
+          selectHeader.classList.remove('active');
+          return;
+        }
+        
+        if (nextIndex !== undefined) {
+          options.forEach(opt => opt.classList.remove('selected'));
+          options[nextIndex].classList.add('selected');
+          options[nextIndex].focus();
+        }
+      });
+    });
     
   </script>
 </body>
