@@ -114,6 +114,189 @@
       width: 20px;
     }
     
+    /* ===== INPUT ROW LAYOUT ===== */
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: stretch;
+      width: 100%;
+    }
+    
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--light);
+      font-size: 14px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      outline: none;
+      font-weight: 500;
+      height: 100%;
+      min-height: 52px;
+    }
+    
+    .search-input:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .search-input::placeholder {
+      color: var(--gray);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+      transition: all 0.3s;
+    }
+    
+    .search-input:focus + .input-icon {
+      color: var(--primary);
+    }
+    
+    /* ===== CUSTOM DROPDOWN STYLES ===== */
+    .input-dropdown {
+      position: relative;
+      width: 120px;
+      flex-shrink: 0;
+    }
+    
+    .custom-select {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .select-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--light);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+      height: 100%;
+      min-height: 52px;
+    }
+    
+    .select-header:hover {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .select-header.active {
+      border-color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    
+    .select-header .selected-value {
+      color: var(--light);
+      white-space: nowrap;
+    }
+    
+    .select-header .arrow {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--gray);
+      font-size: 12px;
+      margin-left: 8px;
+    }
+    
+    .select-header.active .arrow {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+    
+    .select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      border: 2px solid var(--primary);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    .select-options.active {
+      max-height: 300px;
+      opacity: 1;
+      overflow-y: auto;
+    }
+    
+    .select-option {
+      padding: 14px 16px;
+      color: var(--gray);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+    }
+    
+    .select-option:last-child {
+      border-bottom: none;
+    }
+    
+    .select-option:hover {
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--light);
+    }
+    
+    .select-option.selected {
+      background: rgba(37, 99, 235, 0.15);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    /* Custom scrollbar for dropdown */
+    .select-options::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .select-options::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+    }
+    
+    .select-options::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    
+    /* Hide original select */
+    .original-select {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
     /* ===== COMMAND BUTTONS ===== */
     .command-grid {
       display: grid;
@@ -211,28 +394,6 @@
       display: flex;
       gap: 10px;
       margin-bottom: 12px;
-    }
-    
-    .search-input {
-      flex: 1;
-      padding: 14px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      color: var(--light);
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    
-    .search-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    }
-    
-    .search-input::placeholder {
-      color: var(--gray);
     }
     
     .search-btn {
@@ -546,7 +707,7 @@
     }
     
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 480px) {
+    @media (max-width: 640px) {
       body {
         padding: 12px;
       }
@@ -580,6 +741,16 @@
       
       .metric-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .input-row {
+        flex-direction: column;
+      }
+      
+      .input-dropdown {
+        width: 100%;
       }
     }
     
@@ -700,277 +871,127 @@
       justify-content: center;
     }
 
-
     /* top stock by broker*/
     .search-box-broker {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 28px;
-        }
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 28px;
+    }
 
-        .input-wrapper {
-            position: relative;
-        }
+    .radio-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 6px;
+        border-radius: 14px;
+    }
 
-        .search-input {
-            width: 100%;
-            padding: 16px 16px 16px 48px;
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            font-size: 1rem;
-            transition: var(--transition);
-            box-sizing: border-box;
-            outline: none;
-            font-weight: 500;
-        }
+    .radio-option {
+        position: relative;
+    }
 
-        .search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
-        }
+    .radio-option input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
 
-        .input-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            transition: var(--transition);
-        }
+    .radio-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        color: var(--gray);
+    }
 
-        .search-input:focus + .input-icon {
-            color: var(--secondary);
-        }
+    .radio-option input:checked + .radio-label.acc {
+        background: white;
+        color: #10b981;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
-        .radio-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px;
-            border-radius: 14px;
-        }
+    .radio-option input:checked + .radio-label.dist {
+        background: white;
+        color: #ef4444;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }   
 
-        .radio-option {
-            position: relative;
-        }
+    /* Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-        .radio-option input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
+    .section {
+        animation: fadeIn 0.5s ease-out;
+    }
 
-        .radio-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            color: var(--text-muted);
-        }
+    .date-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
 
-        .radio-option input:checked + .radio-label.acc {
-            background: white;
-            color: #10b981;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
+    .date-input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
 
-        .radio-option input:checked + .radio-label.dist {
-            background: white;
-            color: #ef4444;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }   
-   
+    .date-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--gray);
+        margin-left: 4px;
+    }
 
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .date-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .date-input-container {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .date-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-left: 4px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 14px;
-            border: 2px solid var(--border-color);
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            font-size: 0.9rem;
-            color: var(--light);
-            outline: none;
-            transition: var(--transition);
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-        
-        .action-tag {
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 20px;
-            font-size: 12px;
-            color: var(--light);
-            transition: all 0.2s;
-        } 
-
-    /* ===== CUSTOM DROPDOWN STYLES ===== */
-    .input-dropdown {
-      position: relative;
-      width: 100%;
-      margin-bottom: 20px;
+    .form-control {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        font-size: 0.9rem;
+        color: var(--light);
+        outline: none;
+        transition: all 0.3s;
+        box-sizing: border-box;
+        font-family: inherit;
     }
     
-    .custom-select {
-      position: relative;
-      width: 100%;
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
     
-    .select-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      color: var(--light);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      user-select: none;
+    .action-tag {
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--light);
+        transition: all 0.2s;
+        cursor: pointer;
     }
     
-    .select-header:hover {
-      border-color: var(--primary);
-      background: rgba(255, 255, 255, 0.08);
+    .action-tag:hover {
+        background: rgba(16, 185, 129, 0.2);
+        transform: translateY(-1px);
     }
     
-    .select-header.active {
-      border-color: var(--primary);
-      background: rgba(37, 99, 235, 0.1);
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    
-    .select-header .selected-value {
-      color: var(--light);
-    }
-    
-    .select-header .arrow {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      color: var(--gray);
-      font-size: 12px;
-    }
-    
-    .select-header.active .arrow {
-      transform: rotate(180deg);
-      color: var(--primary);
-    }
-    
-    .select-options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--card-bg);
-      border: 2px solid var(--primary);
-      border-top: none;
-      border-radius: 0 0 12px 12px;
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 100;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-    
-    .select-options.active {
-      max-height: 300px;
-      opacity: 1;
-      overflow-y: auto;
-    }
-    
-    .select-option {
-      padding: 14px 16px;
-      color: var(--gray);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .select-option:last-child {
-      border-bottom: none;
-    }
-    
-    .select-option:hover {
-      background: rgba(37, 99, 235, 0.1);
-      color: var(--light);
-    }
-    
-    .select-option.selected {
-      background: rgba(37, 99, 235, 0.15);
-      color: var(--primary);
-      font-weight: 600;
-    }
-    
-    /* Custom scrollbar for dropdown */
-    .select-options::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    .select-options::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 3px;
-    }
-    
-    .select-options::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 3px;
-    }
-    
-    /* Hide original select */
-    .original-select {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-
     /* ===== MONTHLY TRACKING STYLES ===== */
     .monthly-tracking {
         margin-bottom: 16px;
@@ -1192,38 +1213,41 @@
         </div>
         
         <div class="search-box-broker">
-            <div class="input-wrapper">
-                <input type="text" 
-                       class="search-input" 
-                       id="brokerInput" 
-                       placeholder="Enter broker code (AK, ZP, BK)"
-                       autocomplete="off"
-                       autocapitalize="characters">
-                <i class="fas fa-search input-icon"></i>
-            </div>
-
-            <!-- Custom Dropdown -->
-              <div class="input-dropdown">
-                <select name="limitSelect" id="limitSelect" class="original-select">
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                </select>
+            <!-- Input Row: Input di kiri, Dropdown di kanan -->
+            <div class="input-row">
+                <div class="input-wrapper">
+                    <input type="text" 
+                           class="search-input" 
+                           id="brokerInput" 
+                           placeholder="Enter broker code (AK, ZP, BK)"
+                           autocomplete="off"
+                           autocapitalize="characters">
+                    <i class="fas fa-search input-icon"></i>
+                </div>
                 
-                <div class="custom-select" id="customSelect">
-                  <div class="select-header" id="selectHeader">
-                    <span class="selected-value" id="selectedValue">5</span>
-                    <i class="fas fa-chevron-down arrow"></i>
-                  </div>
-                  <div class="select-options" id="selectOptions">
-                    <div class="select-option" data-value="5">5</div>
-                    <div class="select-option" data-value="10">10</div>
-                    <div class="select-option" data-value="20">20</div>
-                    <div class="select-option" data-value="50">50</div>
+                <!-- Custom Dropdown -->
+                <div class="input-dropdown">
+                  <select name="limitSelect" id="limitSelect" class="original-select">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                  </select>
+                  
+                  <div class="custom-select" id="customSelect">
+                    <div class="select-header" id="selectHeader">
+                      <span class="selected-value" id="selectedValue">5</span>
+                      <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                    <div class="select-options" id="selectOptions">
+                      <div class="select-option" data-value="5">5</div>
+                      <div class="select-option" data-value="10">10</div>
+                      <div class="select-option" data-value="20">20</div>
+                      <div class="select-option" data-value="50">50</div>
+                    </div>
                   </div>
                 </div>
-              </div>
+            </div>
 
             <div class="date-group">
               <div class="date-input-container">
@@ -2271,7 +2295,8 @@
      
     }
 
-     // Custom Dropdown Functionality
+     //=========== Dwropdown Top Stock by Broker===========
+    // Custom Dropdown Functionality
     document.addEventListener('DOMContentLoaded', function() {
       const selectHeader = document.getElementById('selectHeader');
       const selectOptions = document.getElementById('selectOptions');
@@ -2370,9 +2395,8 @@
           options[nextIndex].focus();
         }
       });
-    });
-
-    // Setup Monthly Tracking Button
+      
+      // Setup Monthly Tracking Button
       const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
       const brokerInputMonthly = document.getElementById('brokerInputMonthly');
       const startMonthInput = document.getElementById('startMonth');
@@ -2423,7 +2447,6 @@
       
       setDefaultMonth();
     });
-    }
   </script>
 </body>
 </html>
