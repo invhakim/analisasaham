@@ -1314,6 +1314,33 @@
         </div>
       </div>
     </section>
+
+     <!-- Command Bot -->
+    <section class="section monthly-tracking">
+      <div class="section-title">
+       <i class="fa-solid fa-hat-cowboy"></i>
+        <span>Quick Command Bot</span>
+      </div>
+      
+      <div class="search-box-broker">        
+        <div class="date-group">
+          <div class="input-wrapper">
+          <input type="text" 
+                 class="search-input" 
+                 id="commandInput" 
+                 placeholder="Enter command bot"
+                 value="/ratu-2025-05-01+2025-06-13"
+                 autocomplete="off">
+          <i class="fas fa-search input-icon"></i>
+        </div>
+          
+          <button class="search-btn" id="commandBot">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Send</span>
+          </button>
+        </div>
+      </div>
+    </section>
     
         
     <!-- Results Display for Other Analysis -->
@@ -2447,6 +2474,65 @@
       
       setDefaultMonth();
     });
+
+    // Fungsi untuk mengirim command ke bot Telegram via GAS
+    async function sendCommandToBot() {
+        const commandInput = document.getElementById('commandInput');
+        const command = commandInput.value.trim();
+        
+        if (!command) {
+            alert('Masukkan command!');
+            return;
+        }
+        
+        // Ambil data user dari Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
+        
+        // Data yang dikirim ke GAS
+        const payload = {
+            userId: user?.id || 'unknown',
+            command: command,
+            username: user?.username || user?.first_name || 'User',
+            timestamp: new Date().toISOString(),
+            source: 'mini_app'
+        };
+
+        try {
+            // Kirim POST request ke GAS
+            const response = await fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Important for GAS
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            
+            console.log('Command sent:', command);
+            alert(`✅ Command "${command}" telah dikirim!`);
+            
+            // Kosongkan input setelah berhasil
+            commandInput.value = '';
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Gagal mengirim command');
+        }
+    }
+    
+    // Event listener untuk tombol send
+    document.getElementById('commandBot').addEventListener('click', sendCommandToBot);
+    
+    // Enter key support
+    document.getElementById('commandInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendCommandToBot();
+        }
+    });
+    
+        
   </script>
 </body>
 </html>
