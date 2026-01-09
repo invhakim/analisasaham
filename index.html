@@ -1113,6 +1113,38 @@
       transition: all 0.35s cubic-bezier(.68,-0.55,.27,1.55);
     }
     
+    /* ===== ICON ONLY MODE (MOBILE SMALL) ===== */
+    @media (max-width: 480px) {
+      .bottom-nav .nav-link span {
+        display: none;
+      }
+    
+      .bottom-nav .nav-link i {
+        font-size: 20px;
+        margin-bottom: 0;
+      }
+    
+      .bottom-nav .nav-link {
+        padding: 14px 10px;
+        min-width: 52px;
+      }
+    
+      /* Indicator tetap center */
+      .bottom-nav .nav-indicator {
+        width: 52px;
+        height: 52px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .bottom-nav .nav-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    
     /* ===== LIGHT MODE ===== */
     body.light .bottom-nav {
       background: #ffffff;
@@ -1131,13 +1163,6 @@
 
     
 /* ===== HEADER ===== */
-.header {
-  background: var(--bg-card);
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
 .header-content {
   display: flex;
   align-items: center;
