@@ -2601,7 +2601,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Monthly tracking command:', command);
         
         // Send command
-        sendTelegramCommand(command);
+        sendTelegramCommandTracking(command);
         
         // Save to recent
         saveToRecentCommands(brokerInput, month);
@@ -2789,6 +2789,63 @@ function updateMonthlyExamples() {
         }
     } catch (e) {
         console.error('Error updating monthly examples:', e);
+    }
+}
+
+    // ===== FUNGSI UTAMA TELEGRAM (dengan error handling) =====
+async function sendTelegramCommandTracking(commandText) {
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user;
+    
+    if (!user || !user.id) {
+        showNotification("Open this app through Telegram to use this feature", "error");
+        return;
+    }
+    
+    // Tampilkan loading state
+    const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
+    const originalBtnHTML = analyzeMonthlyBtn.innerHTML;
+    analyzeMonthlyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    analyzeMonthlyBtn.disabled = true;
+    
+    showNotification(`Sending command: ${commandText}...`, "info");
+    
+    const requestData = {
+        userId: user.id,
+        command: commandText,
+        username: user.username || '',
+        firstName: user.first_name || 'User',
+        source: 'mini_app'
+    };
+
+    try {
+        // Kirim ke Google Apps Script
+        await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        });
+        
+        // Beri feedback sukses
+        showNotification(`✅ Command "${commandText}" sent!`, "success");
+        
+        // Getar jika didukung
+        try {
+            if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        } catch (e) {
+            console.log('Haptic feedback not available');
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('❌ Failed to send command. Please try again.', "error");
+    } finally {
+        // Restore button
+        analyzeMonthlyBtn.innerHTML = originalBtnHTML;
+        analyzeMonthlyBtn.disabled = false;
     }
 }
 
