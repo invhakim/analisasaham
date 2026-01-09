@@ -1129,6 +1129,13 @@
     padding: 8px;
     gap: 6px;
     border-radius: 20px;
+    touch-action: pan-y; /* penting */
+    user-select: none;
+    cursor: grab;
+  }
+  
+  .bottom-nav.dragging {
+    cursor: grabbing;
   }
 
   .bottom-nav .nav-link {
@@ -3200,6 +3207,61 @@ document.getElementById('commandInput').addEventListener('keypress', function(e)
       indicator.style.transform = `translateX(${rect.left - parent.left + rect.width / 2 - 30}px)`;
     }
   }
+
+    //draging menu nav
+  const nav = document.querySelector('.bottom-nav');
+
+  if (nav && window.innerWidth <= 480) {
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    // posisi awal (load dari storage)
+    const savedSide = localStorage.getItem('navSide');
+    if (savedSide === 'left') {
+      nav.style.left = '12px';
+      nav.style.right = 'auto';
+    }
+
+    nav.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      nav.classList.add('dragging');
+    }, { passive: true });
+
+    nav.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+    }, { passive: true });
+
+    nav.addEventListener('touchend', () => {
+      if (!isDragging) return;
+
+      const screenMid = window.innerWidth / 2;
+
+      if (currentX < screenMid) {
+        // snap LEFT
+        nav.style.left = '12px';
+        nav.style.right = 'auto';
+        localStorage.setItem('navSide', 'left');
+      } else {
+        // snap RIGHT
+        nav.style.right = '12px';
+        nav.style.left = 'auto';
+        localStorage.setItem('navSide', 'right');
+      }
+
+      nav.classList.remove('dragging');
+      isDragging = false;
+    });
+  }
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 480) {
+    nav.style.left = '';
+    nav.style.right = '';
+  }
+});
 
   
 
