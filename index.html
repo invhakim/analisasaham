@@ -1058,225 +1058,122 @@
       justify-content: center;
       font-weight: 600;
     }
-
-    //custume menu
+    
     /* ===== NAVIGATION MENU ===== */
-.main-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--card-bg);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--card-border);
-  padding: 8px 0;
-}
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card);
+      border-radius: 24px;
+      display: flex;
+      padding: 10px;
+      gap: 6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      z-index: 999;
+      backdrop-filter: blur(20px);
+    }
+    
+    .bottom-nav .nav-link {
+      position: relative;
+      flex: 1;
+      min-width: 60px;
+      text-align: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 10px 8px;
+      border-radius: 18px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .bottom-nav .nav-link i {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    
+    .bottom-nav .nav-link.active {
+      color: #fff;
+    }
+    
+    .bottom-nav .nav-indicator {
+      position: absolute;
+      bottom: 6px;
+      left: 0;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      z-index: -1;
+      transition: all 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+    
+    /* ===== LIGHT MODE ===== */
+    body.light .bottom-nav {
+      background: #ffffff;
+    }
+    
+    body.light .bottom-nav .nav-link {
+      color: var(--text-muted);
+    }
+    
+    body.light .bottom-nav .nav-link.active {
+      color: #fff;
+    }
+    body {
+      padding-bottom: 120px;
+    }
 
-.nav-container {
-  max-width: 100%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.nav-menu::-webkit-scrollbar {
-  display: none;
-}
-
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: var(--gray);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 70px;
-  white-space: nowrap;
-}
-
-.nav-item:hover {
-  border-color: var(--primary);
-  background: rgba(37, 99, 235, 0.1);
-}
-
-.nav-item.active {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border: none;
-  color: white;
-}
-
-.nav-item i {
-  font-size: 18px;
-}
-
-.nav-toggle {
-  display: none;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: var(--light);
-  padding: 8px;
-  font-size: 18px;
-  cursor: pointer;
-}
-
-/* Mobile Styles */
-@media (max-width: 768px) {
-  .nav-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 0 0 16px 16px;
-    padding: 16px;
-    flex-direction: column;
-    gap: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  }
-
-  .nav-menu.active {
-    display: flex;
-  }
-
-  .nav-item {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 12px;
-    padding: 12px 16px;
-    min-width: auto;
-    border: none;
-    background: transparent;
-    border-radius: 10px;
-  }
-
-  .nav-toggle {
-    display: block;
-  }
-}
-
-/* Section Visibility */
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* ===== FIX NAVIGATION BUG ===== */
-/* Pastikan .container ada setelah nav */
-.container {
-  margin-top: 0;
-}
-
-/* Pastikan section tidak hidden saat active */
-.section:not(.hidden) {
-  display: block;
-}
-
-/* Fix untuk mobile nav */
-@media (max-width: 768px) {
-  .nav-menu {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    background: var(--darker);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    padding: 16px;
-    border-radius: 0 0 16px 16px;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1000;
-  }
-  
-  .nav-menu.active {
-    max-height: 500px;
-    opacity: 1;
-    overflow-y: auto;
-  }
-  
-  .container {
-    padding-top: 8px;
-  }
-}
-
-/* Pastikan hidden class bekerja */
-.hidden {
-  display: none !important;
-}
   </style>
 </head>
 
 <body>
   
-  <!-- Navigation Menu -->
-  <nav class="main-nav">
-    <div class="nav-container">
-      <div class="nav-menu" id="navMenu">
-        <button class="nav-item active" data-section="quick-actions">
-          <i class="fas fa-bolt"></i>
-          <span>Quick Actions</span>
-        </button>
-        <button class="nav-item" data-section="analysis">
-          <i class="fas fa-chart-bar"></i>
-          <span>Analysis</span>
-        </button>
-        <button class="nav-item" data-section="screener">
-          <i class="fa-solid fa-bullseye"></i>
-          <span>Screener</span>
-        </button>                
-        <button class="nav-item" data-section="slingshot">
-          <i class="fas fa-rocket"></i>
-          <span>Slingshot</span>
-        </button>
-        <button class="nav-item" data-section="top-broker">
-          <i class="fas fa-building"></i>
-          <span>Top by Broker</span>
-        </button>
-        <button class="nav-item" data-section="broker-monthly">
-          <i class="fas fa-chart-line"></i>
-          <span>Broker Monthly</span>
-        </button>        
-        <button class="nav-item" data-section="command-bot">
-          <i class="fas fa-robot"></i>
-          <span>Command Bot</span>
-        </button>
-        
-        
-        
-      </div>
-      <button class="nav-toggle" id="navToggle">
-        <i class="fas fa-bars"></i>
-      </button>
-    </div>
-  </nav>
+ <!-- Navigation Menu -->
+ <nav class="bottom-nav">
+  <a class="nav-link active" data-section="quick-actions">
+    <i class="fas fa-bolt"></i>
+    <span>Quick</span>
+  </a>
+
+  <a class="nav-link" data-section="analysis">
+    <i class="fas fa-chart-bar"></i>
+    <span>Analysis</span>
+  </a>
+
+  <a class="nav-link" data-section="screener">
+    <i class="fas fa-bullseye"></i>
+    <span>Screener</span>
+  </a>
+
+  <a class="nav-link" data-section="slingshot">
+    <i class="fas fa-rocket"></i>
+    <span>Shot</span>
+  </a>
+
+  <a class="nav-link" data-section="top-broker">
+    <i class="fas fa-building"></i>
+    <span>Broker</span>
+  </a>
+   
+   <a class="nav-link" data-section="broker-monthly">
+    <i class="fas fa-chart-line"></i>
+    <span>Monthly</span>
+  </a>
+   
+   <a class="nav-link" data-section="command-bot">
+    <i class="fas fa-robot"></i>
+    <span>Bot</span>
+  </a>
+
+  <div class="nav-indicator"></div>
+</nav>
+
 
   <div class="container">
     <!-- Header -->
@@ -3096,203 +2993,39 @@ document.getElementById('commandInput').addEventListener('keypress', function(e)
 
 
 // ===== FIXED NAVIGATION SYSTEM =====
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing navigation system...');
-    
-    // Navigation elements
-    const navMenu = document.getElementById('navMenu');
-    const navToggle = document.getElementById('navToggle');
-    const navItems = document.querySelectorAll('.nav-item');
-    const sections = document.querySelectorAll('.section');
-    
-    // Pastikan elemen ada
-    if (!navMenu || !navToggle) {
-        console.error('Navigation elements not found!');
-        return;
-    }
-    
-    console.log('Found nav items:', navItems.length);
-    console.log('Found sections:', sections.length);
-    
-    // Function to show section
-    function showSection(sectionId) {
-        console.log('Showing section:', sectionId);
-        
-        // Validate sectionId
-        const validSections = ['quick-actions', 'broker-monthly', 'command-bot', 'top-broker', 'slingshot', 'analysis'];
-        if (!validSections.includes(sectionId)) {
-            console.error('Invalid section ID:', sectionId);
-            sectionId = 'quick-actions'; // Fallback to default
-        }
-        
-        // Hide all sections
-        sections.forEach(section => {
-            section.classList.add('hidden');
-        });
-        
-        // Show selected section
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-            targetSection.classList.remove('hidden');
-            console.log('Section shown:', sectionId);
-            
-            // Smooth scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Update URL hash
-            if (window.location.hash !== `#${sectionId}`) {
-                history.replaceState(null, null, `#${sectionId}`);
-            }
-        } else {
-            console.error('Target section not found:', sectionId);
-            // Fallback to first section
-            const firstSection = document.getElementById('quick-actions');
-            if (firstSection) {
-                firstSection.classList.remove('hidden');
-            }
-        }
-        
-        // Update active nav item
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('data-section') === sectionId) {
-                item.classList.add('active');
-            }
-        });
-        
-        // Close mobile menu if open
-        closeMobileMenu();
-        
-        // Dispatch custom event for other components
-        window.dispatchEvent(new CustomEvent('sectionChanged', {
-            detail: sectionId
-        }));
-    }
-    
-    // Function to close mobile menu
-    function closeMobileMenu() {
-        navMenu.classList.remove('active');
-        if (navToggle) {
-            navToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            navToggle.classList.remove('active');
-        }
-    }
-    
-    // Navigation item click handler
-    navItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const sectionId = this.getAttribute('data-section');
-            console.log('Nav item clicked:', sectionId);
-            
-            if (sectionId) {
-                showSection(sectionId);
-            }
-        });
-    });
-    
-    // Mobile menu toggle
-    navToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        navMenu.classList.toggle('active');
-        this.classList.toggle('active');
-        
-        if (navMenu.classList.contains('active')) {
-            this.innerHTML = '<i class="fas fa-times"></i>';
-            // Prevent body scrolling when menu is open
-            document.body.style.overflow = 'hidden';
-        } else {
-            this.innerHTML = '<i class="fas fa-bars"></i>';
-            document.body.style.overflow = '';
-        }
-    });
-    
-    // Handle URL hash on page load
-    function handleInitialSection() {
-        let hash = window.location.hash.substring(1);
-        const validSections = ['quick-actions', 'broker-monthly', 'command-bot', 'top-broker', 'slingshot', 'analysis'];
-        
-        console.log('Initial hash:', hash);
-        
-        // Validate hash
-        if (!hash || !validSections.includes(hash)) {
-            hash = 'quick-actions';
-            history.replaceState(null, null, `#${hash}`);
-        }
-        
-        // Show the section
-        setTimeout(() => {
-            showSection(hash);
-        }, 100);
-    }
-    
-    // Handle hash changes
-    window.addEventListener('hashchange', function() {
-        const hash = window.location.hash.substring(1);
-        const validSections = ['quick-actions', 'broker-monthly', 'command-bot', 'top-broker', 'slingshot', 'analysis'];
-        
-        if (hash && validSections.includes(hash)) {
-            showSection(hash);
-        }
-    });
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (navMenu.classList.contains('active') && 
-            !navMenu.contains(event.target) && 
-            !navToggle.contains(event.target)) {
-            closeMobileMenu();
-            document.body.style.overflow = '';
-        }
-    });
-    
-    // Close menu with Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && navMenu.classList.contains('active')) {
-            closeMobileMenu();
-            document.body.style.overflow = '';
-        }
-    });
-    
-    // Initialize navigation
-    handleInitialSection();
-    
-    // Debug info
-    console.log('Navigation system initialized successfully');
-    
-    // Event listener for section changes
-    window.addEventListener('sectionChanged', function(e) {
-        console.log('Section changed to:', e.detail);
-    });
-});
+  const navLinks = document.querySelectorAll('.bottom-nav .nav-link');
+  const indicator = document.querySelector('.nav-indicator');
 
-// ===== PAGE LOAD COMPLETION =====
-window.addEventListener('load', function() {
-    console.log('Page fully loaded');
-    
-    // Hide loading state if any
-    const loadingElements = document.querySelectorAll('.loading');
-    loadingElements.forEach(el => {
-        el.classList.remove('active');
+  function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const parentRect = el.parentElement.getBoundingClientRect();
+    indicator.style.left = `${rect.left - parentRect.left + rect.width / 2 - 30}px`;
+  }
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      // pindah section
+      const target = link.dataset.section;
+      document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.add('hidden');
+      });
+      const activeSection = document.getElementById(target);
+      if (activeSection) activeSection.classList.remove('hidden');
+
+      moveIndicator(link);
     });
-    
-    // Ensure proper section is visible
-    setTimeout(() => {
-        const hash = window.location.hash.substring(1) || 'quick-actions';
-        const validSections = ['quick-actions', 'broker-monthly', 'command-bot', 'top-broker', 'slingshot', 'analysis'];
-        
-        if (validSections.includes(hash)) {
-            const section = document.getElementById(hash);
-            if (section) {
-                section.classList.remove('hidden');
-            }
-        }
-    }, 100);
-});
+  });
+
+  // init position
+  window.addEventListener('load', () => {
+    const active = document.querySelector('.nav-link.active');
+    if (active) moveIndicator(active);
+  });
+
+
   </script>
 </body>
 
