@@ -1296,8 +1296,8 @@
           <input type="text" 
                  class="search-input" 
                  id="brokerInputMonthly" 
-                 placeholder="Enter broker code (AK, ZP, BK)"
-                 value="AK-ASII"
+                 placeholder="AK-BK+BBCA or BK+BBCA"
+                 value=""
                  autocomplete="off">
           <i class="fas fa-search input-icon"></i>
         </div>
@@ -2423,57 +2423,374 @@
         }
       });
       
-      // Setup Monthly Tracking Button
-      const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
-      const brokerInputMonthly = document.getElementById('brokerInputMonthly');
-      const startMonthInput = document.getElementById('startMonth');
-      
-      analyzeMonthlyBtn.addEventListener('click', function() {
-        const brokerCode = brokerInputMonthly.value.trim().toUpperCase();
-        const month = startMonthInput.value;
-        
-        if (!brokerCode) {
-          showNotification('Please enter broker code(s)!', 'warning');
-          return;
-        }
-        
-        if (!month) {
-          showNotification('Please select a month!', 'warning');
-          return;
-        }
-        
-        // Format the month to YYYY-MM (already in correct format from input)
-        const formattedMonth = month;
-        
-        // Build command: /monthly-AK-ASII-2025-10
-        const command = `/monthly-${brokerCode}-${formattedMonth}`;
-        
-        console.log('Monthly tracking command:', command);
-        sendTelegramCommand(command);
-      });
-      
-      // Enter key support for monthly broker input
-      brokerInputMonthly.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          analyzeMonthlyBtn.click();
-        }
-      });
-      
-      // Set default month to current month
-      function setDefaultMonth() {
+    });
+
+    // ===== BROKER MONTHLY TRACKING FUNCTIONS =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup Monthly Tracking Button
+    const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
+    const brokerInputMonthly = document.getElementById('brokerInputMonthly');
+    const startMonthInput = document.getElementById('startMonth');
+    
+    // Set default month to current month
+    function setDefaultMonth() {
         const today = new Date();
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const defaultMonth = `${year}-${month}`;
         
         if (!startMonthInput.value) {
-          startMonthInput.value = defaultMonth;
+            startMonthInput.value = defaultMonth;
         }
-      }
-      
-      setDefaultMonth();
+    }
+    
+    setDefaultMonth();
+    
+    // Format broker input
+    function formatBrokerInput(input) {
+        if (!input) return '';
+        
+        const formatted = input.trim().toUpperCase();
+        
+        // Remove any spaces
+        let cleanInput = formatted.replace(/\s+/g, '');
+        
+        // Replace common separators with proper format
+        // Convert comma to dash for multiple brokers
+        cleanInput = cleanInput.replace(/,/g, '-');
+        
+        // Ensure plus sign between brokers and stock
+        if (cleanInput.includes('-') && !cleanInput.includes('+')) {
+            // If there's no plus sign but there's a dash, check if we need to add plus
+            const parts = cleanInput.split('-');
+            if (parts.length > 1) {
+                // Check if last part looks like a stock code (4 letters)
+                const lastPart = parts[parts.length - 1];
+                if (lastPart.length >= 2 && lastPart.length <= 4 && /^[A-Z]+$/.test(lastPart)) {
+                    // Format: broker1-broker2+stock
+                    const brokers = parts.slice(0, -1).join('-');
+                    const stock = lastPart;
+                    cleanInput = `${brokers}+${stock}`;
+                }
+            }
+        }
+        
+        return cleanInput;
+    }
+    
+    // Validate broker input format
+    function validateBrokerInput(input) {
+        if (!input) return { isValid: false, message: 'Input cannot be empty' };
+        
+        // Check if input contains stock code (after + sign)
+        if (input.includes('+')) {
+            const parts = input.split('+');
+            if (parts.length > 2) {
+                return { isValid: false, message: 'Format: AK-BK+BBCA or BK+BBCA' };
+            }
+            
+            // Check brokers part (before +)
+            const brokersPart = parts[0];
+            if (!brokersPart) {
+                return { isValid: false, message: 'Broker code required before +' };
+            }
+            
+            // Check stock part (after +)
+            const stockPart = parts[1];
+            if (!stockPart) {
+                return { isValid: false, message: 'Stock code required after +' };
+            }
+            
+            // Validate brokers format (max 3 brokers)
+            const brokers = brokersPart.split('-');
+            if (brokers.length > 3) {
+                return { isValid: false, message: 'Maximum 3 brokers separated by dash' };
+            }
+            
+            // Check each broker code
+            for (const broker of brokers) {
+                if (broker.length < 2 || broker.length > 4) {
+                    return { isValid: false, message: `Invalid broker code: ${broker}` };
+                }
+                if (!/^[A-Z]+$/.test(broker)) {
+                    return { isValid: false, message: `Broker code must be letters only: ${broker}` };
+                }
+            }
+            
+            // Validate stock code
+            if (!/^[A-Z]{1,4}$/.test(stockPart)) {
+                return { isValid: false, message: `Invalid stock code: ${stockPart}` };
+            }
+            
+        } else {
+            // No stock code, just brokers
+            const brokers = input.split('-');
+            if (brokers.length > 3) {
+                return { isValid: false, message: 'Maximum 3 brokers separated by dash' };
+            }
+            
+            // Check each broker code
+            for (const broker of brokers) {
+                if (broker.length < 2 || broker.length > 4) {
+                    return { isValid: false, message: `Invalid broker code: ${broker}` };
+                }
+                if (!/^[A-Z]+$/.test(broker)) {
+                    return { isValid: false, message: `Broker code must be letters only: ${broker}` };
+                }
+            }
+        }
+        
+        return { isValid: true };
+    }
+    
+    // Build monthly command
+    function buildMonthlyCommand(brokerInput, month) {
+        // Format: /ak-zp-bk+bbca+2025-12 or /ak+bbca+2025-12
+        
+        // Format the broker input
+        const formattedBroker = formatBrokerInput(brokerInput);
+        
+        // Format month (ensure YYYY-MM format)
+        let formattedMonth = month;
+        if (formattedMonth.includes('-') && formattedMonth.length === 7) {
+            // Already in YYYY-MM format
+            formattedMonth = formattedMonth;
+        } else {
+            // Try to convert
+            const date = new Date(month);
+            if (!isNaN(date.getTime())) {
+                const year = date.getFullYear();
+                const monthNum = String(date.getMonth() + 1).padStart(2, '0');
+                formattedMonth = `${year}-${monthNum}`;
+            }
+        }
+        
+        // Build command
+        if (formattedBroker.includes('+')) {
+            return `/${formattedBroker}+${formattedMonth}`;
+        } else {
+            return `/${formattedBroker}+${formattedMonth}`;
+        }
+    }
+    
+    // Handle analyze button click
+    analyzeMonthlyBtn.addEventListener('click', function() {
+        const brokerInput = brokerInputMonthly.value.trim();
+        const month = startMonthInput.value;
+        
+        if (!brokerInput) {
+            showNotification('Please enter broker code(s)!', 'warning');
+            return;
+        }
+        
+        if (!month) {
+            showNotification('Please select a month!', 'warning');
+            return;
+        }
+        
+        // Validate broker input
+        const validation = validateBrokerInput(brokerInput);
+        if (!validation.isValid) {
+            showNotification(validation.message, 'warning');
+            return;
+        }
+        
+        // Build command
+        const command = buildMonthlyCommand(brokerInput, month);
+        
+        console.log('Monthly tracking command:', command);
+        
+        // Send command
+        sendTelegramCommand(command);
+        
+        // Save to recent
+        saveToRecentCommands(brokerInput, month);
     });
+    
+    // Enter key support for monthly broker input
+    brokerInputMonthly.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            analyzeMonthlyBtn.click();
+        }
+    });
+    
+    // Auto-format input on blur
+    brokerInputMonthly.addEventListener('blur', function() {
+        const formatted = formatBrokerInput(this.value);
+        if (formatted) {
+            this.value = formatted;
+        }
+    });
+    
+    // Add quick examples
+    setupMonthlyExamples();
+});
+
+// Save to recent commands
+function saveToRecentCommands(brokerInput, month) {
+    try {
+        const historyKey = 'monthly_tracking_history';
+        let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+        
+        const entry = {
+            brokerInput: brokerInput,
+            month: month,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Remove duplicates
+        history = history.filter(item => 
+            !(item.brokerInput === brokerInput && item.month === month)
+        );
+        
+        // Add to beginning
+        history.unshift(entry);
+        
+        // Keep only last 5
+        if (history.length > 5) {
+            history = history.slice(0, 5);
+        }
+        
+        localStorage.setItem(historyKey, JSON.stringify(history));
+        
+        // Update examples
+        updateMonthlyExamples();
+    } catch (e) {
+        console.error('Error saving recent command:', e);
+    }
+}
+
+// Setup monthly examples
+function setupMonthlyExamples() {
+    const examples = [
+        { brokers: 'AK', stock: 'BBCA', label: 'AK + BBCA' },
+        { brokers: 'AK-ZP', stock: 'BBCA', label: 'AK-ZP + BBCA' },
+        { brokers: 'AK-ZP-BK', stock: 'BBCA', label: 'AK-ZP-BK + BBCA' },
+        { brokers: 'BK', stock: 'ASII', label: 'BK + ASII' }
+    ];
+    
+    const section = document.querySelector('.monthly-tracking');
+    if (!section) return;
+    
+    // Check if examples already exist
+    if (document.getElementById('monthlyExamples')) {
+        document.getElementById('monthlyExamples').remove();
+    }
+    
+    const examplesContainer = document.createElement('div');
+    examplesContainer.id = 'monthlyExamples';
+    examplesContainer.style.marginTop = '15px';
+    examplesContainer.style.display = 'flex';
+    examplesContainer.style.flexWrap = 'wrap';
+    examplesContainer.style.gap = '8px';
+    
+    // Add title
+    const title = document.createElement('div');
+    title.textContent = 'Quick Examples:';
+    title.style.fontSize = '12px';
+    title.style.color = 'var(--gray)';
+    title.style.marginBottom = '8px';
+    title.style.width = '100%';
+    examplesContainer.appendChild(title);
+    
+    // Add example buttons
+    examples.forEach(example => {
+        const button = document.createElement('button');
+        button.className = 'action-tag';
+        button.textContent = example.label;
+        button.title = `${example.brokers}+${example.stock}`;
+        
+        button.addEventListener('click', () => {
+            document.getElementById('brokerInputMonthly').value = 
+                `${example.brokers}+${example.stock}`;
+        });
+        
+        examplesContainer.appendChild(button);
+    });
+    
+    // Insert after the date group
+    const dateGroup = section.querySelector('.date-group');
+    if (dateGroup) {
+        dateGroup.parentNode.insertBefore(examplesContainer, dateGroup.nextSibling);
+    }
+}
+
+// Update monthly examples with recent commands
+function updateMonthlyExamples() {
+    try {
+        const historyKey = 'monthly_tracking_history';
+        const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+        
+        const recentContainer = document.getElementById('monthlyRecent');
+        if (!recentContainer) {
+            // Create recent container if it doesn't exist
+            const section = document.querySelector('.monthly-tracking');
+            if (!section || history.length === 0) return;
+            
+            const container = document.createElement('div');
+            container.id = 'monthlyRecent';
+            container.style.marginTop = '10px';
+            container.style.display = 'flex';
+            container.style.flexWrap = 'wrap';
+            container.style.gap = '8px';
+            
+            const title = document.createElement('div');
+            title.textContent = 'Recent:';
+            title.style.fontSize = '12px';
+            title.style.color = 'var(--gray)';
+            title.style.marginBottom = '8px';
+            title.style.width = '100%';
+            container.appendChild(title);
+            
+            // Add recent items
+            history.forEach((item, index) => {
+                const tag = document.createElement('span');
+                tag.className = 'action-tag';
+                tag.style.cursor = 'pointer';
+                tag.textContent = `${item.brokerInput} (${item.month})`;
+                
+                tag.addEventListener('click', () => {
+                    document.getElementById('brokerInputMonthly').value = item.brokerInput;
+                    document.getElementById('startMonth').value = item.month;
+                });
+                
+                container.appendChild(tag);
+            });
+            
+            // Insert at the end of the section
+            section.appendChild(container);
+        } else {
+            // Update existing container
+            recentContainer.innerHTML = '';
+            
+            const title = document.createElement('div');
+            title.textContent = 'Recent:';
+            title.style.fontSize = '12px';
+            title.style.color = 'var(--gray)';
+            title.style.marginBottom = '8px';
+            title.style.width = '100%';
+            recentContainer.appendChild(title);
+            
+            // Add recent items
+            history.forEach((item, index) => {
+                const tag = document.createElement('span');
+                tag.className = 'action-tag';
+                tag.style.cursor = 'pointer';
+                tag.textContent = `${item.brokerInput} (${item.month})`;
+                
+                tag.addEventListener('click', () => {
+                    document.getElementById('brokerInputMonthly').value = item.brokerInput;
+                    document.getElementById('startMonth').value = item.month;
+                });
+                
+                recentContainer.appendChild(tag);
+            });
+        }
+    } catch (e) {
+        console.error('Error updating monthly examples:', e);
+    }
+}
 
     // Fungsi untuk mengirim command ke bot Telegram via GAS
     async function sendCommandToBot() {
