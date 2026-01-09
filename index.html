@@ -1113,36 +1113,51 @@
       transition: all 0.35s cubic-bezier(.68,-0.55,.27,1.55);
     }
     
-    /* ===== ICON ONLY MODE (MOBILE SMALL) ===== */
-    @media (max-width: 480px) {
-      .bottom-nav .nav-link span {
-        display: none;
-      }
-    
-      .bottom-nav .nav-link i {
-        font-size: 20px;
-        margin-bottom: 0;
-      }
-    
-      .bottom-nav .nav-link {
-        padding: 14px 10px;
-        min-width: 52px;
-      }
-    
-      /* Indicator tetap center */
-      .bottom-nav .nav-indicator {
-        width: 52px;
-        height: 52px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .bottom-nav .nav-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
+    /* ===== VERTICAL NAV (MOBILE) ===== */
+@media (max-width: 480px) {
+  .bottom-nav {
+    position: fixed;
+    top: 50%;
+    right: calc(12px + env(safe-area-inset-right));
+    left: auto;
+    bottom: auto;
+
+    transform: translateY(-50%);
+    flex-direction: column;
+
+    width: auto;
+    padding: 8px;
+    gap: 6px;
+    border-radius: 20px;
+  }
+
+  .bottom-nav .nav-link {
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bottom-nav .nav-link span {
+    display: none;
+  }
+
+  .bottom-nav .nav-link i {
+    font-size: 20px;
+  }
+
+  /* Active indicator (bubble) */
+  .bottom-nav .nav-indicator {
+    width: 48px;
+    height: 48px;
+    left: 6px;
+    top: 0;
+    bottom: auto;
+    transition: transform 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+  }
+}
 
     
     /* ===== LIGHT MODE ===== */
@@ -3173,6 +3188,20 @@ document.getElementById('commandInput').addEventListener('keypress', function(e)
     if (active) moveIndicator(active);
   });
 
+    // nav menu bottom vertical mobile
+  function moveIndicator(el) {
+    const indicator = document.querySelector('.nav-indicator');
+    const rect = el.getBoundingClientRect();
+    const parent = el.parentElement.getBoundingClientRect();
+  
+    if (window.innerWidth <= 480) {
+      indicator.style.transform = `translateY(${rect.top - parent.top}px)`;
+    } else {
+      indicator.style.transform = `translateX(${rect.left - parent.left + rect.width / 2 - 30}px)`;
+    }
+  }
+
+  
 
   </script>
 </body>
