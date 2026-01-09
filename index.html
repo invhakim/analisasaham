@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <title>Holistik Pro Investment</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Telegram Mini App -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  
+
   <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <style>
     /* ===== VARIABLES & RESET ===== */
     :root {
@@ -30,13 +31,13 @@
       --card-bg: rgba(30, 41, 59, 0.9);
       --card-border: rgba(71, 85, 105, 0.3);
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
@@ -45,12 +46,12 @@
       padding: 16px;
       line-height: 1.6;
     }
-    
+
     .container {
       max-width: 100%;
       margin: 0 auto;
     }
-    
+
     /* ===== HEADER ===== */
     .header {
       text-align: center;
@@ -62,7 +63,7 @@
       border: 1px solid var(--card-border);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-    
+
     .header h1 {
       font-size: 24px;
       margin-bottom: 8px;
@@ -71,12 +72,12 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    
+
     .header p {
       color: var(--gray);
       font-size: 14px;
     }
-    
+
     .user-badge {
       display: inline-flex;
       align-items: center;
@@ -88,7 +89,7 @@
       font-size: 12px;
       color: var(--light);
     }
-    
+
     /* ===== COMMAND SECTIONS ===== */
     .section {
       background: var(--card-bg);
@@ -98,7 +99,7 @@
       margin-bottom: 16px;
       border: 1px solid var(--card-border);
     }
-    
+
     .section-title {
       display: flex;
       align-items: center;
@@ -108,12 +109,12 @@
       font-size: 16px;
       font-weight: 600;
     }
-    
+
     .section-title i {
       color: var(--primary);
       width: 20px;
     }
-    
+
     /* ===== INPUT ROW LAYOUT ===== */
     .input-row {
       display: flex;
@@ -122,12 +123,12 @@
       align-items: stretch;
       width: 100%;
     }
-    
+
     .input-wrapper {
       position: relative;
       flex: 1;
     }
-    
+
     .search-input {
       width: 100%;
       padding: 14px 16px 14px 48px;
@@ -142,17 +143,17 @@
       height: 100%;
       min-height: 52px;
     }
-    
+
     .search-input:focus {
       border-color: var(--primary);
       background: rgba(255, 255, 255, 0.08);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
-    
+
     .search-input::placeholder {
       color: var(--gray);
     }
-    
+
     .input-icon {
       position: absolute;
       left: 18px;
@@ -161,24 +162,24 @@
       color: var(--gray);
       transition: all 0.3s;
     }
-    
-    .search-input:focus + .input-icon {
+
+    .search-input:focus+.input-icon {
       color: var(--primary);
     }
-    
+
     /* ===== CUSTOM DROPDOWN STYLES ===== */
     .input-dropdown {
       position: relative;
       width: 120px;
       flex-shrink: 0;
     }
-    
+
     .custom-select {
       position: relative;
       width: 100%;
       height: 100%;
     }
-    
+
     .select-header {
       display: flex;
       align-items: center;
@@ -196,36 +197,36 @@
       height: 100%;
       min-height: 52px;
     }
-    
+
     .select-header:hover {
       border-color: var(--primary);
       background: rgba(255, 255, 255, 0.08);
     }
-    
+
     .select-header.active {
       border-color: var(--primary);
       background: rgba(37, 99, 235, 0.1);
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     }
-    
+
     .select-header .selected-value {
       color: var(--light);
       white-space: nowrap;
     }
-    
+
     .select-header .arrow {
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       color: var(--gray);
       font-size: 12px;
       margin-left: 8px;
     }
-    
+
     .select-header.active .arrow {
       transform: rotate(180deg);
       color: var(--primary);
     }
-    
+
     .select-options {
       position: absolute;
       top: 100%;
@@ -242,13 +243,13 @@
       z-index: 100;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
-    
+
     .select-options.active {
       max-height: 300px;
       opacity: 1;
       overflow-y: auto;
     }
-    
+
     .select-option {
       padding: 14px 16px;
       color: var(--gray);
@@ -259,44 +260,44 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       text-align: center;
     }
-    
+
     .select-option:last-child {
       border-bottom: none;
     }
-    
+
     .select-option:hover {
       background: rgba(37, 99, 235, 0.1);
       color: var(--light);
     }
-    
+
     .select-option.selected {
       background: rgba(37, 99, 235, 0.15);
       color: var(--primary);
       font-weight: 600;
     }
-    
+
     /* Custom scrollbar for dropdown */
     .select-options::-webkit-scrollbar {
       width: 6px;
     }
-    
+
     .select-options::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 3px;
     }
-    
+
     .select-options::-webkit-scrollbar-thumb {
       background: var(--primary);
       border-radius: 3px;
     }
-    
+
     /* Hide original select */
     .original-select {
       position: absolute;
       opacity: 0;
       pointer-events: none;
     }
-    
+
     /* ===== COMMAND BUTTONS ===== */
     .command-grid {
       display: grid;
@@ -304,13 +305,13 @@
       gap: 10px;
       margin-bottom: 12px;
     }
-    
+
     @media (max-width: 640px) {
       .command-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    
+
     .command-btn {
       padding: 14px;
       background: rgba(255, 255, 255, 0.05);
@@ -330,72 +331,72 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .command-btn:hover {
       border-color: var(--primary);
       transform: translateY(-2px);
       box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
     }
-    
+
     .command-btn:active {
       transform: translateY(0);
     }
-    
+
     .command-btn i {
       font-size: 20px;
       color: var(--primary);
     }
-    
+
     .command-btn .command-text {
       font-size: 13px;
       font-weight: 600;
     }
-    
+
     .command-btn .description {
       font-size: 11px;
       color: var(--gray);
       opacity: 0.8;
     }
-    
+
     /* Button Variants */
     .command-btn.primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       border: none;
     }
-    
+
     .command-btn.primary i {
       color: white;
     }
-    
+
     .command-btn.secondary {
       background: rgba(16, 185, 129, 0.1);
       border-color: rgba(16, 185, 129, 0.2);
     }
-    
+
     .command-btn.secondary i {
       color: var(--secondary);
     }
-    
+
     .command-btn.warning {
       background: rgba(245, 158, 11, 0.1);
       border-color: rgba(245, 158, 11, 0.2);
     }
-    
+
     .command-btn.warning i {
       color: var(--warning);
     }
-    
+
     /* ===== SEARCH SECTION ===== */
     .search-section {
       margin-bottom: 20px;
     }
-    
+
     .search-box {
       display: flex;
       gap: 10px;
       margin-bottom: 12px;
     }
-    
+
     .search-btn {
       padding: 0 20px;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -411,23 +412,23 @@
       gap: 8px;
       white-space: nowrap;
     }
-    
+
     .search-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     }
-    
+
     /* ===== SLINGSHOT SCREENER SECTION ===== */
     .slingshot-controls {
       display: flex;
       gap: 10px;
       margin-bottom: 16px;
     }
-    
+
     .slingshot-controls .search-input {
       flex: 1;
     }
-    
+
     .slingshot-btn {
       background: linear-gradient(135deg, #8b5cf6, #7c3aed);
       border: none;
@@ -441,12 +442,12 @@
       gap: 8px;
       transition: all 0.2s;
     }
-    
+
     .slingshot-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
     }
-    
+
     /* ===== TABLE STYLES ===== */
     .data-table-container {
       overflow-x: auto;
@@ -454,20 +455,20 @@
       border: 1px solid var(--card-border);
       margin-top: 16px;
     }
-    
+
     .data-table {
       width: 100%;
       border-collapse: collapse;
       min-width: 800px;
     }
-    
+
     .data-table thead {
       background: rgba(15, 23, 42, 0.8);
       position: sticky;
       top: 0;
       z-index: 10;
     }
-    
+
     .data-table th {
       padding: 14px 12px;
       text-align: left;
@@ -479,60 +480,60 @@
       cursor: pointer;
       user-select: none;
     }
-    
+
     .data-table th:hover {
       background: rgba(37, 99, 235, 0.1);
     }
-    
+
     .data-table th.sort-asc::after {
       content: " ↑";
       font-weight: bold;
       color: var(--secondary);
     }
-    
+
     .data-table th.sort-desc::after {
       content: " ↓";
       font-weight: bold;
       color: var(--danger);
     }
-    
+
     .data-table td {
       padding: 12px;
       font-size: 13px;
       color: var(--gray);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-    
+
     .data-table tbody tr:hover {
       background: rgba(255, 255, 255, 0.03);
     }
-    
+
     .data-table tbody tr:nth-child(even) {
       background: rgba(255, 255, 255, 0.02);
     }
-    
+
     /* Table cell styling */
     .positive {
       color: var(--success) !important;
       font-weight: 600;
     }
-    
+
     .negative {
       color: var(--danger) !important;
       font-weight: 600;
     }
-    
+
     .neutral {
       color: var(--warning) !important;
       font-weight: 600;
     }
-    
+
     .stock-code {
       font-weight: 700;
       color: var(--light) !important;
       cursor: pointer;
     }
-    
+
     /* ===== PAGINATION ===== */
     .pagination {
       display: flex;
@@ -542,7 +543,7 @@
       margin-top: 20px;
       flex-wrap: wrap;
     }
-    
+
     .page-btn {
       padding: 8px 14px;
       background: rgba(255, 255, 255, 0.05);
@@ -555,34 +556,34 @@
       min-width: 40px;
       text-align: center;
     }
-    
+
     .page-btn:hover:not(.active):not(:disabled) {
       background: rgba(255, 255, 255, 0.1);
       border-color: var(--primary);
     }
-    
+
     .page-btn.active {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       border-color: var(--primary);
       color: white;
     }
-    
+
     .page-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    
+
     /* ===== LOADING INDICATOR ===== */
     .loading {
       display: none;
       text-align: center;
       padding: 40px;
     }
-    
+
     .loading.active {
       display: block;
     }
-    
+
     .spinner {
       width: 40px;
       height: 40px;
@@ -592,16 +593,18 @@
       animation: spin 1s linear infinite;
       margin: 0 auto 16px;
     }
-    
+
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
-    
+
     .loading-text {
       color: var(--gray);
       font-size: 14px;
     }
-    
+
     /* ===== RESULT DISPLAY ===== */
     .result-container {
       background: var(--card-bg);
@@ -613,16 +616,23 @@
       display: none;
       animation: slideUp 0.3s ease;
     }
-    
+
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
+
     .result-container.active {
       display: block;
     }
-    
+
     .result-header {
       display: flex;
       justify-content: space-between;
@@ -631,7 +641,7 @@
       padding-bottom: 12px;
       border-bottom: 1px solid var(--card-border);
     }
-    
+
     .result-title {
       display: flex;
       align-items: center;
@@ -640,11 +650,11 @@
       font-weight: 600;
       color: var(--light);
     }
-    
+
     .result-title i {
       color: var(--primary);
     }
-    
+
     .close-result {
       background: none;
       border: none;
@@ -655,12 +665,12 @@
       border-radius: 8px;
       transition: all 0.2s;
     }
-    
+
     .close-result:hover {
       background: rgba(255, 255, 255, 0.1);
       color: var(--light);
     }
-    
+
     /* ===== NOTIFICATION ===== */
     .notification {
       position: fixed;
@@ -684,109 +694,126 @@
       width: 90%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
-    
+
     .notification.show {
       transform: translateX(-50%) translateY(0);
       opacity: 1;
     }
-    
+
     .notification i {
       font-size: 16px;
     }
-    
+
     .notification.success {
       border-left: 4px solid var(--success);
     }
-    
+
     .notification.error {
       border-left: 4px solid var(--danger);
     }
-    
+
     .notification.info {
       border-left: 4px solid var(--info);
     }
-    
+
     /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
       body {
         padding: 12px;
       }
-      
+
       .header {
         padding: 16px;
         margin-bottom: 20px;
       }
-      
+
       .section {
         padding: 16px;
       }
-      
+
       .command-grid {
         grid-template-columns: 1fr;
         gap: 8px;
       }
-      
+
       .search-box {
         flex-direction: column;
       }
-      
+
       .slingshot-controls {
         flex-direction: column;
       }
-      
-      .search-btn, .slingshot-btn {
+
+      .search-btn,
+      .slingshot-btn {
         justify-content: center;
         padding: 14px;
       }
-      
+
       .metric-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-    
+
     @media (max-width: 480px) {
       .input-row {
         flex-direction: column;
       }
-      
+
       .input-dropdown {
         width: 100%;
       }
     }
-    
+
     /* ===== SCROLLBAR ===== */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
-    
+
     ::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 3px;
     }
-    
+
     ::-webkit-scrollbar-thumb {
       background: var(--primary);
       border-radius: 3px;
     }
-    
+
     /* ===== UTILITIES ===== */
     .hidden {
       display: none !important;
     }
-    
+
     .text-center {
       text-align: center;
     }
-    
-    .mb-2 { margin-bottom: 8px; }
-    .mb-3 { margin-bottom: 12px; }
-    .mb-4 { margin-bottom: 16px; }
-    
-    .mt-2 { margin-top: 8px; }
-    .mt-3 { margin-top: 12px; }
-    .mt-4 { margin-top: 16px; }
-    
+
+    .mb-2 {
+      margin-bottom: 8px;
+    }
+
+    .mb-3 {
+      margin-bottom: 12px;
+    }
+
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+
+    .mt-2 {
+      margin-top: 8px;
+    }
+
+    .mt-3 {
+      margin-top: 12px;
+    }
+
+    .mt-4 {
+      margin-top: 16px;
+    }
+
     /* Loading Dots */
     .loading-dots {
       display: inline-block;
@@ -794,7 +821,7 @@
       width: 20px;
       height: 20px;
     }
-    
+
     .loading-dots::after {
       content: " ";
       display: block;
@@ -807,26 +834,36 @@
       border-color: currentColor transparent currentColor transparent;
       animation: loading-dots 1.2s infinite;
     }
-    
+
     @keyframes loading-dots {
-      0% { transform: rotate(0); animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
-      50% { transform: rotate(900deg); animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
-      100% { transform: rotate(1800deg); }
+      0% {
+        transform: rotate(0);
+        animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+
+      50% {
+        transform: rotate(900deg);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      100% {
+        transform: rotate(1800deg);
+      }
     }
-    
+
     /* Input Persistent */
     .search-input.persistent {
       border-color: var(--primary);
       background: rgba(37, 99, 235, 0.1);
     }
-    
+
     .recent-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 12px;
     }
-    
+
     .recent-badge {
       display: inline-flex;
       align-items: center;
@@ -840,12 +877,12 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    
+
     .recent-badge:hover {
       background: rgba(16, 185, 129, 0.2);
       transform: translateY(-1px);
     }
-    
+
     .recent-badge i {
       font-size: 10px;
       color: var(--secondary);
@@ -854,7 +891,7 @@
     .pe-stats-icon {
       position: relative;
     }
-    
+
     .pe-stats-icon::after {
       content: 'σ';
       position: absolute;
@@ -873,150 +910,353 @@
 
     /* top stock by broker*/
     .search-box-broker {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 28px;
     }
 
     .radio-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        background: rgba(255, 255, 255, 0.05);
-        padding: 6px;
-        border-radius: 14px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px;
+      border-radius: 14px;
     }
 
     .radio-option {
-        position: relative;
+      position: relative;
     }
 
     .radio-option input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
     }
 
     .radio-label {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: all 0.3s;
-        color: var(--gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+      color: var(--gray);
     }
 
-    .radio-option input:checked + .radio-label.acc {
-        background: white;
-        color: #10b981;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    .radio-option input:checked+.radio-label.acc {
+      background: white;
+      color: #10b981;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    .radio-option input:checked + .radio-label.dist {
-        background: white;
-        color: #ef4444;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }   
+    .radio-option input:checked+.radio-label.dist {
+      background: white;
+      color: #ef4444;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
 
     /* Animation */
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .section {
-        animation: fadeIn 0.5s ease-out;
+      animation: fadeIn 0.5s ease-out;
     }
 
     .date-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
 
     .date-input-container {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .date-label {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--gray);
-        margin-left: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray);
+      margin-left: 4px;
     }
 
     .form-control {
-        width: 100%;
-        padding: 12px 14px;
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        font-size: 0.9rem;
-        color: var(--light);
-        outline: none;
-        transition: all 0.3s;
-        box-sizing: border-box;
-        font-family: inherit;
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--light);
+      outline: none;
+      transition: all 0.3s;
+      box-sizing: border-box;
+      font-family: inherit;
     }
-    
+
     .form-control:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
-    
+
     .action-tag {
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 12px;
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        border-radius: 20px;
-        font-size: 12px;
-        color: var(--light);
-        transition: all 0.2s;
-        cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--light);
+      transition: all 0.2s;
+      cursor: pointer;
     }
-    
+
     .action-tag:hover {
-        background: rgba(16, 185, 129, 0.2);
-        transform: translateY(-1px);
+      background: rgba(16, 185, 129, 0.2);
+      transform: translateY(-1px);
     }
-    
+
     /* ===== MONTHLY TRACKING STYLES ===== */
     .monthly-tracking {
-        margin-bottom: 16px;
+      margin-bottom: 16px;
     }
-    
+
     .monthly-tracking .search-box-broker {
-        margin-bottom: 0;
+      margin-bottom: 0;
     }
-    
+
     .monthly-tracking .date-group {
-        grid-template-columns: 1fr auto;
-        align-items: end;
+      grid-template-columns: 1fr auto;
+      align-items: end;
     }
-    
+
     .monthly-tracking .search-btn {
-        height: 46px;
-        padding: 0 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 600;
+      height: 46px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
     }
+
+    //custume menu
+    /* ===== NAVIGATION MENU ===== */
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 16px;
+  border-radius: 0 0 16px 16px;
+  padding: 8px 16px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+}
+
+.nav-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: var(--gray);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 70px;
+  white-space: nowrap;
+  gap: 4px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--light);
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.nav-item i {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.nav-item span {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--light);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  margin-left: 8px;
+}
+
+.nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Hidden class for sections */
+.hidden {
+  display: none !important;
+}
+
+/* Responsive Navigation */
+@media (max-width: 768px) {
+  .nav-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    padding: 16px;
+    border-radius: 0 0 16px 16px;
+    border-bottom: 1px solid var(--card-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+  }
+  
+  .nav-menu.active {
+    max-height: 400px;
+    opacity: 1;
+    overflow-y: auto;
+  }
+  
+  .nav-item {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    text-align: left;
+    gap: 12px;
+    min-width: auto;
+  }
+  
+  .nav-item i {
+    font-size: 18px;
+    margin-bottom: 0;
+    width: 24px;
+  }
+  
+  .nav-item span {
+    font-size: 14px;
+  }
+  
+  .nav-toggle {
+    display: block;
+  }
+}
+
+/* Adjust container padding for nav */
+.container {
+  padding-top: 0;
+}
   </style>
 </head>
+
 <body>
+  
+  <!-- Navigation Menu -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <div class="nav-menu" id="navMenu">
+        <button class="nav-item active" data-section="quick-actions">
+          <i class="fas fa-bolt"></i>
+          <span>Quick Actions</span>
+        </button>
+        <button class="nav-item" data-section="analysis">
+          <i class="fas fa-chart-bar"></i>
+          <span>Analysis</span>
+        </button>
+        <button class="nav-item" data-section="screener">
+          <i class="fa-solid fa-bullseye"></i>
+          <span>Screener</span>
+        </button>                
+        <button class="nav-item" data-section="slingshot">
+          <i class="fas fa-rocket"></i>
+          <span>Slingshot</span>
+        </button>
+        <button class="nav-item" data-section="top-broker">
+          <i class="fas fa-building"></i>
+          <span>Top by Broker</span>
+        </button>
+        <button class="nav-item" data-section="broker-monthly">
+          <i class="fas fa-chart-line"></i>
+          <span>Broker Monthly</span>
+        </button>        
+        <button class="nav-item" data-section="command-bot">
+          <i class="fas fa-robot"></i>
+          <span>Command Bot</span>
+        </button>
+        
+        
+        
+      </div>
+      <button class="nav-toggle" id="navToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
   <div class="container">
     <!-- Header -->
     <header class="header">
@@ -1027,9 +1267,15 @@
         <span id="userName">Loading...</span>
       </div>
     </header>
+
+    <!-- Loading Indicator slingshot-->
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingText">Loading screener data...</div>
+    </div>
     
     <!-- Quick Actions Section -->
-    <section class="section">
+    <section class="section" id="quick-actions">
       <div class="section-title">
         <i class="fas fa-bolt"></i>
         <span>Quick Actions</span>
@@ -1040,13 +1286,13 @@
           <span class="command-text">Start Bot</span>
           <span class="description">Initialize bot</span>
         </button>
-        
+
         <button class="command-btn primary" data-cmd="/help">
           <i class="fas fa-question-circle"></i>
           <span class="command-text">Help Guide</span>
           <span class="description">Show help</span>
         </button>
-                
+
         <button class="command-btn warning" data-cmd="/tng">
           <i class="fas fa-fire"></i>
           <span class="command-text">Top Nego</span>
@@ -1054,123 +1300,39 @@
         </button>
       </div>
     </section>
-
-     <!-- SCRENER -->
-    <section class="section">
-      <div class="section-title">
-        <i class="fa-solid fa-bullseye"></i>
-        <span>Screener</span>
-      </div>
-      
-      <div class="command-grid">
-        <button class="command-btn warning" data-cmd="/scr-holder">
-          <i class="fas fa-filter"></i>
-          <span class="command-text">Holder</span>
-          <span class="description">Stock kepemilikan saham</span>
-        </button>
-        
-        <button class="command-btn warning" data-cmd="/scr-bsjp1">
-          <i class="fa-solid fa-clock"></i>
-          <span class="command-text">BSJP v1</span>
-          <span class="description">Stock screener</span>
-        </button>
-
-        <button class="command-btn warning" data-cmd="/scr-bsjp2">
-          <i class="fa-solid fa-stopwatch-20"></i>
-          <span class="command-text">BSJP v2</span>
-          <span class="description">Stock screener</span>
-        </button>
-        
-        <button class="command-btn warning" data-cmd="/scr-ara">
-          <i class="fa-solid fa-rocket"></i>
-          <span class="command-text">Calon ARA</span>
-          <span class="description">Stock ARA*dev</span>
-        </button>
-        
-        <!-- Slingshot Screener Button -->
-        <button class="command-btn warning" id="btnScreener">
-          <i class="fa-solid fa-mug-hot"></i>
-          <span class="command-text">Slingshot</span>
-          <span class="description">Screener momentum *dev</span>
-        </button>
-      </div>
-      
-      <!-- Slingshot Controls -->
-      <div class="slingshot-controls hidden" id="slingshotControls">
-        <input type="text" id="filterInput" class="search-input" placeholder="Filter saham...">
-        <button class="slingshot-btn" id="refreshScreener">
-          <i class="fas fa-sync-alt"></i>
-          <span>Refresh</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Loading Indicator slingshot-->
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <div class="loading-text" id="loadingText">Loading screener data...</div>
-    </div>
     
-    <!-- Slingshot Results Display -->
-    <div class="result-container" id="slingshotResultContainer">
-      <div class="result-header">
-        <div class="result-title">
-          <i class="fas fa-slingshot"></i>
-          <span id="resultTitle">Slingshot Screener Results</span>
-        </div>
-        <button class="close-result" id="closeSlingshotResult">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      
-      <div class="result-content">
-        <div class="data-table-container">
-          <table class="data-table" id="resultTable"></table>
-        </div>
-        <div class="pagination" id="pagination"></div>
-      </div>
-    </div>
-
-    <!--end slingshot---->
-    
-    <!-- Custom Analysis Section -->
-    <section class="section search-section">
+    <!-- Analysis Tools (Buat section baru) -->
+    <section class="section hidden search-section" id="analysis">
       <div class="section-title">
         <i class="fas fa-search"></i>
-        <span>Custom Analysis</span>
+        <span>Analysis Tools</span>
       </div>
-      
+
       <div class="search-box">
-        <input type="text" 
-               class="search-input" 
-               id="stockInput" 
-               placeholder="Enter stock code (BBCA, TLKM, BBRI...)"
-               autocomplete="off"
-               autocapitalize="characters"
-               value="">
+        <input type="text" class="search-input" id="stockInput" placeholder="Enter stock code (BBCA, TLKM, BBRI...)" autocomplete="off" autocapitalize="characters" value="">
         <button class="search-btn" id="analyzeBtn">
           <i class="fas fa-chart-line"></i>
           <span>Analyze</span>
         </button>
       </div>
-      
+
       <div class="recent-actions" id="recentActions">
         <!-- Recent actions akan ditampilkan di sini -->
       </div>
-      
+
       <div class="command-grid">
         <button class="command-btn secondary" data-prefix="/fc-">
           <i class="fa-solid fa-chart-area"></i>
           <span class="command-text">FundaChart</span>
           <span class="description">Fundamental</span>
         </button>
-        
+
         <button class="command-btn secondary" data-prefix="/tr-">
           <i class="fas fa-chart-line"></i>
           <span class="command-text">Trendlines</span>
           <span class="description">Technical</span>
         </button>
-        
+
         <button class="command-btn secondary" data-prefix="/bsd-">
           <i class="fas fa-balance-scale"></i>
           <span class="command-text">Buyer/Seller</span>
@@ -1182,7 +1344,7 @@
           <span class="command-text">Top 5 Brokers</span>
           <span class="description">Broker Ranking</span>
         </button>
-        
+
         <button class="command-btn secondary" data-prefix="/fl">
           <i class="fas fa-project-diagram"></i>
           <span class="command-text">Flow Analysis</span>
@@ -1194,114 +1356,29 @@
           <span class="command-text">Financial Metrics</span>
           <span class="description">PE Standard Deviation</span>
         </button>
-        
+
         <button class="command-btn secondary" data-prefix="/rrg-">
           <i class="fas fa-rocket"></i>
           <span class="command-text">RRG Matrix</span>
           <span class="description">Rotation</span>
         </button>
-        
+
       </div>
-    </section>
-
-     
-     <!-- Top Stock by Broker -->    
-    <section class="section search-section">
-        <div class="section-title">
-            <i class="fas fa-chart-line"></i>
-            <span>Top Stock by Broker</span>
-        </div>
-        
-        <div class="search-box-broker">
-            <!-- Input Row: Input di kiri, Dropdown di kanan -->
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <input type="text" 
-                           class="search-input" 
-                           id="brokerInput" 
-                           placeholder="Enter broker code (AK, ZP, BK)"
-                           autocomplete="off"
-                           autocapitalize="characters">
-                    <i class="fas fa-search input-icon"></i>
-                </div>
-                
-                <!-- Custom Dropdown -->
-                <div class="input-dropdown">
-                  <select name="limitSelect" id="limitSelect" class="original-select">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                  </select>
-                  
-                  <div class="custom-select" id="customSelect">
-                    <div class="select-header" id="selectHeader">
-                      <span class="selected-value" id="selectedValue">5</span>
-                      <i class="fas fa-chevron-down arrow"></i>
-                    </div>
-                    <div class="select-options" id="selectOptions">
-                      <div class="select-option" data-value="5">5</div>
-                      <div class="select-option" data-value="10">10</div>
-                      <div class="select-option" data-value="20">20</div>
-                      <div class="select-option" data-value="50">50</div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="date-group">
-              <div class="date-input-container">
-                  <label class="date-label" for="min">Start Date</label>
-                  <input type="date" id="min" name="min" value="" min="2024-01-01" max="2025-12-31" class="form-control"
-                placeholder="Start Date" aria-label="Start Date">
-              </div>
-              <div class="date-input-container">
-                  <label class="date-label" for="max">End Date</label>
-                  <input type="date" id="max" name="max" value="" min="2024-01-01" max="2025-12-31" format="dd-mm-yyyy"
-                class="form-control" placeholder="End Date" aria-label="End Date">
-              </div>
-          </div>
-          
-        </div>
-
-        <div class="recent-actions" id="recentBrokers">
-            <span class="action-tag">AK</span>
-            <span class="action-tag">ZP</span>
-        </div>
-        
-        <div class="command-grid">
-            <button class="command-btn" data-prefix="/vol20-" data-action="broker">
-                <i class="fa-solid fa-arrows-to-eye"></i>
-                <span class="command-text">Broker Volume</span>
-                <span class="description">Volume Analysis</span>
-            </button>
-
-            <button class="command-btn" data-prefix="/vvsms20-" data-action="broker">
-                <i class="fa-solid fa-arrows-to-circle"></i>
-                <span class="command-text">Broker Value</span>
-                <span class="description">Value Analysis</span>
-            </button>
-        </div>
     </section>
     
-     <!-- Broker Monthly Tracking -->
-    <section class="section monthly-tracking">
+    <!-- Broker Monthly Tracking -->
+    <section class="section monthly-tracking" id="broker-monthly">
       <div class="section-title">
-       <i class="fa-solid fa-hat-cowboy"></i>
+        <i class="fa-solid fa-hat-cowboy"></i>
         <span>Broker Monthly Tracking</span>
       </div>
-      
+
       <div class="search-box-broker">
         <div class="input-wrapper">
-          <input type="text" 
-                 class="search-input" 
-                 id="brokerInputMonthly" 
-                 placeholder="AK-BK+BBCA or BK+BBCA"
-                 value=""
-                 autocomplete="off">
+          <input type="text" class="search-input" id="brokerInputMonthly" placeholder="AK-BK+BBCA or BK+BBCA" value="" autocomplete="off">
           <i class="fas fa-search input-icon"></i>
         </div>
-        
+
         <div class="date-group">
           <div class="date-input-container">
             <label class="date-label">Start Month</label>
@@ -1315,25 +1392,20 @@
       </div>
     </section>
 
-     <!-- Command Bot -->
-    <section class="section monthly-tracking">
+    <!-- Command Bot -->
+    <section class="section monthly-tracking" id="command-bot">
       <div class="section-title">
-       <i class="fa-solid fa-hat-cowboy"></i>
+        <i class="fa-solid fa-hat-cowboy"></i>
         <span>Quick Command Bot</span>
       </div>
-      
-      <div class="search-box-broker">        
+
+      <div class="search-box-broker">
         <div class="date-group">
           <div class="input-wrapper">
-          <input type="text" 
-                 class="search-input" 
-                 id="commandInput" 
-                 placeholder="Enter command bot"
-                 value=""
-                 autocomplete="off">
-          <i class="fas fa-search input-icon"></i>
-        </div>
-          
+            <input type="text" class="search-input" id="commandInput" placeholder="Enter command bot" value="" autocomplete="off">
+            <i class="fas fa-search input-icon"></i>
+          </div>
+
           <button class="search-btn" id="commandBot">
             <i class="fa-solid fa-paper-plane"></i>
             <span>Send</span>
@@ -1341,8 +1413,201 @@
         </div>
       </div>
     </section>
-    
+
+    <!-- Top Stock by Broker (Buat section baru) -->
+    <section class="section hidden search-section" id="top-broker">
+      <div class="section-title">
+        <i class="fas fa-chart-line"></i>
+        <span>Top Stock by Broker</span>
+      </div>
+
+      <div class="search-box-broker">
+        <!-- Input Row: Input di kiri, Dropdown di kanan -->
+        <div class="input-row">
+          <div class="input-wrapper">
+            <input type="text" class="search-input" id="brokerInput" placeholder="Enter broker code (AK, ZP, BK)" autocomplete="off" autocapitalize="characters">
+            <i class="fas fa-search input-icon"></i>
+          </div>
+
+          <!-- Custom Dropdown -->
+          <div class="input-dropdown">
+            <select name="limitSelect" id="limitSelect" class="original-select">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+
+            <div class="custom-select" id="customSelect">
+              <div class="select-header" id="selectHeader">
+                <span class="selected-value" id="selectedValue">5</span>
+                <i class="fas fa-chevron-down arrow"></i>
+              </div>
+              <div class="select-options" id="selectOptions">
+                <div class="select-option" data-value="5">5</div>
+                <div class="select-option" data-value="10">10</div>
+                <div class="select-option" data-value="20">20</div>
+                <div class="select-option" data-value="50">50</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="date-group">
+          <div class="date-input-container">
+            <label class="date-label" for="min">Start Date</label>
+            <input type="date" id="min" name="min" value="" min="2024-01-01" max="2025-12-31" class="form-control" placeholder="Start Date" aria-label="Start Date">
+          </div>
+          <div class="date-input-container">
+            <label class="date-label" for="max">End Date</label>
+            <input type="date" id="max" name="max" value="" min="2024-01-01" max="2025-12-31" format="dd-mm-yyyy" class="form-control" placeholder="End Date" aria-label="End Date">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="recent-actions" id="recentBrokers">
+        <span class="action-tag">AK</span>
+        <span class="action-tag">ZP</span>
+      </div>
+
+      <div class="command-grid">
+        <button class="command-btn" data-prefix="/vol20-" data-action="broker">
+          <i class="fa-solid fa-arrows-to-eye"></i>
+          <span class="command-text">Broker Volume</span>
+          <span class="description">Volume Analysis</span>
+        </button>
+
+        <button class="command-btn" data-prefix="/vvsms20-" data-action="broker">
+          <i class="fa-solid fa-arrows-to-circle"></i>
+          <span class="command-text">Broker Value</span>
+          <span class="description">Value Analysis</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Slingshot Screener (Buat section baru) -->
+    <section class="section hidden" id="slingshot">
+      <div class="section-title">
+        <i class="fas fa-rocket"></i>
+        <span>Slingshot Screener</span>
+      </div>
+      
+      <div class="slingshot-controls">
+        <input type="text" 
+               class="search-input" 
+               id="filterInput" 
+               placeholder="Filter stocks..."
+               autocomplete="off">
+        <button class="slingshot-btn" id="btnScreener">
+          <i class="fas fa-download"></i>
+          Load Data
+        </button>
+        <button class="slingshot-btn" id="refreshScreener">
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+      </div>
+      
+      <!-- Loading Indicator -->
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading data...</div>
+      </div>
+      
+      <!-- Results Container -->
+      <div class="result-container" id="slingshotResultContainer">
+        <div class="result-header">
+          <div class="result-title">
+            <i class="fas fa-table"></i>
+            <span>Slingshot Data</span>
+          </div>
+          <button class="close-result" id="closeSlingshotResult">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
         
+        <div class="data-table-container">
+          <table class="data-table" id="resultTable">
+            <!-- Data will be loaded here -->
+          </table>
+        </div>
+        
+        <div class="pagination" id="pagination">
+          <!-- Pagination will be generated here -->
+        </div>
+      </div>
+    </section>
+    <!-- Slingshot Results Display -->
+    <div class="result-container" id="slingshotResultContainer">
+      <div class="result-header">
+        <div class="result-title">
+          <i class="fas fa-slingshot"></i>
+          <span id="resultTitle">Slingshot Screener Results</span>
+        </div>
+        <button class="close-result" id="closeSlingshotResult">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="result-content">
+        <div class="data-table-container">
+          <table class="data-table" id="resultTable"></table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+    
+    <!-- Screener (Buat section baru) -->
+    <section class="section hidden" id="screener">
+      <div class="section-title">
+        <i class="fa-solid fa-bullseye"></i>
+        <span>Screener</span>
+      </div>
+
+      <div class="command-grid">
+        <button class="command-btn warning" data-cmd="/scr-holder">
+          <i class="fas fa-filter"></i>
+          <span class="command-text">Holder</span>
+          <span class="description">Stock kepemilikan saham</span>
+        </button>
+
+        <button class="command-btn warning" data-cmd="/scr-bsjp1">
+          <i class="fa-solid fa-clock"></i>
+          <span class="command-text">BSJP v1</span>
+          <span class="description">Stock screener</span>
+        </button>
+
+        <button class="command-btn warning" data-cmd="/scr-bsjp2">
+          <i class="fa-solid fa-stopwatch-20"></i>
+          <span class="command-text">BSJP v2</span>
+          <span class="description">Stock screener</span>
+        </button>
+
+        <button class="command-btn warning" data-cmd="/scr-ara">
+          <i class="fa-solid fa-rocket"></i>
+          <span class="command-text">Calon ARA</span>
+          <span class="description">Stock ARA*dev</span>
+        </button>
+
+        <!-- Slingshot Screener Button -->
+        <button class="command-btn warning" id="btnScreener">
+          <i class="fa-solid fa-mug-hot"></i>
+          <span class="command-text">Slingshot</span>
+          <span class="description">Screener momentum *dev</span>
+        </button>
+      </div>
+
+      <!-- Slingshot Controls -->
+      <div class="slingshot-controls hidden" id="slingshotControls">
+        <input type="text" id="filterInput" class="search-input" placeholder="Filter saham...">
+        <button class="slingshot-btn" id="refreshScreener">
+          <i class="fas fa-sync-alt"></i>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </section> 
+    
     <!-- Results Display for Other Analysis -->
     <div class="result-container" id="resultContainer">
       <div class="result-header">
@@ -1354,13 +1619,15 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-      
+
       <div class="result-content" id="resultContent">
         <!-- Results will be dynamically inserted here -->
       </div>
     </div>
+        
   </div>
   
+
   <!-- Notification -->
   <div class="notification" id="notification">
     <i class="fas fa-info-circle"></i>
@@ -1369,37 +1636,60 @@
 
   <!-- Modal Chart -->
   <style>
-    .modal_chart { display: none; position: fixed; z-index: 1000; left: 0; top: 0;
-             width: 100%; height: 100%; overflow: auto;
-             background-color: rgba(0,0,0,0.6); }
-    .modal-content_chart { background-color: #fff; margin: 5% auto; padding: 10px;
-                     border: 1px solid #888;     width: 50%;
-                     max-width: 50%; height: 75%;
-                     border-radius: 8px; }
-    .close_chart { color: #aaa; float: right; font-size: 24px; font-weight: bold; cursor: pointer; }
-    .close_chart:hover { color: #000; }
+    .modal_chart {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content_chart {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 10px;
+      border: 1px solid #888;
+      width: 50%;
+      max-width: 50%;
+      height: 75%;
+      border-radius: 8px;
+    }
+
+    .close_chart {
+      color: #aaa;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close_chart:hover {
+      color: #000;
+    }
   </style>
 
   <!-- Modal Chart -->
   <div id="chartModal" class="modal_chart">
     <div class="modal-content_chart">
-        <span class="close_chart" onclick="closeModal()">&times;</span>
-        <div id="chartContainer"></div>
+      <span class="close_chart" onclick="closeModal()">&times;</span>
+      <div id="chartContainer"></div>
     </div>
   </div>
 
   <script src="https://s3.tradingview.com/tv.js"></script>
   <script>
-  // Pastikan fungsi global
-  window.showChart = function(kode) {
-    document.getElementById("chartModal").style.display = "block";
-
-    // Kosongkan kontainer dan buat div baru untuk chart
-    const container = document.getElementById("chartContainer");
-    container.innerHTML = `<div id="tradingview_${kode}" style="height:800px;"></div>`;
-
-    // Buat widget TradingView
-    new TradingView.widget({
+    // Pastikan fungsi global
+    window.showChart = function(kode) {
+      document.getElementById("chartModal").style.display = "block";
+      // Kosongkan kontainer dan buat div baru untuk chart
+      const container = document.getElementById("chartContainer");
+      container.innerHTML = `<div id="tradingview_${kode}" style="height:800px;"></div>`;
+      // Buat widget TradingView
+      new TradingView.widget({
         "width": "100%",
         "height": 500,
         "symbol": "IDX:" + kode,
@@ -1417,36 +1707,31 @@
           "STD;RSI",
           "STD;Divergence%1Indicator"
         ],
-    });
-  }
-
-  window.closeModal = function() {
-    document.getElementById("chartModal").style.display = "none";
-    document.getElementById("chartContainer").innerHTML = "";
-  }
-
-  // Tutup modal jika klik luar
-  window.onclick = function(event) {
-    const modal = document.getElementById("chartModal");
-    if (event.target == modal) {
-        window.closeModal();
+      });
     }
-  }
+    window.closeModal = function() {
+      document.getElementById("chartModal").style.display = "none";
+      document.getElementById("chartContainer").innerHTML = "";
+    }
+    // Tutup modal jika klik luar
+    window.onclick = function(event) {
+      const modal = document.getElementById("chartModal");
+      if (event.target == modal) {
+        window.closeModal();
+      }
+    }
   </script>
-<!-- End Modal Chart -->
+  <!-- End Modal Chart -->
 
   <script>
     // ===== KONFIGURASI =====
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwWs7bl93tAo5aC779_kRisi7vojWYkCRmASY3ZzG8JKc1RFoQmsdXuUGo-fKkH6z9I/exec';
+    const GAS_WEB_APP_URL = '';
     const SLINGSHOT_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT0WOo8T_vpgXMdyOgtr2YQQyNSBnB4Xg-l-JhE7M048OcC4WjcwjG-GTXrBi7FkYAGIooL6hvslITF/pub?output=csv";
-
     // ===== INISIALISASI =====
     const tg = window.Telegram.WebApp;
-
     // ===== VARIABEL GLOBAL =====
     let recentActions = JSON.parse(localStorage.getItem('holistik_recent_actions') || '[]');
     let currentStockCode = '';
-    
     // ===== SLINGSHOT VARIABLES =====
     let rawData = [];
     let filteredData = [];
@@ -1454,591 +1739,500 @@
     const rowsPerPage = 10;
     let sortColumn = null;
     let sortDirection = "asc";
-
     // ===== NOTIFICATION SYSTEM =====
     let notificationTimeout;
 
     function showNotification(message, type = 'info', duration = 3000) {
-        const notification = document.getElementById('notification');
-        const notificationText = document.getElementById('notificationText');
-        const icon = notification.querySelector('i');
-        
-        // Set message and type
-        notificationText.textContent = message;
-        notification.className = `notification ${type}`;
-        
-        // Update icon based on type
-        const icons = {
-            success: 'fa-check-circle',
-            error: 'fa-exclamation-circle',
-            warning: 'fa-exclamation-triangle',
-            info: 'fa-info-circle'
-        };
-        icon.className = `fas ${icons[type] || icons.info}`;
-        
-        // Show notification
-        notification.classList.add('show');
-        
-        // Auto hide
-        clearTimeout(notificationTimeout);
-        notificationTimeout = setTimeout(() => {
-            notification.classList.remove('show');
-        }, duration);
+      const notification = document.getElementById('notification');
+      const notificationText = document.getElementById('notificationText');
+      const icon = notification.querySelector('i');
+      // Set message and type
+      notificationText.textContent = message;
+      notification.className = `notification ${type}`;
+      // Update icon based on type
+      const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+      };
+      icon.className = `fas ${icons[type] || icons.info}`;
+      // Show notification
+      notification.classList.add('show');
+      // Auto hide
+      clearTimeout(notificationTimeout);
+      notificationTimeout = setTimeout(() => {
+        notification.classList.remove('show');
+      }, duration);
     }
-
     // ===== FUNGSI UNTUK MENYIMPAN AKSI TERAKHIR =====
     function saveRecentAction(stockCode, commandType) {
-        // Simpan kode saham saat ini
-        currentStockCode = stockCode;
-        
-        // Tambah aksi ke daftar recent
-        const action = {
-            stockCode: stockCode,
-            commandType: commandType,
-            timestamp: new Date().getTime()
-        };
-        
-        // Hapus duplikat berdasarkan stockCode dan commandType
-        recentActions = recentActions.filter(a => 
-            !(a.stockCode === stockCode && a.commandType === commandType)
-        );
-        
-        // Tambah ke awal array
-        recentActions.unshift(action);
-        
-        // Simpan maksimal 5 aksi
-        if (recentActions.length > 5) {
-            recentActions = recentActions.slice(0, 5);
-        }
-        
-        // Simpan ke localStorage
-        localStorage.setItem('holistik_recent_actions', JSON.stringify(recentActions));
-        
-        // Update tampilan recent actions
-        updateRecentActions();
+      // Simpan kode saham saat ini
+      currentStockCode = stockCode;
+      // Tambah aksi ke daftar recent
+      const action = {
+        stockCode: stockCode,
+        commandType: commandType,
+        timestamp: new Date().getTime()
+      };
+      // Hapus duplikat berdasarkan stockCode dan commandType
+      recentActions = recentActions.filter(a =>
+        !(a.stockCode === stockCode && a.commandType === commandType)
+      );
+      // Tambah ke awal array
+      recentActions.unshift(action);
+      // Simpan maksimal 5 aksi
+      if (recentActions.length > 5) {
+        recentActions = recentActions.slice(0, 5);
+      }
+      // Simpan ke localStorage
+      localStorage.setItem('holistik_recent_actions', JSON.stringify(recentActions));
+      // Update tampilan recent actions
+      updateRecentActions();
     }
-
     // ===== FUNGSI UNTUK UPDATE TAMPILAN RECENT ACTIONS =====
     function updateRecentActions() {
-        const recentActionsContainer = document.getElementById('recentActions');
-        
-        if (recentActions.length === 0) {
-            recentActionsContainer.innerHTML = '';
-            return;
-        }
-        
-        let html = '';
-        recentActions.forEach(action => {
-            const commandName = getCommandName(action.commandType);
-            const timeAgo = getTimeAgo(action.timestamp);
-            
-            html += `
+      const recentActionsContainer = document.getElementById('recentActions');
+      if (recentActions.length === 0) {
+        recentActionsContainer.innerHTML = '';
+        return;
+      }
+      let html = '';
+      recentActions.forEach(action => {
+        const commandName = getCommandName(action.commandType);
+        const timeAgo = getTimeAgo(action.timestamp);
+        html += `
                 <div class="recent-badge" data-stock="${action.stockCode}" data-type="${action.commandType}">
                     <i class="fas fa-history"></i>
                     <span>${action.stockCode} - ${commandName}</span>
                     <span style="font-size: 10px; opacity: 0.7;">(${timeAgo})</span>
                 </div>
             `;
+      });
+      recentActionsContainer.innerHTML = html;
+      // Tambah event listener untuk recent badges
+      document.querySelectorAll('.recent-badge').forEach(badge => {
+        badge.addEventListener('click', function() {
+          const stockCode = this.getAttribute('data-stock');
+          const commandType = this.getAttribute('data-type');
+          // Set input dengan kode saham
+          document.getElementById('stockInput').value = stockCode;
+          document.getElementById('stockInput').classList.add('persistent');
+          // Kirim perintah
+          sendTelegramCommand(`${commandType}${stockCode}`);
         });
-        
-        recentActionsContainer.innerHTML = html;
-        
-        // Tambah event listener untuk recent badges
-        document.querySelectorAll('.recent-badge').forEach(badge => {
-            badge.addEventListener('click', function() {
-                const stockCode = this.getAttribute('data-stock');
-                const commandType = this.getAttribute('data-type');
-                
-                // Set input dengan kode saham
-                document.getElementById('stockInput').value = stockCode;
-                document.getElementById('stockInput').classList.add('persistent');
-                
-                // Kirim perintah
-                sendTelegramCommand(`${commandType}${stockCode}`);
-            });
-        });
+      });
     }
-
     // ===== FUNGSI BANTUAN =====
     function getCommandName(commandType) {
-        const commandMap = {
-            '/fc-': 'FundaChart',
-            '/tr-': 'Trendlines',
-            '/bsd-': 'Buyer/Seller',
-            '/rrg-': 'RRG Matrix',
-            '/t5': 'Top 5 Brokers',
-            '/fl': 'Flow Analysis'
-        };
-        
-        return commandMap[commandType] || 'Analysis';
+      const commandMap = {
+        '/fc-': 'FundaChart',
+        '/tr-': 'Trendlines',
+        '/bsd-': 'Buyer/Seller',
+        '/rrg-': 'RRG Matrix',
+        '/t5': 'Top 5 Brokers',
+        '/fl': 'Flow Analysis'
+      };
+      return commandMap[commandType] || 'Analysis';
     }
 
     function getTimeAgo(timestamp) {
-        const now = new Date().getTime();
-        const diff = now - timestamp;
-        
-        const minutes = Math.floor(diff / (1000 * 60));
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        
-        if (minutes < 1) return 'just now';
-        if (minutes < 60) return `${minutes}m ago`;
-        if (hours < 24) return `${hours}h ago`;
-        return `${days}d ago`;
+      const now = new Date().getTime();
+      const diff = now - timestamp;
+      const minutes = Math.floor(diff / (1000 * 60));
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      if (minutes < 1) return 'just now';
+      if (minutes < 60) return `${minutes}m ago`;
+      if (hours < 24) return `${hours}h ago`;
+      return `${days}d ago`;
     }
-
     // ===== FUNGSI UTAMA TELEGRAM =====
     async function sendTelegramCommand(commandText) {
-        const user = tg.initDataUnsafe.user;
-        
-        if (!user || !user.id) {
-            showNotification("Open this app through Telegram to use this feature", "error");
-            return;
-        }
-        
-        // Dapatkan kode saham dari command
-        const stockMatch = commandText.match(/-\s*([A-Z]+)/);
-        if (stockMatch && stockMatch[1]) {
-            currentStockCode = stockMatch[1];
-            document.getElementById('stockInput').value = currentStockCode;
-            document.getElementById('stockInput').classList.add('persistent');
-        }
-        
-        // Simpan ke recent actions jika ada kode saham
-        const commandType = commandText.substring(0, commandText.lastIndexOf('-') + 1);
-        const stockCode = currentStockCode || document.getElementById('stockInput').value.trim().toUpperCase();
-        
-        if (stockCode && (commandText.includes('/fc-') || commandText.includes('/tr-') || 
-            commandText.includes('/bsd-') || commandText.includes('/rrg-') || 
-            commandText.includes('/t5') || commandText.includes('/fl')) ) {
-            saveRecentAction(stockCode, commandType);
-        }
-        
-        // Tampilkan loading state
-        const buttons = document.querySelectorAll('.command-btn, .search-btn');
-        buttons.forEach(btn => {
-            btn.disabled = true;
-            const originalText = btn.innerHTML;
-            btn.dataset.originalText = originalText;
-            btn.innerHTML = `<span class="loading-dots"></span>`;
+      const user = tg.initDataUnsafe.user;
+      if (!user || !user.id) {
+        showNotification("Open this app through Telegram to use this feature", "error");
+        return;
+      }
+      // Dapatkan kode saham dari command
+      const stockMatch = commandText.match(/-\s*([A-Z]+)/);
+      if (stockMatch && stockMatch[1]) {
+        currentStockCode = stockMatch[1];
+        document.getElementById('stockInput').value = currentStockCode;
+        document.getElementById('stockInput').classList.add('persistent');
+      }
+      // Simpan ke recent actions jika ada kode saham
+      const commandType = commandText.substring(0, commandText.lastIndexOf('-') + 1);
+      const stockCode = currentStockCode || document.getElementById('stockInput').value.trim().toUpperCase();
+      if (stockCode && (commandText.includes('/fc-') || commandText.includes('/tr-') ||
+          commandText.includes('/bsd-') || commandText.includes('/rrg-') ||
+          commandText.includes('/t5') || commandText.includes('/fl'))) {
+        saveRecentAction(stockCode, commandType);
+      }
+      // Tampilkan loading state
+      const buttons = document.querySelectorAll('.command-btn, .search-btn');
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        const originalText = btn.innerHTML;
+        btn.dataset.originalText = originalText;
+        btn.innerHTML = `<span class="loading-dots"></span>`;
+      });
+      showNotification(`Sending command: ${commandText}...`, "info");
+      const requestData = {
+        userId: user.id,
+        command: commandText,
+        username: user.username || '',
+        firstName: user.first_name || 'User',
+        source: 'mini_app'
+      };
+      try {
+        // Kirim ke Google Apps Script
+        await fetch(GAS_WEB_APP_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestData)
         });
-        
-        showNotification(`Sending command: ${commandText}...`, "info");
-        
-        const requestData = {
-            userId: user.id,
-            command: commandText,
-            username: user.username || '',
-            firstName: user.first_name || 'User',
-            source: 'mini_app'
-        };
-        
+        // Beri feedback sukses
+        showNotification(`✅ Command "${commandText}" sent! Check your Telegram chat.`, "success");
+        // Getar jika didukung
         try {
-            // Kirim ke Google Apps Script
-            await fetch(GAS_WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            });
-            
-            // Beri feedback sukses
-            showNotification(`✅ Command "${commandText}" sent! Check your Telegram chat.`, "success");
-            
-            // Getar jika didukung
-            try {
-                if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
-                    tg.HapticFeedback.impactOccurred('light');
-                }
-            } catch (e) {
-                console.log('Haptic feedback not available');
-            }
-            
-            // Highlight input field
-            const stockInput = document.getElementById('stockInput');
-            stockInput.classList.add('persistent');
-            
-        } catch (error) {
-            console.error('Error:', error);
-            showNotification('❌ Failed to send command. Please try again.', "error");
-        } finally {
-            // Restore buttons
-            setTimeout(() => {
-                buttons.forEach(btn => {
-                    btn.disabled = false;
-                    if (btn.dataset.originalText) {
-                        btn.innerHTML = btn.dataset.originalText;
-                    }
-                });
-            }, 500);
+          if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
+            tg.HapticFeedback.impactOccurred('light');
+          }
+        } catch (e) {
+          console.log('Haptic feedback not available');
         }
+        // Highlight input field
+        const stockInput = document.getElementById('stockInput');
+        stockInput.classList.add('persistent');
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('❌ Failed to send command. Please try again.', "error");
+      } finally {
+        // Restore buttons
+        setTimeout(() => {
+          buttons.forEach(btn => {
+            btn.disabled = false;
+            if (btn.dataset.originalText) {
+              btn.innerHTML = btn.dataset.originalText;
+            }
+          });
+        }, 500);
+      }
     }
-
     // ===== SLINGSHOT FUNCTIONS =====
     async function loadCSV() {
-        const loading = document.getElementById('loading');
-        const table = document.getElementById('resultTable');
-        const paginationDiv = document.getElementById('pagination');
-        
-        loading.classList.add('active');
-        table.innerHTML = "";
-        paginationDiv.innerHTML = "";
-
-        try {
-            const response = await fetch(SLINGSHOT_CSV_URL);
-            const csvText = await response.text();
-
-            rawData = csvText.trim().split("\n").map(r => {
-                // Handle quoted CSV values
-                const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
-                const matches = r.match(regex) || [];
-                return matches.map(cell => cell.replace(/^"|"$/g, '').trim());
-            });
-            
-            filteredData = [...rawData];
-            currentPage = 1;
-            
-            // Show controls
-            document.getElementById('slingshotControls').classList.remove('hidden');
-            
-            // Show results
-            document.getElementById('slingshotResultContainer').classList.add('active');
-            
-            render();
-            showNotification("✅ Data Slingshot berhasil dimuat", "success");
-            
-        } catch (err) {
-            console.error(err);
-            showNotification("❌ Gagal mengambil data CSV", "error");
-        } finally {
-            loading.classList.remove('active');
-        }
+      const loading = document.getElementById('loading');
+      const table = document.getElementById('resultTable');
+      const paginationDiv = document.getElementById('pagination');
+      loading.classList.add('active');
+      table.innerHTML = "";
+      paginationDiv.innerHTML = "";
+      try {
+        const response = await fetch(SLINGSHOT_CSV_URL);
+        const csvText = await response.text();
+        rawData = csvText.trim().split("\n").map(r => {
+          // Handle quoted CSV values
+          const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+          const matches = r.match(regex) || [];
+          return matches.map(cell => cell.replace(/^"|"$/g, '').trim());
+        });
+        filteredData = [...rawData];
+        currentPage = 1;
+        // Show controls
+        document.getElementById('slingshotControls').classList.remove('hidden');
+        // Show results
+        document.getElementById('slingshotResultContainer').classList.add('active');
+        render();
+        showNotification("✅ Data Slingshot berhasil dimuat", "success");
+      } catch (err) {
+        console.error(err);
+        showNotification("❌ Gagal mengambil data CSV", "error");
+      } finally {
+        loading.classList.remove('active');
+      }
     }
 
     function applyFilter() {
-        const keyword = document.getElementById('filterInput').value.toLowerCase();
-
-        filteredData = [
-            rawData[0],
-            ...rawData.slice(1).filter(row =>
-                row.join(" ").toLowerCase().includes(keyword)
-            )
-        ];
-
-        currentPage = 1;
-        render();
+      const keyword = document.getElementById('filterInput').value.toLowerCase();
+      filteredData = [
+        rawData[0],
+        ...rawData.slice(1).filter(row =>
+          row.join(" ").toLowerCase().includes(keyword)
+        )
+      ];
+      currentPage = 1;
+      render();
     }
 
     function render() {
-        renderTable();
-        renderPagination();
+      renderTable();
+      renderPagination();
     }
 
     function renderTable() {
-        const table = document.getElementById('resultTable');
-        table.innerHTML = "";
-
-        if (filteredData.length === 0) {
-            table.innerHTML = "<tr><td colspan='100%' class='text-center'>Tidak ada data</td></tr>";
-            return;
+      const table = document.getElementById('resultTable');
+      table.innerHTML = "";
+      if (filteredData.length === 0) {
+        table.innerHTML = "<tr><td colspan='100%' class='text-center'>Tidak ada data</td></tr>";
+        return;
+      }
+      // HEADER
+      const header = filteredData[0];
+      let thead = "<tr>";
+      header.forEach((col, idx) => {
+        let cls = "";
+        if (sortColumn === idx) {
+          cls = sortDirection === "asc" ? "sort-asc" : "sort-desc";
         }
-
-        // HEADER
-        const header = filteredData[0];
-        let thead = "<tr>";
-
-        header.forEach((col, idx) => {
-            let cls = "";
-            if (sortColumn === idx) {
-                cls = sortDirection === "asc" ? "sort-asc" : "sort-desc";
-            }
-            
-            // Style first column as stock code
-            if (idx === 0) {
-                thead += `<th class="${cls}" onclick="sortScreenerTable(${idx})">${col}</th>`;
+        // Style first column as stock code
+        if (idx === 0) {
+          thead += `<th class="${cls}" onclick="sortScreenerTable(${idx})">${col}</th>`;
+        } else {
+          thead += `<th class="${cls}" onclick="sortScreenerTable(${idx})">${col}</th>`;
+        }
+      });
+      thead += "</tr>";
+      table.innerHTML = thead;
+      // BODY
+      const start = (currentPage - 1) * rowsPerPage + 1;
+      const end = start + rowsPerPage;
+      const rows = filteredData.slice(start, end);
+      rows.forEach(row => {
+        let tr = "<tr>";
+        row.forEach((col, idx) => {
+          // Style first column as stock code
+          if (idx === 0) {
+            tr += `<td class="stock-code" onclick="showChart('${col}')">${col}</td>`;
+          } else {
+            // Check if value is numeric and apply color coding
+            const numVal = parseFloat(col);
+            if (!isNaN(numVal)) {
+              let cellClass = '';
+              if (numVal > 0) cellClass = 'positive';
+              else if (numVal < 0) cellClass = 'negative';
+              else cellClass = 'neutral';
+              tr += `<td class="${cellClass}">${col}</td>`;
             } else {
-                thead += `<th class="${cls}" onclick="sortScreenerTable(${idx})">${col}</th>`;
+              tr += `<td>${col}</td>`;
             }
+          }
         });
-
-        thead += "</tr>";
-        table.innerHTML = thead;
-
-        // BODY
-        const start = (currentPage - 1) * rowsPerPage + 1;
-        const end = start + rowsPerPage;
-        const rows = filteredData.slice(start, end);
-
-        rows.forEach(row => {
-            let tr = "<tr>";
-            row.forEach((col, idx) => {
-                // Style first column as stock code
-                if (idx === 0) {
-                    tr += `<td class="stock-code" onclick="showChart('${col}')">${col}</td>`;
-                } else {
-                    // Check if value is numeric and apply color coding
-                    const numVal = parseFloat(col);
-                    if (!isNaN(numVal)) {
-                        let cellClass = '';
-                        if (numVal > 0) cellClass = 'positive';
-                        else if (numVal < 0) cellClass = 'negative';
-                        else cellClass = 'neutral';
-                        
-                        tr += `<td class="${cellClass}">${col}</td>`;
-                    } else {
-                        tr += `<td>${col}</td>`;
-                    }
-                }
-            });
-            tr += "</tr>";
-            table.innerHTML += tr;
-        });
+        tr += "</tr>";
+        table.innerHTML += tr;
+      });
     }
 
     function renderPagination() {
-        const paginationDiv = document.getElementById('pagination');
-        paginationDiv.innerHTML = "";
-
-        const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
-        
-        if (totalPages <= 1) return;
-
-        // Previous button
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'page-btn';
-        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-        prevBtn.disabled = currentPage === 1;
-        prevBtn.onclick = () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
-                updatePaginationButtons();
-            }
-        };
-        paginationDiv.appendChild(prevBtn);
-
-        // Page numbers
-        const maxVisible = 5;
-        let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-        let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-        if (endPage - startPage + 1 < maxVisible) {
-            startPage = Math.max(1, endPage - maxVisible + 1);
+      const paginationDiv = document.getElementById('pagination');
+      paginationDiv.innerHTML = "";
+      const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
+      if (totalPages <= 1) return;
+      // Previous button
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'page-btn';
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderTable();
+          updatePaginationButtons();
         }
-
-        for (let i = startPage; i <= endPage; i++) {
-            const btn = document.createElement('button');
-            btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-            btn.textContent = i;
-            btn.onclick = () => {
-                currentPage = i;
-                renderTable();
-                updatePaginationButtons();
-            };
-            paginationDiv.appendChild(btn);
-        }
-
-        // Next button
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'page-btn';
-        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-        nextBtn.disabled = currentPage === totalPages;
-        nextBtn.onclick = () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderTable();
-                updatePaginationButtons();
-            }
+      };
+      paginationDiv.appendChild(prevBtn);
+      // Page numbers
+      const maxVisible = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+      if (endPage - startPage + 1 < maxVisible) {
+        startPage = Math.max(1, endPage - maxVisible + 1);
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement('button');
+        btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+        btn.textContent = i;
+        btn.onclick = () => {
+          currentPage = i;
+          renderTable();
+          updatePaginationButtons();
         };
-        paginationDiv.appendChild(nextBtn);
+        paginationDiv.appendChild(btn);
+      }
+      // Next button
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'page-btn';
+      nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderTable();
+          updatePaginationButtons();
+        }
+      };
+      paginationDiv.appendChild(nextBtn);
     }
 
     function updatePaginationButtons() {
-        const buttons = document.querySelectorAll('#pagination .page-btn');
-        const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
-        
-        buttons.forEach((btn, index) => {
-            if (btn.textContent === '<' || btn.textContent === '>') {
-                // Previous/Next buttons
-                if (btn.textContent === '<') {
-                    btn.disabled = currentPage === 1;
-                } else {
-                    btn.disabled = currentPage === totalPages;
-                }
-            } else {
-                // Page number buttons
-                const pageNum = parseInt(btn.textContent);
-                btn.className = `page-btn ${pageNum === currentPage ? 'active' : ''}`;
-            }
-        });
+      const buttons = document.querySelectorAll('#pagination .page-btn');
+      const totalPages = Math.ceil((filteredData.length - 1) / rowsPerPage);
+      buttons.forEach((btn, index) => {
+        if (btn.textContent === '<' || btn.textContent === '>') {
+          // Previous/Next buttons
+          if (btn.textContent === '<') {
+            btn.disabled = currentPage === 1;
+          } else {
+            btn.disabled = currentPage === totalPages;
+          }
+        } else {
+          // Page number buttons
+          const pageNum = parseInt(btn.textContent);
+          btn.className = `page-btn ${pageNum === currentPage ? 'active' : ''}`;
+        }
+      });
     }
 
     function sortScreenerTable(columnIndex) {
-        if (sortColumn === columnIndex) {
-            sortDirection = sortDirection === "asc" ? "desc" : "asc";
-        } else {
-            sortColumn = columnIndex;
-            sortDirection = "asc";
+      if (sortColumn === columnIndex) {
+        sortDirection = sortDirection === "asc" ? "desc" : "asc";
+      } else {
+        sortColumn = columnIndex;
+        sortDirection = "asc";
+      }
+      const header = filteredData[0];
+      const body = filteredData.slice(1);
+      body.sort((a, b) => {
+        const valA = a[columnIndex]?.trim();
+        const valB = b[columnIndex]?.trim();
+        if (!isNaN(valA) && !isNaN(valB)) {
+          const numA = parseFloat(valA);
+          const numB = parseFloat(valB);
+          return sortDirection === "asc" ? numA - numB : numB - numA;
         }
-
-        const header = filteredData[0];
-        const body = filteredData.slice(1);
-
-        body.sort((a, b) => {
-            const valA = a[columnIndex]?.trim();
-            const valB = b[columnIndex]?.trim();
-
-            if (!isNaN(valA) && !isNaN(valB)) {
-                const numA = parseFloat(valA);
-                const numB = parseFloat(valB);
-                return sortDirection === "asc" ? numA - numB : numB - numA;
-            }
-
-            return sortDirection === "asc" 
-                ? (valA || "").localeCompare(valB || "")
-                : (valB || "").localeCompare(valA || "");
-        });
-
-        filteredData = [header, ...body];
-        renderTable();
+        return sortDirection === "asc" ?
+          (valA || "").localeCompare(valB || "") :
+          (valB || "").localeCompare(valA || "");
+      });
+      filteredData = [header, ...body];
+      renderTable();
     }
-
     // ===== SETUP EVENT LISTENERS =====
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Web App Version:', tg.version);
-        console.log('User:', tg.initDataUnsafe.user);
-        
-        // Setup Telegram WebApp
-        tg.expand();
-        
-        // Update user info
-        const user = tg.initDataUnsafe.user;
-        if (user) {
-            const userName = user.username || user.first_name || 'User';
-            document.getElementById('userName').textContent = userName;
+      console.log('Web App Version:', tg.version);
+      console.log('User:', tg.initDataUnsafe.user);
+      // Setup Telegram WebApp
+      tg.expand();
+      // Update user info
+      const user = tg.initDataUnsafe.user;
+      if (user) {
+        const userName = user.username || user.first_name || 'User';
+        document.getElementById('userName').textContent = userName;
+      }
+      // Tampilkan recent actions
+      updateRecentActions();
+      // Setup broker analysis
+      setupBrokerAnalysis();
+      // Setup command buttons dengan data-cmd
+      document.querySelectorAll('.command-btn[data-cmd]').forEach(button => {
+        button.addEventListener('click', function() {
+          const command = this.getAttribute('data-cmd');
+          if (command) {
+            sendTelegramCommand(command);
+          }
+        });
+      });
+      // Setup command buttons dengan data-prefix
+      document.querySelectorAll('.command-btn[data-prefix]:not([data-action="broker"])').forEach(button => {
+        button.addEventListener('click', function() {
+          const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
+          if (!stockCode) {
+            showNotification("Please enter a stock code first!", "warning");
+            return;
+          }
+          const prefix = this.getAttribute('data-prefix');
+          sendTelegramCommand(`${prefix}${stockCode}`);
+        });
+      });
+      // Setup analyze button (default: trendlines)
+      document.getElementById('analyzeBtn').addEventListener('click', function() {
+        const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
+        if (!stockCode) {
+          showNotification("Please enter a stock code first!", "warning");
+          return;
         }
-        
-        // Tampilkan recent actions
-        updateRecentActions();
-
-        // Setup broker analysis
-        setupBrokerAnalysis();
-        
-        // Setup command buttons dengan data-cmd
-        document.querySelectorAll('.command-btn[data-cmd]').forEach(button => {
-            button.addEventListener('click', function() {
-                const command = this.getAttribute('data-cmd');
-                if (command) {
-                    sendTelegramCommand(command);
-                }
-            });
-        });
-        
-        // Setup command buttons dengan data-prefix
-        document.querySelectorAll('.command-btn[data-prefix]:not([data-action="broker"])').forEach(button => {
-            button.addEventListener('click', function() {
-                const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
-                if (!stockCode) {
-                    showNotification("Please enter a stock code first!", "warning");
-                    return;
-                }
-                const prefix = this.getAttribute('data-prefix');
-                sendTelegramCommand(`${prefix}${stockCode}`);
-            });
-        });
-        
-        // Setup analyze button (default: trendlines)
-        document.getElementById('analyzeBtn').addEventListener('click', function() {
-            const stockCode = document.getElementById('stockInput').value.trim().toUpperCase();
-            if (!stockCode) {
-                showNotification("Please enter a stock code first!", "warning");
-                return;
-            }
-            sendTelegramCommand(`/${stockCode}`);
-        });
-        
-        // Enter key support
-        document.getElementById('stockInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('analyzeBtn').click();
-            }
-        });
-        
-        // Ketika input diubah, hilangkan highlight
-        document.getElementById('stockInput').addEventListener('input', function() {
-            this.classList.remove('persistent');
-        });
-        
-        // Close result buttons
-        document.getElementById('closeResult').addEventListener('click', function() {
-            document.getElementById('resultContainer').classList.remove('active');
-        });
-        
-        document.getElementById('closeSlingshotResult').addEventListener('click', function() {
-            document.getElementById('slingshotResultContainer').classList.remove('active');
-        });
-        
-        // Telegram Main Button
-        tg.MainButton.setText("Open in Telegram");
-        tg.MainButton.onClick(() => {
-            tg.close();
-        });
-        tg.MainButton.show();
-        
-        // Slingshot Screener Button
-        document.getElementById('btnScreener').addEventListener('click', loadCSV);
-        
-        // Filter input for Slingshot
-        document.getElementById('filterInput').addEventListener('input', applyFilter);
-        
-        // Refresh button for Slingshot
-        document.getElementById('refreshScreener').addEventListener('click', loadCSV);
-        
-        // Handle deep linking
-        const startParam = tg.initDataUnsafe.start_param;
-        if (startParam && startParam.startsWith('cmd_')) {
-            const command = startParam.replace('cmd_', '/').replace(/_/g, '-');
-            setTimeout(() => sendTelegramCommand(command), 1000);
+        sendTelegramCommand(`/${stockCode}`);
+      });
+      // Enter key support
+      document.getElementById('stockInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          document.getElementById('analyzeBtn').click();
         }
-        
-        // Tambahkan contoh kode saham yang sering digunakan
-        const popularStocks = ['BBCA', 'TLKM', 'BBRI', 'ASII', 'UNVR'];
-        const recentContainer = document.getElementById('recentActions');
-        
-        // Tambah tombol untuk kode saham populer jika belum ada recent actions
-        if (recentActions.length === 0) {
-            let popularHtml = '<div style="font-size: 12px; color: var(--gray); margin-bottom: 8px;">Popular: </div>';
-            popularStocks.forEach(stock => {
-                popularHtml += `
+      });
+      // Ketika input diubah, hilangkan highlight
+      document.getElementById('stockInput').addEventListener('input', function() {
+        this.classList.remove('persistent');
+      });
+      // Close result buttons
+      document.getElementById('closeResult').addEventListener('click', function() {
+        document.getElementById('resultContainer').classList.remove('active');
+      });
+      document.getElementById('closeSlingshotResult').addEventListener('click', function() {
+        document.getElementById('slingshotResultContainer').classList.remove('active');
+      });
+      // Telegram Main Button
+      tg.MainButton.setText("Open in Telegram");
+      tg.MainButton.onClick(() => {
+        tg.close();
+      });
+      tg.MainButton.show();
+      // Slingshot Screener Button
+      document.getElementById('btnScreener').addEventListener('click', loadCSV);
+      // Filter input for Slingshot
+      document.getElementById('filterInput').addEventListener('input', applyFilter);
+      // Refresh button for Slingshot
+      document.getElementById('refreshScreener').addEventListener('click', loadCSV);
+      // Handle deep linking
+      const startParam = tg.initDataUnsafe.start_param;
+      if (startParam && startParam.startsWith('cmd_')) {
+        const command = startParam.replace('cmd_', '/').replace(/_/g, '-');
+        setTimeout(() => sendTelegramCommand(command), 1000);
+      }
+      // Tambahkan contoh kode saham yang sering digunakan
+      const popularStocks = ['BBCA', 'TLKM', 'BBRI', 'ASII', 'UNVR'];
+      const recentContainer = document.getElementById('recentActions');
+      // Tambah tombol untuk kode saham populer jika belum ada recent actions
+      if (recentActions.length === 0) {
+        let popularHtml = '<div style="font-size: 12px; color: var(--gray); margin-bottom: 8px;">Popular: </div>';
+        popularStocks.forEach(stock => {
+          popularHtml += `
                     <div class="recent-badge" data-stock="${stock}" data-type="/tr-">
                         <i class="fas fa-star"></i>
                         <span>${stock}</span>
                     </div>
                 `;
+        });
+        // Tambah ke container jika kosong
+        if (recentContainer.innerHTML === '') {
+          recentContainer.innerHTML = popularHtml;
+          // Tambah event listener untuk popular stocks
+          document.querySelectorAll('.recent-badge[data-stock]').forEach(badge => {
+            badge.addEventListener('click', function() {
+              const stockCode = this.getAttribute('data-stock');
+              const commandType = this.getAttribute('data-type') || '/tr-';
+              // Set input dengan kode saham
+              document.getElementById('stockInput').value = stockCode;
+              document.getElementById('stockInput').classList.add('persistent');
+              // Kirim perintah
+              sendTelegramCommand(`${commandType}${stockCode}`);
             });
-            
-            // Tambah ke container jika kosong
-            if (recentContainer.innerHTML === '') {
-                recentContainer.innerHTML = popularHtml;
-                
-                // Tambah event listener untuk popular stocks
-                document.querySelectorAll('.recent-badge[data-stock]').forEach(badge => {
-                    badge.addEventListener('click', function() {
-                        const stockCode = this.getAttribute('data-stock');
-                        const commandType = this.getAttribute('data-type') || '/tr-';
-                        
-                        // Set input dengan kode saham
-                        document.getElementById('stockInput').value = stockCode;
-                        document.getElementById('stockInput').classList.add('persistent');
-                        
-                        // Kirim perintah
-                        sendTelegramCommand(`${commandType}${stockCode}`);
-                    });
-                });
-            }
+          });
         }
+      }
     });
-
     //top stock by broker
     // ===== BROKER ANALYSIS FUNCTIONS =====
     function setupBrokerAnalysis() {
@@ -2047,12 +2241,10 @@
       const minDateInput = document.getElementById('min');
       const maxDateInput = document.getElementById('max');
       const originalSelect = document.getElementById('limitSelect'); // Original select element
-
       const recentActionsContainer = document.getElementById('recentBrokers');
-      
       // Load recent from localStorage or use defaults
       let recentBrokers = JSON.parse(localStorage.getItem('recentBrokers')) || ['AK', 'ZP', 'BK'];
- 
+
       function updateRecentUI() {
         recentActionsContainer.innerHTML = '';
         recentBrokers.forEach(code => {
@@ -2074,94 +2266,75 @@
         localStorage.setItem('recentBrokers', JSON.stringify(recentBrokers));
         updateRecentUI();
       }
-     
       // Set default date values to today
       function setDefaultDates() {
         const today = new Date();
         const yesterday = new Date(today);
         yesterday.setDate(yesterday.getDate() - 1);
-
         const formatDate = (date) => {
           const year = date.getFullYear();
           const month = String(date.getMonth() + 1).padStart(2, '0');
           const day = String(date.getDate()).padStart(2, '0');
           return `${year}-${month}-${day}`;
         };
-
         if (!minDateInput.value) {
           minDateInput.value = formatDate(yesterday);
         }
-
         if (!maxDateInput.value) {
           maxDateInput.value = formatDate(today);
         }
-
         // Set max attribute to today
         maxDateInput.max = formatDate(today);
         minDateInput.max = formatDate(today);
       }
-
       // Initialize dates on load
       setDefaultDates();
-
       // Function to format broker codes
       function formatBrokerCodes(input) {
         // Trim the input and convert to uppercase
         const trimmedInput = input.trim().toUpperCase();
-
         // If empty, return empty string
         if (!trimmedInput) return '';
-
         // Split by comma, trim each part, remove empty strings
         const brokers = trimmedInput
           .split(',')
           .map(broker => broker.trim())
           .filter(broker => broker.length > 0);
-
         // Join with dash and return
         return brokers.join('-');
       }
-
       // Function to get the limit value from dropdown
       function getLimitValue() {
         // Get value from the original select element
         const limit = originalSelect.value;
-        
         // Validate and return default if needed
         const validLimits = ['5', '10', '20', '50'];
         return validLimits.includes(limit) ? limit : '20';
       }
-      
       // Function to get formatted broker codes for command
       function getFormattedBrokerCodes() {
         const rawInput = brokerInput.value;
         addRecent(rawInput);
         return formatBrokerCodes(rawInput);
       }
-
       // Function to validate and format date range
       function getFormattedDateRange() {
         const minDate = minDateInput.value;
         const maxDate = maxDateInput.value;
-
         // If no dates provided, return empty string
         if (!minDate && !maxDate) {
           return '';
         }
-
         // If only one date provided, use it for both
         if (minDate && !maxDate) {
           return `${minDate}+${minDate}`;
         }
-
         if (!minDate && maxDate) {
           return `${maxDate}+${maxDate}`;
         }
-
         // If both dates provided, return range
         return `${minDate}+${maxDate}`;
       }
-
       // Function to build complete broker command
       function buildBrokerCommand(prefix) {
         const brokerCodes = getFormattedBrokerCodes();
@@ -2169,29 +2342,22 @@
           showNotification('Please enter broker code(s) first!', 'warning');
           return null;
         }
-
         const dateRange = getFormattedDateRange();
-         const limit = getLimitValue(); // Get limit from dropdown
-
+        const limit = getLimitValue(); // Get limit from dropdown
         // Replace the number in the prefix with the selected limit
         // Example: /vol20- -> /vol5-, /vvsms20- -> /vvsms10-
         const updatedPrefix = prefix.replace(/\d+/, limit);
-
         // Build command: /vol5-AK-BK-2025-12-31+2025-12-31
         let command = `${updatedPrefix}${brokerCodes}`;
-
         if (dateRange) {
           command += `-${dateRange}`;
         }
-
         return command;
       }
-
       // Function to update command button descriptions based on limit
       function updateButtonDescriptions() {
         const limit = getLimitValue();
         const buttons = document.querySelectorAll('.command-btn[data-action="broker"]');
-        
         buttons.forEach(button => {
           const description = button.querySelector('.description');
           if (description) {
@@ -2204,109 +2370,85 @@
           }
         });
       }
-
-    
       // Handle broker buttons with data-action="broker"
       function setupBrokerButtons() {
         // Get all broker action buttons
         const brokerButtons = document.querySelectorAll('.command-btn[data-action="broker"]');
-
         brokerButtons.forEach(button => {
           // Remove existing click handlers to prevent duplicates
           const newButton = button.cloneNode(true);
           button.parentNode.replaceChild(newButton, button);
         });
-
         // Get fresh references after cloning
         const freshBrokerButtons = document.querySelectorAll('.command-btn[data-action="broker"]');
-
         freshBrokerButtons.forEach(button => {
           button.addEventListener('click', function(e) {
             e.preventDefault();
-
             const prefix = this.getAttribute('data-prefix');
             const command = buildBrokerCommand(prefix);
-
             if (!command) {
               return; // Notification already shown in buildBrokerCommand
             }
-
             console.log('Broker command:', command);
             sendTelegramCommand(command);
           });
         });
       }
-
       // Enter key support for broker input
       function setupEnterKeySupport() {
         brokerInput.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
             e.preventDefault();
-
             // Use default prefix for enter key (volume analysis)
             const command = buildBrokerCommand('/vol20-');
-
             if (!command) {
               return;
             }
-
             console.log('Broker command (Enter):', command);
             sendTelegramCommand(command);
           }
         });
       }
-
       // Format broker input in real-time as user types
       function setupRealTimeFormatting() {
         let previousValue = '';
-
         brokerInput.addEventListener('input', function() {
           const currentValue = this.value;
-
           // Don't format if the user is deleting or if the value is empty
           if (currentValue.length < previousValue.length || !currentValue) {
             previousValue = currentValue;
             return;
           }
-
           // Format only when user types a comma
           if (currentValue.endsWith(',')) {
             // Get the formatted value
             const formattedValue = formatBrokerCodes(currentValue.replace(/,$/, ''));
-
             // Update the input with formatted value
             this.value = formattedValue;
-
             // Add a comma at the end if user is still typing multiple brokers
             if (currentValue.trim().endsWith(',')) {
               this.value += ',';
             }
           }
-
           previousValue = this.value;
         });
-
         // Format on blur (when input loses focus)
         brokerInput.addEventListener('blur', function() {
           const formattedValue = formatBrokerCodes(this.value);
           this.value = formattedValue;
         });
       }
-
       // Listen for limit selection changes
       function setupLimitChangeListener() {
         originalSelect.addEventListener('change', function() {
           const limit = this.value;
           console.log('Limit changed to:', limit);
-          
           // Update button descriptions
           updateButtonDescriptions();
-          
           // Show notification if needed
           showNotification(`Limit set to ${limit} stocks`, 'info');
         });
       }
-
       // Initialize all broker functions
       function init() {
         setupBrokerButtons();
@@ -2316,13 +2458,10 @@
         updateRecentUI();
         updateButtonDescriptions(); // Set initial button descriptions
       }
-
       // Call initialization
-      init();   
-     
+      init();
     }
-
-     //=========== Dwropdown Top Stock by Broker===========
+    //=========== Dwropdown Top Stock by Broker===========
     // Custom Dropdown Functionality
     document.addEventListener('DOMContentLoaded', function() {
       const selectHeader = document.getElementById('selectHeader');
@@ -2330,43 +2469,34 @@
       const selectedValue = document.getElementById('selectedValue');
       const originalSelect = document.getElementById('limitSelect');
       const customSelect = document.getElementById('customSelect');
-      
       // Open/close dropdown
       selectHeader.addEventListener('click', function(e) {
         e.stopPropagation();
         selectOptions.classList.toggle('active');
         selectHeader.classList.toggle('active');
       });
-      
       // Handle option selection
       document.querySelectorAll('.select-option').forEach(option => {
         option.addEventListener('click', function() {
           const value = this.getAttribute('data-value');
           const text = this.textContent;
-          
           // Update custom dropdown display
           selectedValue.textContent = text;
-          
           // Update original select element
           originalSelect.value = value;
-          
           // Remove selected class from all options
           document.querySelectorAll('.select-option').forEach(opt => {
             opt.classList.remove('selected');
           });
-          
           // Add selected class to clicked option
           this.classList.add('selected');
-          
           // Close dropdown
           selectOptions.classList.remove('active');
           selectHeader.classList.remove('active');
-          
           // Trigger change event on original select
           originalSelect.dispatchEvent(new Event('change'));
         });
       });
-      
       // Close dropdown when clicking outside
       document.addEventListener('click', function(e) {
         if (!customSelect.contains(e.target)) {
@@ -2374,14 +2504,12 @@
           selectHeader.classList.remove('active');
         }
       });
-      
       // Initialize selected option
       const initialValue = originalSelect.value;
       const initialOption = document.querySelector(`.select-option[data-value="${initialValue}"]`);
       if (initialOption) {
         initialOption.classList.add('selected');
       }
-      
       // Handle keyboard navigation
       selectHeader.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -2390,13 +2518,11 @@
           selectHeader.classList.toggle('active');
         }
       });
-      
       // Add keyboard navigation for options
       selectOptions.addEventListener('keydown', function(e) {
         const options = Array.from(document.querySelectorAll('.select-option'));
         const currentIndex = options.findIndex(opt => opt.classList.contains('selected'));
         let nextIndex;
-        
         if (e.key === 'ArrowDown') {
           e.preventDefault();
           nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0;
@@ -2415,385 +2541,372 @@
           selectHeader.classList.remove('active');
           return;
         }
-        
         if (nextIndex !== undefined) {
           options.forEach(opt => opt.classList.remove('selected'));
           options[nextIndex].classList.add('selected');
           options[nextIndex].focus();
         }
       });
-      
     });
-
-    // ===== BROKER MONTHLY TRACKING FUNCTIONS =====
-document.addEventListener('DOMContentLoaded', function() {
-    // Setup Monthly Tracking Button
-    const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
-    const brokerInputMonthly = document.getElementById('brokerInputMonthly');
-    const startMonthInput = document.getElementById('startMonth');
     
-    // Set default month to current month
-    function setDefaultMonth() {
+    
+    // ===== BROKER MONTHLY TRACKING FUNCTIONS =====
+    document.addEventListener('DOMContentLoaded', function() {
+      // Setup Monthly Tracking Button
+      const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
+      const brokerInputMonthly = document.getElementById('brokerInputMonthly');
+      const startMonthInput = document.getElementById('startMonth');
+      // Set default month to current month
+      function setDefaultMonth() {
         const today = new Date();
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const defaultMonth = `${year}-${month}`;
-        
         if (!startMonthInput.value) {
-            startMonthInput.value = defaultMonth;
+          startMonthInput.value = defaultMonth;
         }
-    }
-    
-    setDefaultMonth();
-    
-    // Format broker input
-    function formatBrokerInput(input) {
+      }
+      setDefaultMonth();
+      // Format broker input
+      function formatBrokerInput(input) {
         if (!input) return '';
-        
         const formatted = input.trim().toUpperCase();
-        
         // Remove any spaces
         let cleanInput = formatted.replace(/\s+/g, '');
-        
         // Replace common separators with proper format
         // Convert comma to dash for multiple brokers
         cleanInput = cleanInput.replace(/,/g, '-');
-        
         // Ensure plus sign between brokers and stock
         if (cleanInput.includes('-') && !cleanInput.includes('+')) {
-            // If there's no plus sign but there's a dash, check if we need to add plus
-            const parts = cleanInput.split('-');
-            if (parts.length > 1) {
-                // Check if last part looks like a stock code (4 letters)
-                const lastPart = parts[parts.length - 1];
-                if (lastPart.length >= 2 && lastPart.length <= 4 && /^[A-Z]+$/.test(lastPart)) {
-                    // Format: broker1-broker2+stock
-                    const brokers = parts.slice(0, -1).join('-');
-                    const stock = lastPart;
-                    cleanInput = `${brokers}+${stock}`;
-                }
+          // If there's no plus sign but there's a dash, check if we need to add plus
+          const parts = cleanInput.split('-');
+          if (parts.length > 1) {
+            // Check if last part looks like a stock code (4 letters)
+            const lastPart = parts[parts.length - 1];
+            if (lastPart.length >= 2 && lastPart.length <= 4 && /^[A-Z]+$/.test(lastPart)) {
+              // Format: broker1-broker2+stock
+              const brokers = parts.slice(0, -1).join('-');
+              const stock = lastPart;
+              cleanInput = `${brokers}+${stock}`;
             }
+          }
         }
-        
         return cleanInput;
-    }
-    
-    // Validate broker input format
-    function validateBrokerInput(input) {
-        if (!input) return { isValid: false, message: 'Input cannot be empty' };
-        
+      }
+      // Validate broker input format
+      function validateBrokerInput(input) {
+        if (!input) return {
+          isValid: false,
+          message: 'Input cannot be empty'
+        };
         // Check if input contains stock code (after + sign)
         if (input.includes('+')) {
-            const parts = input.split('+');
-            if (parts.length > 2) {
-                return { isValid: false, message: 'Format: AK-BK+BBCA or BK+BBCA' };
+          const parts = input.split('+');
+          if (parts.length > 2) {
+            return {
+              isValid: false,
+              message: 'Format: AK-BK+BBCA or BK+BBCA'
+            };
+          }
+          // Check brokers part (before +)
+          const brokersPart = parts[0];
+          if (!brokersPart) {
+            return {
+              isValid: false,
+              message: 'Broker code required before +'
+            };
+          }
+          // Check stock part (after +)
+          const stockPart = parts[1];
+          if (!stockPart) {
+            return {
+              isValid: false,
+              message: 'Stock code required after +'
+            };
+          }
+          // Validate brokers format (max 3 brokers)
+          const brokers = brokersPart.split('-');
+          if (brokers.length > 3) {
+            return {
+              isValid: false,
+              message: 'Maximum 3 brokers separated by dash'
+            };
+          }
+          // Check each broker code
+          for (const broker of brokers) {
+            if (broker.length < 2 || broker.length > 4) {
+              return {
+                isValid: false,
+                message: `Invalid broker code: ${broker}`
+              };
             }
-            
-            // Check brokers part (before +)
-            const brokersPart = parts[0];
-            if (!brokersPart) {
-                return { isValid: false, message: 'Broker code required before +' };
+            if (!/^[A-Z]+$/.test(broker)) {
+              return {
+                isValid: false,
+                message: `Broker code must be letters only: ${broker}`
+              };
             }
-            
-            // Check stock part (after +)
-            const stockPart = parts[1];
-            if (!stockPart) {
-                return { isValid: false, message: 'Stock code required after +' };
-            }
-            
-            // Validate brokers format (max 3 brokers)
-            const brokers = brokersPart.split('-');
-            if (brokers.length > 3) {
-                return { isValid: false, message: 'Maximum 3 brokers separated by dash' };
-            }
-            
-            // Check each broker code
-            for (const broker of brokers) {
-                if (broker.length < 2 || broker.length > 4) {
-                    return { isValid: false, message: `Invalid broker code: ${broker}` };
-                }
-                if (!/^[A-Z]+$/.test(broker)) {
-                    return { isValid: false, message: `Broker code must be letters only: ${broker}` };
-                }
-            }
-            
-            // Validate stock code
-            if (!/^[A-Z]{1,4}$/.test(stockPart)) {
-                return { isValid: false, message: `Invalid stock code: ${stockPart}` };
-            }
-            
+          }
+          // Validate stock code
+          if (!/^[A-Z]{1,4}$/.test(stockPart)) {
+            return {
+              isValid: false,
+              message: `Invalid stock code: ${stockPart}`
+            };
+          }
         } else {
-            // No stock code, just brokers
-            const brokers = input.split('-');
-            if (brokers.length > 3) {
-                return { isValid: false, message: 'Maximum 3 brokers separated by dash' };
+          // No stock code, just brokers
+          const brokers = input.split('-');
+          if (brokers.length > 3) {
+            return {
+              isValid: false,
+              message: 'Maximum 3 brokers separated by dash'
+            };
+          }
+          // Check each broker code
+          for (const broker of brokers) {
+            if (broker.length < 2 || broker.length > 4) {
+              return {
+                isValid: false,
+                message: `Invalid broker code: ${broker}`
+              };
             }
-            
-            // Check each broker code
-            for (const broker of brokers) {
-                if (broker.length < 2 || broker.length > 4) {
-                    return { isValid: false, message: `Invalid broker code: ${broker}` };
-                }
-                if (!/^[A-Z]+$/.test(broker)) {
-                    return { isValid: false, message: `Broker code must be letters only: ${broker}` };
-                }
+            if (!/^[A-Z]+$/.test(broker)) {
+              return {
+                isValid: false,
+                message: `Broker code must be letters only: ${broker}`
+              };
             }
+          }
         }
-        
-        return { isValid: true };
-    }
-    
-    // Build monthly command
-    function buildMonthlyCommand(brokerInput, month) {
+        return {
+          isValid: true
+        };
+      }
+      // Build monthly command
+      function buildMonthlyCommand(brokerInput, month) {
         // Format: /ak-zp-bk+bbca+2025-12 or /ak+bbca+2025-12
-        
         // Format the broker input
         const formattedBroker = formatBrokerInput(brokerInput);
-        
         // Format month (ensure YYYY-MM format)
         let formattedMonth = month;
         if (formattedMonth.includes('-') && formattedMonth.length === 7) {
-            // Already in YYYY-MM format
-            formattedMonth = formattedMonth;
+          // Already in YYYY-MM format
+          formattedMonth = formattedMonth;
         } else {
-            // Try to convert
-            const date = new Date(month);
-            if (!isNaN(date.getTime())) {
-                const year = date.getFullYear();
-                const monthNum = String(date.getMonth() + 1).padStart(2, '0');
-                formattedMonth = `${year}-${monthNum}`;
-            }
+          // Try to convert
+          const date = new Date(month);
+          if (!isNaN(date.getTime())) {
+            const year = date.getFullYear();
+            const monthNum = String(date.getMonth() + 1).padStart(2, '0');
+            formattedMonth = `${year}-${monthNum}`;
+          }
         }
-        
         // Build command
         if (formattedBroker.includes('+')) {
-            return `/${formattedBroker}+${formattedMonth}`;
+          console.log(formattedBroker)
+          return `/${formattedBroker}+${formattedMonth}`;
         } else {
-            return `/${formattedBroker}+${formattedMonth}`;
+          return `/${formattedBroker}+${formattedMonth}`;
         }
-    }
-    
-    // Handle analyze button click
-    analyzeMonthlyBtn.addEventListener('click', function() {
+      }
+      // Handle analyze button click
+      analyzeMonthlyBtn.addEventListener('click', function() {
         const brokerInput = brokerInputMonthly.value.trim();
         const month = startMonthInput.value;
-        
         if (!brokerInput) {
-            showNotification('Please enter broker code(s)!', 'warning');
-            return;
+          showNotification('Please enter broker code(s)!', 'warning');
+          return;
         }
-        
         if (!month) {
-            showNotification('Please select a month!', 'warning');
-            return;
+          showNotification('Please select a month!', 'warning');
+          return;
         }
-        
         // Validate broker input
         const validation = validateBrokerInput(brokerInput);
         if (!validation.isValid) {
-            showNotification(validation.message, 'warning');
-            return;
+          showNotification(validation.message, 'warning');
+          return;
         }
-        
         // Build command
         const command = buildMonthlyCommand(brokerInput, month);
-        
         console.log('Monthly tracking command:', command);
-        
         // Send command
-        sendTelegramCommandTracking(command);
-        
+        sendTelegramCommand(command);
         // Save to recent
         saveToRecentCommands(brokerInput, month);
-    });
-    
-    // Enter key support for monthly broker input
-    brokerInputMonthly.addEventListener('keypress', function(e) {
+      });
+      // Enter key support for monthly broker input
+      brokerInputMonthly.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            e.preventDefault();
-            analyzeMonthlyBtn.click();
+          e.preventDefault();
+          analyzeMonthlyBtn.click();
         }
-    });
-    
-    // Auto-format input on blur
-    brokerInputMonthly.addEventListener('blur', function() {
+      });
+      // Auto-format input on blur
+      brokerInputMonthly.addEventListener('blur', function() {
         const formatted = formatBrokerInput(this.value);
         if (formatted) {
-            this.value = formatted;
+          this.value = formatted;
         }
+      });
+      // Add quick examples
+      setupMonthlyExamples();
     });
-    
-    // Add quick examples
-    setupMonthlyExamples();
-});
-
-// Save to recent commands
-function saveToRecentCommands(brokerInput, month) {
-    try {
+    // Save to recent commands
+    function saveToRecentCommands(brokerInput, month) {
+      try {
         const historyKey = 'monthly_tracking_history';
         let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-        
         const entry = {
-            brokerInput: brokerInput,
-            month: month,
-            timestamp: new Date().toISOString()
+          brokerInput: brokerInput,
+          month: month,
+          timestamp: new Date().toISOString()
         };
-        
         // Remove duplicates
-        history = history.filter(item => 
-            !(item.brokerInput === brokerInput && item.month === month)
+        history = history.filter(item =>
+          !(item.brokerInput === brokerInput && item.month === month)
         );
-        
         // Add to beginning
         history.unshift(entry);
-        
         // Keep only last 5
         if (history.length > 5) {
-            history = history.slice(0, 5);
+          history = history.slice(0, 5);
         }
-        
         localStorage.setItem(historyKey, JSON.stringify(history));
-        
         // Update examples
         updateMonthlyExamples();
-    } catch (e) {
+      } catch (e) {
         console.error('Error saving recent command:', e);
+      }
     }
-}
-
-// Setup monthly examples
-function setupMonthlyExamples() {
-    const examples = [
-        { brokers: 'AK', stock: 'BBCA', label: 'AK + BBCA' },
-        { brokers: 'AK-ZP', stock: 'BBCA', label: 'AK-ZP + BBCA' },
-        { brokers: 'AK-ZP-BK', stock: 'BBCA', label: 'AK-ZP-BK + BBCA' },
-        { brokers: 'BK', stock: 'ASII', label: 'BK + ASII' }
-    ];
-    
-    const section = document.querySelector('.monthly-tracking');
-    if (!section) return;
-    
-    // Check if examples already exist
-    if (document.getElementById('monthlyExamples')) {
+    // Setup monthly examples
+    function setupMonthlyExamples() {
+      const examples = [{
+          brokers: 'AK',
+          stock: 'BBCA',
+          label: 'AK + BBCA'
+        },
+        {
+          brokers: 'AK-ZP',
+          stock: 'BBCA',
+          label: 'AK-ZP + BBCA'
+        },
+        {
+          brokers: 'AK-ZP-BK',
+          stock: 'BBCA',
+          label: 'AK-ZP-BK + BBCA'
+        },
+        {
+          brokers: 'BK',
+          stock: 'ASII',
+          label: 'BK + ASII'
+        }
+      ];
+      const section = document.querySelector('.monthly-tracking');
+      if (!section) return;
+      // Check if examples already exist
+      if (document.getElementById('monthlyExamples')) {
         document.getElementById('monthlyExamples').remove();
-    }
-    
-    const examplesContainer = document.createElement('div');
-    examplesContainer.id = 'monthlyExamples';
-    examplesContainer.style.marginTop = '15px';
-    examplesContainer.style.display = 'flex';
-    examplesContainer.style.flexWrap = 'wrap';
-    examplesContainer.style.gap = '8px';
-    
-    // Add title
-    const title = document.createElement('div');
-    title.textContent = 'Quick Examples:';
-    title.style.fontSize = '12px';
-    title.style.color = 'var(--gray)';
-    title.style.marginBottom = '8px';
-    title.style.width = '100%';
-    examplesContainer.appendChild(title);
-    
-    // Add example buttons
-    examples.forEach(example => {
+      }
+      const examplesContainer = document.createElement('div');
+      examplesContainer.id = 'monthlyExamples';
+      examplesContainer.style.marginTop = '15px';
+      examplesContainer.style.display = 'flex';
+      examplesContainer.style.flexWrap = 'wrap';
+      examplesContainer.style.gap = '8px';
+      // Add title
+      const title = document.createElement('div');
+      title.textContent = 'Quick Examples:';
+      title.style.fontSize = '12px';
+      title.style.color = 'var(--gray)';
+      title.style.marginBottom = '8px';
+      title.style.width = '100%';
+      examplesContainer.appendChild(title);
+      // Add example buttons
+      examples.forEach(example => {
         const button = document.createElement('button');
         button.className = 'action-tag';
         button.textContent = example.label;
         button.title = `${example.brokers}+${example.stock}`;
-        
         button.addEventListener('click', () => {
-            document.getElementById('brokerInputMonthly').value = 
-                `${example.brokers}+${example.stock}`;
+          document.getElementById('brokerInputMonthly').value =
+            `${example.brokers}+${example.stock}`;
         });
-        
         examplesContainer.appendChild(button);
-    });
-    
-    // Insert after the date group
-    const dateGroup = section.querySelector('.date-group');
-    if (dateGroup) {
+      });
+      // Insert after the date group
+      const dateGroup = section.querySelector('.date-group');
+      if (dateGroup) {
         dateGroup.parentNode.insertBefore(examplesContainer, dateGroup.nextSibling);
+      }
     }
-}
-
-// Update monthly examples with recent commands
-function updateMonthlyExamples() {
-    try {
+    // Update monthly examples with recent commands
+    function updateMonthlyExamples() {
+      try {
         const historyKey = 'monthly_tracking_history';
         const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-        
         const recentContainer = document.getElementById('monthlyRecent');
         if (!recentContainer) {
-            // Create recent container if it doesn't exist
-            const section = document.querySelector('.monthly-tracking');
-            if (!section || history.length === 0) return;
-            
-            const container = document.createElement('div');
-            container.id = 'monthlyRecent';
-            container.style.marginTop = '10px';
-            container.style.display = 'flex';
-            container.style.flexWrap = 'wrap';
-            container.style.gap = '8px';
-            
-            const title = document.createElement('div');
-            title.textContent = 'Recent:';
-            title.style.fontSize = '12px';
-            title.style.color = 'var(--gray)';
-            title.style.marginBottom = '8px';
-            title.style.width = '100%';
-            container.appendChild(title);
-            
-            // Add recent items
-            history.forEach((item, index) => {
-                const tag = document.createElement('span');
-                tag.className = 'action-tag';
-                tag.style.cursor = 'pointer';
-                tag.textContent = `${item.brokerInput} (${item.month})`;
-                
-                tag.addEventListener('click', () => {
-                    document.getElementById('brokerInputMonthly').value = item.brokerInput;
-                    document.getElementById('startMonth').value = item.month;
-                });
-                
-                container.appendChild(tag);
+          // Create recent container if it doesn't exist
+          const section = document.querySelector('.monthly-tracking');
+          if (!section || history.length === 0) return;
+          const container = document.createElement('div');
+          container.id = 'monthlyRecent';
+          container.style.marginTop = '10px';
+          container.style.display = 'flex';
+          container.style.flexWrap = 'wrap';
+          container.style.gap = '8px';
+          const title = document.createElement('div');
+          title.textContent = 'Recent:';
+          title.style.fontSize = '12px';
+          title.style.color = 'var(--gray)';
+          title.style.marginBottom = '8px';
+          title.style.width = '100%';
+          container.appendChild(title);
+          // Add recent items
+          history.forEach((item, index) => {
+            const tag = document.createElement('span');
+            tag.className = 'action-tag';
+            tag.style.cursor = 'pointer';
+            tag.textContent = `${item.brokerInput} (${item.month})`;
+            tag.addEventListener('click', () => {
+              document.getElementById('brokerInputMonthly').value = item.brokerInput;
+              document.getElementById('startMonth').value = item.month;
             });
-            
-            // Insert at the end of the section
-            section.appendChild(container);
+            container.appendChild(tag);
+          });
+          // Insert at the end of the section
+          section.appendChild(container);
         } else {
-            // Update existing container
-            recentContainer.innerHTML = '';
-            
-            const title = document.createElement('div');
-            title.textContent = 'Recent:';
-            title.style.fontSize = '12px';
-            title.style.color = 'var(--gray)';
-            title.style.marginBottom = '8px';
-            title.style.width = '100%';
-            recentContainer.appendChild(title);
-            
-            // Add recent items
-            history.forEach((item, index) => {
-                const tag = document.createElement('span');
-                tag.className = 'action-tag';
-                tag.style.cursor = 'pointer';
-                tag.textContent = `${item.brokerInput} (${item.month})`;
-                
-                tag.addEventListener('click', () => {
-                    document.getElementById('brokerInputMonthly').value = item.brokerInput;
-                    document.getElementById('startMonth').value = item.month;
-                });
-                
-                recentContainer.appendChild(tag);
+          // Update existing container
+          recentContainer.innerHTML = '';
+          const title = document.createElement('div');
+          title.textContent = 'Recent:';
+          title.style.fontSize = '12px';
+          title.style.color = 'var(--gray)';
+          title.style.marginBottom = '8px';
+          title.style.width = '100%';
+          recentContainer.appendChild(title);
+          // Add recent items
+          history.forEach((item, index) => {
+            const tag = document.createElement('span');
+            tag.className = 'action-tag';
+            tag.style.cursor = 'pointer';
+            tag.textContent = `${item.brokerInput} (${item.month})`;
+            tag.addEventListener('click', () => {
+              document.getElementById('brokerInputMonthly').value = item.brokerInput;
+              document.getElementById('startMonth').value = item.month;
             });
+            recentContainer.appendChild(tag);
+          });
         }
-    } catch (e) {
+      } catch (e) {
         console.error('Error updating monthly examples:', e);
+      }
     }
-}
-
     // ===== FUNGSI UTAMA TELEGRAM (dengan error handling) =====
-async function sendTelegramCommandTracking(commandText) {
+async function sendTelegramCommand(commandText) {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user;
     
@@ -2848,65 +2961,722 @@ async function sendTelegramCommandTracking(commandText) {
         analyzeMonthlyBtn.disabled = false;
     }
 }
-
+    
+    
     // Fungsi untuk mengirim command ke bot Telegram via GAS
     async function sendCommandToBot() {
-        const commandInput = document.getElementById('commandInput');
-        const command = commandInput.value.trim();
+      const commandInput = document.getElementById('commandInput');
+      const command = commandInput.value.trim();
+      if (!command) {
+        alert('Masukkan command!');
+        return;
+      }
+      // Ambil data user dari Telegram WebApp
+      const tg = window.Telegram.WebApp;
+      const user = tg.initDataUnsafe?.user;
+      // Data yang dikirim ke GAS
+      const payload = {
+        userId: user?.id || 'unknown',
+        command: command,
+        username: user?.username || user?.first_name || 'User',
+        timestamp: new Date().toISOString(),
+        source: 'mini_app'
+      };
+      try {
+        // Kirim POST request ke GAS
+        const response = await fetch(GAS_WEB_APP_URL, {
+          method: 'POST',
+          mode: 'no-cors', // Important for GAS
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        console.log('Command sent:', command);
+        alert(`✅ Command "${command}" telah dikirim!`);
+        // Kosongkan input setelah berhasil
+        commandInput.value = '';
+      } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Gagal mengirim command');
+      }
+    }
+    // Event listener untuk tombol send
+    document.getElementById('commandBot').addEventListener('click', sendCommandToBot);
+    // Enter key support
+    document.getElementById('commandInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendCommandToBot();
+      }
+    });
+
+    //custume menu js
+    // Fungsi untuk mengirim command ke bot Telegram via GAS
+async function sendCommandToBot() {
+    const commandInput = document.getElementById('commandInput');
+    const command = commandInput.value.trim();
+    
+    if (!command) {
+        alert('Masukkan command!');
+        return;
+    }
+    
+    // Ambil data user dari Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user;
+    
+    // Data yang dikirim ke GAS
+    const payload = {
+        userId: user?.id || 'unknown',
+        command: command,
+        username: user?.username || user?.first_name || 'User',
+        timestamp: new Date().toISOString(),
+        source: 'telegram_miniapp'
+    };
+    
+    // URL Google Apps Script Web App
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWs7bl93tAo5aC779_kRisi7vojWYkCRmASY3ZzG8JKc1RFoQmsdXuUGo-fKkH6z9I/exec';
+    
+    try {
+        // Kirim POST request ke GAS
+        const response = await fetch(GAS_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Important for GAS
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
         
-        if (!command) {
-            alert('Masukkan command!');
-            return;
+        console.log('Command sent:', command);
+        alert(`✅ Command "${command}" telah dikirim!`);
+        
+        // Kosongkan input setelah berhasil
+        commandInput.value = '';
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Gagal mengirim command');
+    }
+}
+
+// Event listener untuk tombol send
+document.getElementById('commandBot').addEventListener('click', sendCommandToBot);
+
+// Enter key support
+document.getElementById('commandInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        sendCommandToBot();
+    }
+});
+
+
+
+// ===== NAVIGATION SYSTEM =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Navigation elements
+    const navMenu = document.getElementById('navMenu');
+    const navToggle = document.getElementById('navToggle');
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.section');
+    
+    // Show section based on navigation
+    function showSection(sectionId) {
+        // Hide all sections
+        sections.forEach(section => {
+            section.classList.add('hidden');
+        });
+        
+        // Show selected section
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            
+            // Update URL hash for deep linking
+            window.location.hash = sectionId;
         }
         
-        // Ambil data user dari Telegram WebApp
-        const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe?.user;
+        // Update active nav item
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('data-section') === sectionId) {
+                item.classList.add('active');
+            }
+        });
         
-        // Data yang dikirim ke GAS
-        const payload = {
-            userId: user?.id || 'unknown',
-            command: command,
-            username: user?.username || user?.first_name || 'User',
-            timestamp: new Date().toISOString(),
-            source: 'mini_app'
-        };
-
-        try {
-            // Kirim POST request ke GAS
-            const response = await fetch(GAS_WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors', // Important for GAS
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-            
-            console.log('Command sent:', command);
-            alert(`✅ Command "${command}" telah dikirim!`);
-            
-            // Kosongkan input setelah berhasil
-            commandInput.value = '';
-            
-        } catch (error) {
-            console.error('Error:', error);
-            alert('❌ Gagal mengirim command');
+        // Close mobile menu if open
+        if (navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
         }
     }
     
-    // Event listener untuk tombol send
-    document.getElementById('commandBot').addEventListener('click', sendCommandToBot);
-    
-    // Enter key support
-    document.getElementById('commandInput').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            sendCommandToBot();
-        }
+    // Navigation item click handler
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const sectionId = this.getAttribute('data-section');
+            showSection(sectionId);
+        });
     });
     
+    // Mobile menu toggle
+    if (navToggle) {
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            this.innerHTML = navMenu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+    }
+    
+    // Handle URL hash on page load
+    function handleInitialSection() {
+        const hash = window.location.hash.substring(1);
+        const validSections = ['quick-actions', 'broker-monthly', 'command-bot', 'top-broker', 'slingshot', 'analysis'];
         
+        if (hash && validSections.includes(hash)) {
+            showSection(hash);
+        } else {
+            // Default to first section
+            showSection('quick-actions');
+        }
+    }
+    
+    // Initialize navigation
+    handleInitialSection();
+    
+    // Close menu when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        if (navMenu.classList.contains('active') && 
+            !navMenu.contains(event.target) && 
+            !navToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+            navToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    });
+});
+
+// ===== TOP BROKER SECTION FUNCTIONS =====
+document.addEventListener('DOMContentLoaded', function() {
+    const analyzeTopBtn = document.getElementById('analyzeTopBtn');
+    const brokerInputTop = document.getElementById('brokerInputTop');
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    
+    // Set default dates
+    function setDefaultDates() {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        const formatDate = (date) => {
+            return date.toISOString().split('T')[0];
+        };
+        
+        if (!startDateInput.value) {
+            startDateInput.value = formatDate(yesterday);
+        }
+        
+        if (!endDateInput.value) {
+            endDateInput.value = formatDate(today);
+        }
+        
+        // Set max date to today
+        const todayStr = formatDate(today);
+        startDateInput.max = todayStr;
+        endDateInput.max = todayStr;
+    }
+    
+    setDefaultDates();
+    
+    // Validate date range
+    function validateDateRange(start, end) {
+        if (!start || !end) {
+            return { isValid: false, message: 'Please select both dates' };
+        }
+        
+        if (new Date(start) > new Date(end)) {
+            return { isValid: false, message: 'Start date cannot be after end date' };
+        }
+        
+        return { isValid: true };
+    }
+    
+    // Build command for top broker analysis
+    function buildTopBrokerCommand(broker, startDate, endDate, prefix) {
+        // Format broker code
+        const brokerCode = broker.trim().toUpperCase();
+        
+        // Format dates
+        const formattedStart = startDate;
+        const formattedEnd = endDate;
+        
+        // Build command: /vol20-AK-2025-01-01+2025-01-31
+        return `${prefix}${brokerCode}-${formattedStart}+${formattedEnd}`;
+    }
+    
+    // Handle analyze button click
+    if (analyzeTopBtn) {
+        analyzeTopBtn.addEventListener('click', function() {
+            const broker = brokerInputTop.value.trim();
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            
+            if (!broker) {
+                showNotification('Please enter broker code!', 'warning');
+                return;
+            }
+            
+            const dateValidation = validateDateRange(startDate, endDate);
+            if (!dateValidation.isValid) {
+                showNotification(dateValidation.message, 'warning');
+                return;
+            }
+            
+            // Default to volume analysis
+            const command = buildTopBrokerCommand(broker, startDate, endDate, '/vol20-');
+            console.log('Top broker command:', command);
+            sendTelegramCommand(command);
+        });
+    }
+    
+    // Handle command buttons in top broker section
+    document.querySelectorAll('#top-broker .command-btn[data-prefix]').forEach(button => {
+        button.addEventListener('click', function() {
+            const broker = brokerInputTop.value.trim();
+            const startDate = startDateInput.value;
+            const endDate = endDateInput.value;
+            const prefix = this.getAttribute('data-prefix');
+            
+            if (!broker) {
+                showNotification('Please enter broker code!', 'warning');
+                return;
+            }
+            
+            const dateValidation = validateDateRange(startDate, endDate);
+            if (!dateValidation.isValid) {
+                showNotification(dateValidation.message, 'warning');
+                return;
+            }
+            
+            const command = buildTopBrokerCommand(broker, startDate, endDate, prefix);
+            console.log('Top broker command:', command);
+            sendTelegramCommand(command);
+        });
+    });
+    
+    // Enter key support
+    if (brokerInputTop) {
+        brokerInputTop.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (analyzeTopBtn) analyzeTopBtn.click();
+            }
+        });
+    }
+});
+
+// ===== ANALYSIS SECTION FUNCTIONS =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup command buttons in analysis section
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const stockInput = document.getElementById('stockInput');
+    
+    if (analyzeBtn && stockInput) {
+        // Handle analyze button
+        analyzeBtn.addEventListener('click', function() {
+            const stockCode = stockInput.value.trim().toUpperCase();
+            if (!stockCode) {
+                showNotification('Please enter a stock code!', 'warning');
+                return;
+            }
+            
+            // Default to trendlines analysis
+            sendTelegramCommand(`/tr-${stockCode}`);
+        });
+        
+        // Enter key support
+        stockInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                analyzeBtn.click();
+            }
+        });
+        
+        // Handle command buttons with data-prefix
+        document.querySelectorAll('#analysis .command-btn[data-prefix]').forEach(button => {
+            button.addEventListener('click', function() {
+                const stockCode = stockInput.value.trim().toUpperCase();
+                if (!stockCode) {
+                    showNotification('Please enter a stock code first!', 'warning');
+                    return;
+                }
+                const prefix = this.getAttribute('data-prefix');
+                sendTelegramCommand(`${prefix}${stockCode}`);
+            });
+        });
+        
+        // Handle command buttons with data-cmd
+        document.querySelectorAll('#analysis .command-btn[data-cmd]').forEach(button => {
+            button.addEventListener('click', function() {
+                const command = this.getAttribute('data-cmd');
+                if (command) {
+                    sendTelegramCommand(command);
+                }
+            });
+        });
+    }
+});
+
+// ===== SLINGSHOT SECTION FUNCTIONS =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize slingshot variables
+    let slingshotData = [];
+    let slingshotFilteredData = [];
+    let slingshotCurrentPage = 1;
+    const slingshotRowsPerPage = 10;
+    
+    // Setup slingshot buttons
+    const btnScreener = document.getElementById('btnScreener');
+    const refreshScreener = document.getElementById('refreshScreener');
+    const filterInput = document.getElementById('filterInput');
+    
+    if (btnScreener) {
+        btnScreener.addEventListener('click', loadSlingshotData);
+    }
+    
+    if (refreshScreener) {
+        refreshScreener.addEventListener('click', loadSlingshotData);
+    }
+    
+    if (filterInput) {
+        filterInput.addEventListener('input', applySlingshotFilter);
+    }
+    
+    // Load slingshot data
+    async function loadSlingshotData() {
+        const loading = document.getElementById('loading');
+        const table = document.getElementById('resultTable');
+        const resultContainer = document.getElementById('slingshotResultContainer');
+        
+        if (!loading || !table) return;
+        
+        loading.classList.add('active');
+        table.innerHTML = '';
+        
+        try {
+            // Example CSV URL - replace with your actual URL
+            const SLINGSHOT_CSV_URL = "https://example.com/your-data.csv";
+            const response = await fetch(SLINGSHOT_CSV_URL);
+            const csvText = await response.text();
+            
+            // Parse CSV
+            slingshotData = parseCSV(csvText);
+            slingshotFilteredData = [...slingshotData];
+            slingshotCurrentPage = 1;
+            
+            // Show results container
+            if (resultContainer) {
+                resultContainer.classList.add('active');
+            }
+            
+            // Render table
+            renderSlingshotTable();
+            
+            showNotification("✅ Slingshot data loaded successfully", "success");
+            
+        } catch (error) {
+            console.error('Error loading slingshot data:', error);
+            showNotification("❌ Failed to load slingshot data", "error");
+            
+            // Show sample data for demo
+            showSampleSlingshotData();
+            
+        } finally {
+            loading.classList.remove('active');
+        }
+    }
+    
+    // Parse CSV data
+    function parseCSV(csvText) {
+        const lines = csvText.trim().split('\n');
+        return lines.map(line => {
+            // Simple CSV parsing - adjust based on your CSV format
+            return line.split(',').map(cell => cell.trim());
+        });
+    }
+    
+    // Apply filter to slingshot data
+    function applySlingshotFilter() {
+        const keyword = filterInput.value.toLowerCase();
+        
+        if (!keyword) {
+            slingshotFilteredData = [...slingshotData];
+        } else {
+            slingshotFilteredData = slingshotData.filter(row => 
+                row.some(cell => cell.toLowerCase().includes(keyword))
+            );
+        }
+        
+        slingshotCurrentPage = 1;
+        renderSlingshotTable();
+    }
+    
+    // Render slingshot table
+    function renderSlingshotTable() {
+        const table = document.getElementById('resultTable');
+        const paginationDiv = document.getElementById('pagination');
+        
+        if (!table) return;
+        
+        table.innerHTML = '';
+        
+        if (slingshotFilteredData.length === 0) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="10" class="text-center">
+                        No data found. Try loading data first.
+                    </td>
+                </tr>
+            `;
+            if (paginationDiv) paginationDiv.innerHTML = '';
+            return;
+        }
+        
+        // Create table header
+        const headerRow = document.createElement('tr');
+        const headers = ['No', 'Stock', 'Price', 'Change', 'Volume', 'RSI', 'MACD', 'Signal'];
+        
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+        
+        table.appendChild(headerRow);
+        
+        // Calculate pagination
+        const startIndex = (slingshotCurrentPage - 1) * slingshotRowsPerPage;
+        const endIndex = startIndex + slingshotRowsPerPage;
+        const pageData = slingshotFilteredData.slice(startIndex, endIndex);
+        
+        // Create table rows
+        pageData.forEach((row, index) => {
+            const tr = document.createElement('tr');
+            
+            // Add row number
+            const tdNo = document.createElement('td');
+            tdNo.textContent = startIndex + index + 1;
+            tr.appendChild(tdNo);
+            
+            // Add sample data (replace with actual data)
+            const stockCode = row[0] || `STOCK${index + 1}`;
+            
+            const tdStock = document.createElement('td');
+            tdStock.className = 'stock-code';
+            tdStock.textContent = stockCode;
+            tdStock.onclick = () => showChart(stockCode);
+            tr.appendChild(tdStock);
+            
+            // Add sample numeric data
+            const price = (Math.random() * 10000).toFixed(2);
+            const change = (Math.random() * 10 - 5).toFixed(2);
+            const volume = Math.floor(Math.random() * 1000000).toLocaleString();
+            const rsi = (Math.random() * 100).toFixed(1);
+            const macd = (Math.random() * 2 - 1).toFixed(3);
+            const signal = (Math.random() * 2 - 1).toFixed(3);
+            
+            [price, change, volume, rsi, macd, signal].forEach((value, i) => {
+                const td = document.createElement('td');
+                td.textContent = value;
+                
+                // Add color coding for change
+                if (i === 2) { // Change column
+                    const numChange = parseFloat(value);
+                    td.className = numChange >= 0 ? 'positive' : 'negative';
+                }
+                
+                tr.appendChild(td);
+            });
+            
+            table.appendChild(tr);
+        });
+        
+        // Render pagination
+        renderSlingshotPagination();
+    }
+    
+    // Render slingshot pagination
+    function renderSlingshotPagination() {
+        const paginationDiv = document.getElementById('pagination');
+        if (!paginationDiv) return;
+        
+        paginationDiv.innerHTML = '';
+        
+        const totalPages = Math.ceil(slingshotFilteredData.length / slingshotRowsPerPage);
+        
+        if (totalPages <= 1) return;
+        
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-btn';
+        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        prevBtn.disabled = slingshotCurrentPage === 1;
+        prevBtn.onclick = () => {
+            if (slingshotCurrentPage > 1) {
+                slingshotCurrentPage--;
+                renderSlingshotTable();
+            }
+        };
+        paginationDiv.appendChild(prevBtn);
+        
+        // Page numbers
+        for (let i = 1; i <= Math.min(totalPages, 5); i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `page-btn ${i === slingshotCurrentPage ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.onclick = () => {
+                slingshotCurrentPage = i;
+                renderSlingshotTable();
+            };
+            paginationDiv.appendChild(pageBtn);
+        }
+        
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-btn';
+        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        nextBtn.disabled = slingshotCurrentPage === totalPages;
+        nextBtn.onclick = () => {
+            if (slingshotCurrentPage < totalPages) {
+                slingshotCurrentPage++;
+                renderSlingshotTable();
+            }
+        };
+        paginationDiv.appendChild(nextBtn);
+    }
+    
+    // Show sample data for demo
+    function showSampleSlingshotData() {
+        slingshotData = [];
+        for (let i = 0; i < 50; i++) {
+            slingshotData.push([
+                `STOCK${i + 1}`,
+                (Math.random() * 10000).toFixed(2),
+                (Math.random() * 10 - 5).toFixed(2),
+                Math.floor(Math.random() * 1000000),
+                (Math.random() * 100).toFixed(1),
+                (Math.random() * 2 - 1).toFixed(3),
+                (Math.random() * 2 - 1).toFixed(3)
+            ]);
+        }
+        
+        slingshotFilteredData = [...slingshotData];
+        slingshotCurrentPage = 1;
+        
+        const resultContainer = document.getElementById('slingshotResultContainer');
+        if (resultContainer) {
+            resultContainer.classList.add('active');
+        }
+        
+        renderSlingshotTable();
+        showNotification("⚠️ Using sample data (replace with real CSV URL)", "warning");
+    }
+    
+    // Load sample data on section show
+    document.addEventListener('sectionChanged', function(e) {
+        if (e.detail === 'slingshot' && slingshotData.length === 0) {
+            showSampleSlingshotData();
+        }
+    });
+});
+
+// ===== UTILITY FUNCTIONS =====
+
+// Send command to Telegram bot
+async function sendTelegramCommand(commandText) {
+    const tg = window.Telegram?.WebApp;
+    if (!tg) {
+        showNotification("Please open in Telegram", "error");
+        return;
+    }
+    
+    const user = tg.initDataUnsafe?.user;
+    if (!user?.id) {
+        showNotification("User not found", "error");
+        return;
+    }
+    
+    // Show loading
+    showNotification(`Sending: ${commandText}`, "info");
+    
+    // Prepare request data
+    const requestData = {
+        userId: user.id,
+        command: commandText,
+        username: user.username || user.first_name || 'User',
+        source: 'mini_app'
+    };
+    
+    // Your GAS URL
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+    
+    try {
+        await fetch(GAS_WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        });
+        
+        showNotification(`✅ Command sent: ${commandText}`, "success");
+        
+        // Haptic feedback
+        if (tg.HapticFeedback?.impactOccurred) {
+            tg.HapticFeedback.impactOccurred('light');
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification("❌ Failed to send command", "error");
+    }
+}
+
+// Initialize when page loads
+window.onload = function() {
+    // Initialize Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.ready();
+        tg.expand();
+        
+        // Update user info
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            const userName = user.username || user.first_name || 'User';
+            const userBadge = document.getElementById('userName');
+            if (userBadge) {
+                userBadge.textContent = userName;
+            }
+        }
+        
+        // Setup main button
+        tg.MainButton.setText("Open Chat");
+        tg.MainButton.onClick(() => {
+            tg.close();
+        });
+        tg.MainButton.show();
+    }
+    
+    // Show initial section based on URL hash
+    const hash = window.location.hash.substring(1) || 'quick-actions';
+    const navItem = document.querySelector(`.nav-item[data-section="${hash}"]`);
+    if (navItem) {
+        navItem.click();
+    }
+};
   </script>
 </body>
+
 </html>
