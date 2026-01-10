@@ -3099,69 +3099,6 @@ async function sendTelegramCommand(commandText) {
       }
     });
 
-    //custume menu js
-    // Fungsi untuk mengirim command ke bot Telegram via GAS
-async function sendCommandToBot() {
-    const commandInput = document.getElementById('commandInput');
-    const command = commandInput.value.trim();
-    
-    if (!command) {
-        alert('Masukkan command!');
-        return;
-    }
-    
-    // Ambil data user dari Telegram WebApp
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe?.user;
-    
-    // Data yang dikirim ke GAS
-    const payload = {
-        userId: user?.id || 'unknown',
-        command: command,
-        username: user?.username || user?.first_name || 'User',
-        timestamp: new Date().toISOString(),
-        source: 'telegram_miniapp'
-    };
-    
-    // URL Google Apps Script Web App
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwWs7bl93tAo5aC779_kRisi7vojWYkCRmASY3ZzG8JKc1RFoQmsdXuUGo-fKkH6z9I/exec';
-    
-    try {
-        // Kirim POST request ke GAS
-        const response = await fetch(GAS_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Important for GAS
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        
-        console.log('Command sent:', command);
-        alert(`✅ Command "${command}" telah dikirim!`);
-        
-        // Kosongkan input setelah berhasil
-        commandInput.value = '';
-        
-    } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Gagal mengirim command');
-    }
-}
-
-// Event listener untuk tombol send
-document.getElementById('commandBot').addEventListener('click', sendCommandToBot);
-
-// Enter key support
-document.getElementById('commandInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        sendCommandToBot();
-    }
-});
-
-
-
 // ===== FIXED NAVIGATION SYSTEM =====
   const navLinks = document.querySelectorAll('.bottom-nav .nav-link');
   const indicator = document.querySelector('.nav-indicator');
