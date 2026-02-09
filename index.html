@@ -1245,7 +1245,77 @@
     max-width: 220px;
   }
 }
+    
+    .history-container {
+    margin-top: 12px;
+  }
+  
+  .history-title {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .history-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .history-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--light);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .history-item:hover {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+  
+  .history-item i {
+    font-size: 10px;
+    color: var(--gray);
+  }
+  
+  .clear-history {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 11px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  
+  .clear-history:hover {
+    background: rgba(239, 68, 68, 0.1);
+  }
 
+/* Responsive untuk history */
+@media (max-width: 480px) {
+  .history-item {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  
+  .history-items {
+    gap: 4px;
+  }
+}
+    
   </style>  
 </head>
 
@@ -1349,24 +1419,30 @@
       </div>
     </section>
     
-    <!-- Analysis Tools (Buat section baru) -->
-    <section class="section hidden search-section" id="analysis">
-      <div class="section-title">
-        <i class="fas fa-search"></i>
-        <span>Analysis Tools</span>
-      </div>
+    <!-- Perbarui section Analysis Tools -->
+<section class="section hidden search-section" id="analysis">
+  <div class="section-title">
+    <i class="fas fa-search"></i>
+    <span>Analysis Tools</span>
+  </div>
 
-      <div class="search-box">
-        <input type="text" class="search-input" id="stockInput" placeholder="Enter stock code (BBCA, TLKM, BBRI...)" autocomplete="off" autocapitalize="characters" value="">
-        <button class="search-btn" id="analyzeBtn">
-          <i class="fas fa-chart-line"></i>
-          <span>Analyze</span>
-        </button>
-      </div>
+  <div class="search-box">
+    <input type="text" class="search-input" id="stockInput" placeholder="Enter stock code (BBCA, TLKM, BBRI...)" autocomplete="off" autocapitalize="characters" value="">
+    <button class="search-btn" id="analyzeBtn">
+      <i class="fas fa-chart-line"></i>
+      <span>Analyze</span>
+    </button>
+  </div>
 
-      <div class="recent-actions" id="recentActions">
-        <!-- Recent actions akan ditampilkan di sini -->
-      </div>
+  <!-- Stock History Container -->
+<div class="history-container" id="stockHistoryContainer">
+  <div class="history-title">
+    <span>Recent Stocks</span>
+    <button class="clear-history" onclick="clearHistory('analysis')">Clear</button>
+  </div>
+  <div class="history-items" id="stockHistory"></div>
+</div>
+
 
       <div class="command-grid">
         <button class="command-btn secondary" data-prefix="/fc-">
@@ -1414,68 +1490,88 @@
       </div>
     </section>
     
-    <!-- Broker Monthly Tracking -->
-    <section class="section monthly-tracking" id="broker-monthly">
-      <div class="section-title">
-        <i class="fa-solid fa-hat-cowboy"></i>
-        <span>Broker Monthly Tracking</span>
+    <!-- Perbarui section Broker Monthly Tracking -->
+<section class="section monthly-tracking" id="broker-monthly">
+  <div class="section-title">
+    <i class="fa-solid fa-hat-cowboy"></i>
+    <span>Broker Monthly Tracking</span>
+  </div>
+
+  <div class="search-box-broker">
+    <div class="input-wrapper">
+      <input type="text" class="search-input" id="brokerInputMonthly" placeholder="AK-BK+BBCA or BK+BBCA" value="" autocomplete="off">
+      <i class="fas fa-search input-icon"></i>
+    </div>
+
+    <div class="date-group">
+      <div class="date-input-container">
+        <label class="date-label">Start Month</label>
+        <input type="month" id="startMonth" value="2025-10" class="form-control">
       </div>
-
-      <div class="search-box-broker">
-        <div class="input-wrapper">
-          <input type="text" class="search-input" id="brokerInputMonthly" placeholder="AK-BK+BBCA or BK+BBCA" value="" autocomplete="off">
-          <i class="fas fa-search input-icon"></i>
-        </div>
-
-        <div class="date-group">
-          <div class="date-input-container">
-            <label class="date-label">Start Month</label>
-            <input type="month" id="startMonth" value="2025-10" class="form-control">
-          </div>
-          <button class="search-btn" id="analyzeMonthlyBtn">
-            <i class="fas fa-chart-line"></i>
-            <span>Analyze</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Command Bot -->
-    <section class="section monthly-tracking" id="command-bot">
-      <div class="section-title">
-        <i class="fa-solid fa-hat-cowboy"></i>
-        <span>Quick Command Bot</span>
-      </div>
-
-      <div class="search-box-broker">
-        <div class="date-group">
-          <div class="input-wrapper">
-            <input type="text" class="search-input" id="commandInput" placeholder="Enter command bot" value="" autocomplete="off">
-            <i class="fas fa-search input-icon"></i>
-          </div>
-
-          <button class="search-btn" id="commandBot">
-            <i class="fa-solid fa-paper-plane"></i>
-            <span>Send</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Top Stock by Broker (Buat section baru) -->
-    <section class="section hidden search-section" id="top-broker">
-      <div class="section-title">
+      <button class="search-btn" id="analyzeMonthlyBtn">
         <i class="fas fa-chart-line"></i>
-        <span>Top Stock by Broker</span>
+        <span>Analyze</span>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Broker Monthly History Container -->
+    <div class="history-container" id="brokerMonthlyHistoryContainer">
+      <div class="history-title">
+        <span>Recent Queries</span>
+        <button class="clear-history" onclick="clearHistory('broker-monthly')">Clear</button>
+      </div>
+      <div class="history-items" id="brokerMonthlyHistory"></div>
+    </div>
+  
+</section>
+
+    <!-- Perbarui section Command Bot -->
+<section class="section monthly-tracking" id="command-bot">
+  <div class="section-title">
+    <i class="fa-solid fa-hat-cowboy"></i>
+    <span>Quick Command Bot</span>
+  </div>
+
+  <div class="search-box-broker">
+    <div class="date-group">
+      <div class="input-wrapper">
+        <input type="text" class="search-input" id="commandInput" placeholder="Enter command bot" value="" autocomplete="off">
+        <i class="fas fa-search input-icon"></i>
       </div>
 
-      <div class="search-box-broker">
-        <!-- Input Row: Input di kiri, Dropdown di kanan -->
-        <div class="input-row">
-          <div class="input-wrapper">
-            <input type="text" class="search-input" id="brokerInput" placeholder="Enter broker code (AK, ZP, BK)" autocomplete="off" autocapitalize="characters">
-            <i class="fas fa-search input-icon"></i>
-          </div>
+      <button class="search-btn" id="commandBot">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>Send</span>
+      </button>
+    </div>
+
+    <!-- Command History Container -->
+    <div class="history-container" id="commandHistoryContainer">
+      <div class="history-title">
+        <span>Recent Commands</span>
+        <button class="clear-history" onclick="clearHistory('command-bot')">Clear</button>
+      </div>
+      <div class="history-items" id="commandHistory"></div>
+    </div>
+    
+  </div>
+</section>
+
+    <!-- Perbarui section Top Stock by Broker -->
+<section class="section hidden search-section" id="top-broker">
+  <div class="section-title">
+    <i class="fas fa-chart-line"></i>
+    <span>Top Stock by Broker</span>
+  </div>
+
+  <div class="search-box-broker">
+    <!-- Input Row: Input di kiri, Dropdown di kanan -->
+    <div class="input-row">
+      <div class="input-wrapper">
+        <input type="text" class="search-input" id="brokerInput" placeholder="Enter broker code (AK, ZP, BK)" autocomplete="off" autocapitalize="characters">
+        <i class="fas fa-search input-icon"></i>
+      </div>
 
           <!-- Custom Dropdown -->
           <div class="input-dropdown">
@@ -1499,7 +1595,19 @@
               </div>
             </div>
           </div>
-        </div>
+        
+    <div class="date-group">
+      <div class="date-input-container">
+        <label class="date-label" for="min">Start Date</label>
+        <input type="date" id="min" name="min" value="" min="2024-01-01" max="2025-12-31" class="form-control" placeholder="Start Date" aria-label="Start Date">
+      </div>
+      <div class="date-input-container">
+        <label class="date-label" for="max">End Date</label>
+        <input type="date" id="max" name="max" value="" min="2024-01-01" max="2025-12-31" format="dd-mm-yyyy" class="form-control" placeholder="End Date" aria-label="End Date">
+      </div>
+    </div>
+
+  </div>
 
         <div class="date-group">
           <div class="date-input-container">
@@ -1514,10 +1622,14 @@
 
       </div>
 
-      <div class="recent-actions" id="recentBrokers">
-        <span class="action-tag">AK</span>
-        <span class="action-tag">ZP</span>
+      <!-- Broker History Container -->
+    <div class="history-container" id="brokerHistoryContainer">
+      <div class="history-title">
+        <span>Recent Brokers</span>
+        <button class="clear-history" onclick="clearHistory('top-broker')">Clear</button>
       </div>
+      <div class="history-items" id="brokerHistory"></div>
+    </div>
 
       <div class="command-grid">
         <button class="command-btn" data-prefix="/vol20-" data-action="broker">
@@ -1728,7 +1840,7 @@
     </div>
   </div>
 
-  <script src="https://s3.tradingview.com/tv.js"></script>
+    <script src="https://s3.tradingview.com/tv.js"></script>
   <script>
     // Pastikan fungsi global
     window.showChart = function(kode) {
@@ -1813,64 +1925,291 @@
         notification.classList.remove('show');
       }, duration);
     }
-    // ===== FUNGSI UNTUK MENYIMPAN AKSI TERAKHIR =====
-    function saveRecentAction(stockCode, commandType) {
-      // Simpan kode saham saat ini
-      currentStockCode = stockCode;
-      // Tambah aksi ke daftar recent
-      const action = {
-        stockCode: stockCode,
-        commandType: commandType,
-        timestamp: new Date().getTime()
-      };
-      // Hapus duplikat berdasarkan stockCode dan commandType
-      recentActions = recentActions.filter(a =>
-        !(a.stockCode === stockCode && a.commandType === commandType)
-      );
-      // Tambah ke awal array
-      recentActions.unshift(action);
-      // Simpan maksimal 5 aksi
-      if (recentActions.length > 5) {
-        recentActions = recentActions.slice(0, 5);
+    
+    // ===== HISTORY MANAGEMENT SYSTEM (UPDATED) =====
+    // Konfigurasi untuk setiap menu
+    const HISTORY_CONFIG = {
+      'command-bot': {
+        key: 'holistik_command_history',
+        maxItems: 15,
+        containerId: 'commandHistory',
+        inputId: 'commandInput',
+        type: 'command'
+      },
+      'broker-monthly': {
+        key: 'holistik_broker_monthly_history',
+        maxItems: 10,
+        containerId: 'brokerMonthlyHistory',
+        inputId: 'brokerInputMonthly',
+        type: 'broker-monthly'
+      },
+      'top-broker': {
+        key: 'holistik_broker_history',
+        maxItems: 10,
+        containerId: 'brokerHistory',
+        inputId: 'brokerInput',
+        type: 'broker'
+      },
+      'analysis': {
+        key: 'holistik_stock_history',
+        maxItems: 10,
+        containerId: 'stockHistory',
+        inputId: 'stockInput',
+        type: 'stock'
       }
+    };
+
+
+    // ===== FUNGSI saveRecentAction YANG DIUPDATE =====
+    function saveRecentAction(fullCommand, commandType, additionalData = {}) {
       // Simpan ke localStorage
+      const historyItem = {
+        fullCommand: fullCommand,
+        commandType: commandType,
+        timestamp: new Date().getTime(),
+        ...additionalData
+      };
+
+      // Simpan ke recent actions global
+      let recentActions = JSON.parse(localStorage.getItem('holistik_recent_actions') || '[]');
+
+      // Hapus duplikat berdasarkan fullCommand
+      recentActions = recentActions.filter(a => a.fullCommand !== fullCommand);
+
+      // Tambah ke awal array
+      recentActions.unshift(historyItem);
+
+      // Simpan maksimal 20 aksi
+      if (recentActions.length > 20) {
+        recentActions = recentActions.slice(0, 20);
+      }
+
       localStorage.setItem('holistik_recent_actions', JSON.stringify(recentActions));
-      // Update tampilan recent actions
-      updateRecentActions();
+
+      // Juga simpan ke menu-specific history
+      saveToMenuHistory(commandType, fullCommand, additionalData);
+
+      return historyItem;
     }
+
+    // ===== FUNGSI UNTUK MENYIMPAN KE HISTORY MENU SPESIFIK =====
+    function saveToMenuHistory(menuType, fullCommand, additionalData = {}) {
+      let menuConfig;
+
+      // Tentukan menu berdasarkan commandType atau pattern
+      if (menuType === 'command-bot' || fullCommand.startsWith('/')) {
+        menuConfig = HISTORY_CONFIG['command-bot'];
+      } else if (fullCommand.includes('+') && (fullCommand.includes('-') || /[A-Z]{2,4}/.test(fullCommand))) {
+        menuConfig = HISTORY_CONFIG['broker-monthly'];
+      } else if (fullCommand.includes('-') && /[A-Z]{2,4}/.test(fullCommand) && !fullCommand.includes('+')) {
+        menuConfig = HISTORY_CONFIG['top-broker'];
+      } else if (/^[A-Z]{1,4}$/.test(fullCommand)) {
+        menuConfig = HISTORY_CONFIG['analysis'];
+      } else {
+        return; // Tidak dikenali
+      }
+
+      if (!menuConfig) return;
+
+      let history = JSON.parse(localStorage.getItem(menuConfig.key) || '[]');
+
+      // Hapus duplikat
+      history = history.filter(item => 
+        typeof item === 'object' 
+          ? item.fullCommand !== fullCommand 
+          : item !== fullCommand
+      );
+
+      // Simpan sebagai objek jika ada additionalData
+      const historyItem = additionalData && Object.keys(additionalData).length > 0
+        ? { fullCommand, ...additionalData, timestamp: new Date().getTime() }
+        : fullCommand;
+
+      // Tambahkan ke awal
+      history.unshift(historyItem);
+
+      // Potong jika melebihi maxItems
+      if (history.length > menuConfig.maxItems) {
+        history = history.slice(0, menuConfig.maxItems);
+      }
+
+      localStorage.setItem(menuConfig.key, JSON.stringify(history));
+
+      // Update tampilan
+      renderMenuHistory(menuConfig.type);
+    }
+
+    // ===== FUNGSI UNTUK MENAMPILKAN HISTORY PER MENU =====
+    function renderMenuHistory(menuType) {
+      const config = HISTORY_CONFIG[menuType];
+      if (!config) return;
+
+      const history = JSON.parse(localStorage.getItem(config.key) || '[]');
+      const container = document.getElementById(config.containerId);
+
+      if (!container) return;
+
+      container.innerHTML = '';
+
+      if (history.length === 0) {
+        container.innerHTML = '<div style="color: var(--gray); font-size: 11px; padding: 8px;">No history yet</div>';
+        return;
+      }
+
+      history.forEach((item, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+
+        // Handle apakah item adalah objek atau string
+        const displayText = typeof item === 'object' ? item.fullCommand : item;
+        const timeAgo = typeof item === 'object' && item.timestamp 
+          ? getTimeAgo(item.timestamp) 
+          : '';
+
+        historyItem.innerHTML = `
+          <i class="fas fa-history"></i>
+          <span style="flex: 1;">${displayText}</span>
+          ${timeAgo ? `<span style="font-size: 9px; opacity: 0.7;">${timeAgo}</span>` : ''}
+        `;
+
+        historyItem.addEventListener('click', () => {
+          const input = document.getElementById(config.inputId);
+          if (input) {
+            // Isi input dengan teks yang sesuai
+            if (typeof item === 'object') {
+              input.value = item.fullCommand || item;
+
+              // Untuk broker monthly, isi juga bulan jika ada
+              if (menuType === 'broker-monthly' && item.month) {
+                const monthInput = document.getElementById('startMonth');
+                if (monthInput) monthInput.value = item.month;
+              }
+            } else {
+              input.value = item;
+            }
+            input.focus();
+
+            // Trigger input event
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        });
+
+        container.appendChild(historyItem);
+      });
+    }
+
+    // ===== FUNGSI UNTUK MENGHAPUS HISTORY =====
+    function clearHistory(menuType) {
+      const config = HISTORY_CONFIG[menuType];
+      if (!config) return;
+
+      if (confirm(`Clear all ${menuType} history?`)) {
+        localStorage.removeItem(config.key);
+        renderMenuHistory(menuType);
+        showNotification(`${menuType} history cleared`, 'info');
+      }
+    }
+
+    // ===== INISIALISASI SEMUA HISTORY =====
+    function initAllHistories() {
+      Object.keys(HISTORY_CONFIG).forEach(menuType => {
+        renderMenuHistory(menuType);
+      });
+    }
+
+    
     // ===== FUNGSI UNTUK UPDATE TAMPILAN RECENT ACTIONS =====
     function updateRecentActions() {
       const recentActionsContainer = document.getElementById('recentActions');
-      if (recentActions.length === 0) {
+      if (!recentActionsContainer) return;
+
+      // Gabungkan semua history dari berbagai menu
+      const allHistory = [];
+
+      // Ambil dari masing-masing storage
+      Object.keys(HISTORY_CONFIG).forEach(menuType => {
+        const config = HISTORY_CONFIG[menuType];
+        const history = JSON.parse(localStorage.getItem(config.key) || '[]');
+
+        history.forEach(item => {
+          const historyItem = typeof item === 'object' ? item : { fullCommand: item };
+          allHistory.push({
+            ...historyItem,
+            menuType: menuType,
+            timestamp: historyItem.timestamp || Date.now()
+          });
+        });
+      });
+
+      // Urutkan berdasarkan timestamp
+      allHistory.sort((a, b) => b.timestamp - a.timestamp);
+
+      // Ambil 10 terbaru
+      const recentItems = allHistory.slice(0, 10);
+
+      if (recentItems.length === 0) {
         recentActionsContainer.innerHTML = '';
         return;
       }
-      let html = '';
-      recentActions.forEach(action => {
-        const commandName = getCommandName(action.commandType);
-        const timeAgo = getTimeAgo(action.timestamp);
+
+      let html = '<div style="font-size: 12px; color: var(--gray); margin-bottom: 8px;">Recent History:</div>';
+
+      recentItems.forEach(item => {
+        const timeAgo = getTimeAgo(item.timestamp);
+        const icon = getMenuIcon(item.menuType);
+
         html += `
-                <div class="recent-badge" data-stock="${action.stockCode}" data-type="${action.commandType}">
-                    <i class="fas fa-history"></i>
-                    <span>${action.stockCode} - ${commandName}</span>
-                    <span style="font-size: 10px; opacity: 0.7;">(${timeAgo})</span>
-                </div>
-            `;
+          <div class="recent-badge" data-command="${item.fullCommand}" data-menu="${item.menuType}">
+            ${icon}
+            <span>${item.fullCommand}</span>
+            <span style="font-size: 10px; opacity: 0.7;">(${timeAgo})</span>
+          </div>
+        `;
       });
+
       recentActionsContainer.innerHTML = html;
-      // Tambah event listener untuk recent badges
+
+      // Tambah event listener
       document.querySelectorAll('.recent-badge').forEach(badge => {
         badge.addEventListener('click', function() {
-          const stockCode = this.getAttribute('data-stock');
-          const commandType = this.getAttribute('data-type');
-          // Set input dengan kode saham
-          document.getElementById('stockInput').value = stockCode;
-          document.getElementById('stockInput').classList.add('persistent');
-          // Kirim perintah
-          sendTelegramCommand(`${commandType}${stockCode}`);
+          const command = this.getAttribute('data-command');
+          const menuType = this.getAttribute('data-menu');
+
+          // Isi input berdasarkan menu type
+          switch(menuType) {
+            case 'analysis':
+              document.getElementById('stockInput').value = command;
+              document.getElementById('stockInput').classList.add('persistent');
+              break;
+            case 'top-broker':
+              document.getElementById('brokerInput').value = command;
+              break;
+            case 'broker-monthly':
+              // Handle broker monthly format
+              if (command.includes('+')) {
+                const [brokers, stock] = command.split('+');
+                document.getElementById('brokerInputMonthly').value = `${brokers}+${stock}`;
+              }
+              break;
+            case 'command-bot':
+              document.getElementById('commandInput').value = command;
+              break;
+          }
         });
       });
     }
+    
+    // Helper function untuk icon menu
+    function getMenuIcon(menuType) {
+      const icons = {
+        'analysis': '<i class="fas fa-chart-line"></i>',
+        'top-broker': '<i class="fas fa-building"></i>',
+        'broker-monthly': '<i class="fas fa-calendar-alt"></i>',
+        'command-bot': '<i class="fas fa-robot"></i>'
+      };
+      return icons[menuType] || '<i class="fas fa-history"></i>';
+    }
+
     // ===== FUNGSI BANTUAN =====
     function getCommandName(commandType) {
       const commandMap = {
@@ -1895,82 +2234,8 @@
       if (hours < 24) return `${hours}h ago`;
       return `${days}d ago`;
     }
-    // ===== FUNGSI UTAMA TELEGRAM =====
-    async function sendTelegramCommand(commandText) {
-      const user = tg.initDataUnsafe.user;
-      if (!user || !user.id) {
-        showNotification("Open this app through Telegram to use this feature", "error");
-        return;
-      }
-      // Dapatkan kode saham dari command
-      const stockMatch = commandText.match(/-\s*([A-Z]+)/);
-      if (stockMatch && stockMatch[1]) {
-        currentStockCode = stockMatch[1];
-        document.getElementById('stockInput').value = currentStockCode;
-        document.getElementById('stockInput').classList.add('persistent');
-      }
-      // Simpan ke recent actions jika ada kode saham
-      const commandType = commandText.substring(0, commandText.lastIndexOf('-') + 1);
-      const stockCode = currentStockCode || document.getElementById('stockInput').value.trim().toUpperCase();
-      if (stockCode && (commandText.includes('/fc-') || commandText.includes('/tr-') ||
-          commandText.includes('/bsd-') || commandText.includes('/rrg-') ||
-          commandText.includes('/t5') || commandText.includes('/fl'))) {
-        saveRecentAction(stockCode, commandType);
-      }
-      // Tampilkan loading state
-      const buttons = document.querySelectorAll('.command-btn, .search-btn');
-      buttons.forEach(btn => {
-        btn.disabled = true;
-        const originalText = btn.innerHTML;
-        btn.dataset.originalText = originalText;
-        btn.innerHTML = `<span class="loading-dots"></span>`;
-      });
-      showNotification(`Sending command: ${commandText}...`, "info");
-      const requestData = {
-        userId: user.id,
-        command: commandText,
-        username: user.username || '',
-        firstName: user.first_name || 'User',
-        source: 'mini_app'
-      };
-      try {
-        // Kirim ke Google Apps Script
-        await fetch(GAS_WEB_APP_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(requestData)
-        });
-        // Beri feedback sukses
-        showNotification(`✅ Command "${commandText}" sent! Check your Telegram chat.`, "success");
-        // Getar jika didukung
-        try {
-          if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
-            tg.HapticFeedback.impactOccurred('light');
-          }
-        } catch (e) {
-          console.log('Haptic feedback not available');
-        }
-        // Highlight input field
-        const stockInput = document.getElementById('stockInput');
-        stockInput.classList.add('persistent');
-      } catch (error) {
-        console.error('Error:', error);
-        showNotification('❌ Failed to send command. Please try again.', "error");
-      } finally {
-        // Restore buttons
-        setTimeout(() => {
-          buttons.forEach(btn => {
-            btn.disabled = false;
-            if (btn.dataset.originalText) {
-              btn.innerHTML = btn.dataset.originalText;
-            }
-          });
-        }, 500);
-      }
-    }
+    
+    
     // ===== SLINGSHOT FUNCTIONS =====
     async function loadCSV() {
       const loading = document.getElementById('loading');
@@ -2281,6 +2546,8 @@
         }
       }
     });
+    
+    
     //top stock by broker
     // ===== BROKER ANALYSIS FUNCTIONS =====
     function setupBrokerAnalysis() {
@@ -2390,6 +2657,13 @@
           showNotification('Please enter broker code(s) first!', 'warning');
           return null;
         }
+        
+        // Simpan recent action
+        saveRecentAction(brokerCodes, 'top-broker', {
+          brokers: brokerCodes,
+          dateRange: getFormattedDateRange()
+        });
+
         const dateRange = getFormattedDateRange();
         const limit = getLimitValue(); // Get limit from dropdown
         // Replace the number in the prefix with the selected limit
@@ -2766,6 +3040,19 @@
           showNotification('Please enter broker code(s)!', 'warning');
           return;
         }
+        
+        // Format untuk penyimpanan
+        const fullCommand = brokerInput.includes('+') 
+          ? brokerInput 
+          : `${brokerInput}+${document.querySelector('.stock-input')?.value || ''}`;
+
+        // Simpan recent action
+        saveRecentAction(fullCommand, 'broker-monthly', {
+          brokers: brokerInput,
+          month: month,
+          stock: brokerInput.includes('+') ? brokerInput.split('+')[1] : ''
+        });
+
         if (!month) {
           showNotification('Please select a month!', 'warning');
           return;
@@ -2779,10 +3066,10 @@
         // Build command
         const command = buildMonthlyCommand(brokerInput, month);
         console.log('Monthly tracking command:', command);
-        // Send command
+        
+        // Kirim command menggunakan fungsi utama
         sendTelegramCommand(command);
-        // Save to recent
-        saveToRecentCommands(brokerInput, month);
+        
       });
       // Enter key support for monthly broker input
       brokerInputMonthly.addEventListener('keypress', function(e) {
@@ -2801,33 +3088,8 @@
       // Add quick examples
       setupMonthlyExamples();
     });
-    // Save to recent commands
-    function saveToRecentCommands(brokerInput, month) {
-      try {
-        const historyKey = 'monthly_tracking_history';
-        let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
-        const entry = {
-          brokerInput: brokerInput,
-          month: month,
-          timestamp: new Date().toISOString()
-        };
-        // Remove duplicates
-        history = history.filter(item =>
-          !(item.brokerInput === brokerInput && item.month === month)
-        );
-        // Add to beginning
-        history.unshift(entry);
-        // Keep only last 5
-        if (history.length > 5) {
-          history = history.slice(0, 5);
-        }
-        localStorage.setItem(historyKey, JSON.stringify(history));
-        // Update examples
-        updateMonthlyExamples();
-      } catch (e) {
-        console.error('Error saving recent command:', e);
-      }
-    }
+    
+    
     // Setup monthly examples
     function setupMonthlyExamples() {
       const examples = [{
@@ -2953,102 +3215,197 @@
         console.error('Error updating monthly examples:', e);
       }
     }
-    // ===== FUNGSI UTAMA TELEGRAM (dengan error handling) =====
-async function sendTelegramCommand(commandText) {
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe?.user;
     
-    if (!user || !user.id) {
-        showNotification("Open this app through Telegram to use this feature", "error");
-        return;
-    }
-    
-    // Tampilkan loading state
-    const analyzeMonthlyBtn = document.getElementById('analyzeMonthlyBtn');
-    const originalBtnHTML = analyzeMonthlyBtn.innerHTML;
-    analyzeMonthlyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    analyzeMonthlyBtn.disabled = true;
-    
-    showNotification(`Sending command: ${commandText}...`, "info");
-    
-    const requestData = {
-        userId: user.id,
-        command: commandText,
-        username: user.username || '',
-        firstName: user.first_name || 'User',
-        source: 'mini_app'
-    };
+    // ===== FUNGSI UTAMA TELEGRAM (YANG PERTAMA - DIPERBARUI) =====
+    async function sendTelegramCommand(commandText) {
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
 
-    try {
-        // Kirim ke Google Apps Script
-        await fetch(GAS_WEB_APP_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestData)
-        });
-        
-        // Beri feedback sukses
-        showNotification(`✅ Command "${commandText}" sent!`, "success");
-        
-        // Getar jika didukung
-        try {
-            if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        } catch (e) {
-            console.log('Haptic feedback not available');
+        if (!user || !user.id) {
+            showNotification("Open this app through Telegram to use this feature", "error");
+            return;
         }
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('❌ Failed to send command. Please try again.', "error");
-    } finally {
-        // Restore button
-        analyzeMonthlyBtn.innerHTML = originalBtnHTML;
-        analyzeMonthlyBtn.disabled = false;
+
+        // Tampilkan loading state
+        const buttons = document.querySelectorAll('.command-btn, .search-btn, .slingshot-btn, #analyzeBtn, #analyzeMonthlyBtn, #commandBot');
+        buttons.forEach(btn => {
+            if (!btn.disabled) {
+                btn.disabled = true;
+                const originalText = btn.innerHTML;
+                btn.dataset.originalText = originalText;
+                btn.innerHTML = `<span class="loading-dots"></span>`;
+            }
+        });
+
+        showNotification(`Sending command: ${commandText}...`, "info");
+
+        // Simpan ke recent actions berdasarkan tipe command
+        let menuType = 'unknown';
+        let additionalData = {};
+
+        // Analisis tipe command untuk disimpan di history
+        if (commandText.startsWith('/')) {
+            // Command dari Quick Command Bot
+            if (commandText.includes('+') && (commandText.includes('-') || /\/[A-Z]{2,}/.test(commandText))) {
+                // Broker monthly format: /AK-ZP-BK+BBCA+2025-10
+                menuType = 'broker-monthly';
+                const parts = commandText.substring(1).split('+');
+                if (parts.length >= 2) {
+                    additionalData = {
+                        brokers: parts[0],
+                        stock: parts[1],
+                        month: parts[2] || document.getElementById('startMonth')?.value
+                    };
+                }
+            } else if (commandText.startsWith('/vol') || commandText.startsWith('/vvsms')) {
+                // Top Stock by Broker commands
+                menuType = 'top-broker';
+            } else if (commandText.startsWith('/fc-') || commandText.startsWith('/tr-') || 
+                       commandText.startsWith('/bsd-') || commandText.startsWith('/rrg-') ||
+                       commandText.startsWith('/t5') || commandText.startsWith('/fl') ||
+                       commandText.startsWith('/pe-')) {
+                // Analysis Tools commands
+                menuType = 'analysis';
+                const stockCode = commandText.split('-')[1] || commandText.substring(3);
+                if (stockCode) {
+                    additionalData = { stockCode: stockCode };
+                }
+            } else {
+                // General bot commands
+                menuType = 'command-bot';
+            }
+        } else if (/^[A-Z]{1,4}$/.test(commandText)) {
+            // Stock code saja (untuk analysis)
+            menuType = 'analysis';
+            additionalData = { stockCode: commandText };
+        } else if (commandText.includes('-') && /[A-Z]{2,4}/.test(commandText)) {
+            // Broker codes saja (tanpa prefix)
+            menuType = 'top-broker';
+            additionalData = { brokers: commandText };
+        }
+
+        // Simpan ke recent actions
+        saveRecentAction(commandText, menuType, additionalData);
+
+        const requestData = {
+            userId: user.id,
+            command: commandText,
+            username: user.username || '',
+            firstName: user.first_name || 'User',
+            source: 'mini_app'
+        };
+
+        try {
+            // Kirim ke Google Apps Script
+            await fetch(GAS_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            // Beri feedback sukses
+            showNotification(`✅ Command "${commandText}" sent! Check your Telegram chat.`, "success");
+
+            // Getar jika didukung
+            try {
+                if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
+                    tg.HapticFeedback.impactOccurred('light');
+                }
+            } catch (e) {
+                console.log('Haptic feedback not available');
+            }
+
+            // Highlight input field yang sesuai
+            highlightInputField(menuType, commandText);
+
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('❌ Failed to send command. Please try again.', "error");
+        } finally {
+            // Restore buttons setelah 1 detik
+            setTimeout(() => {
+                buttons.forEach(btn => {
+                    btn.disabled = false;
+                    if (btn.dataset.originalText) {
+                        btn.innerHTML = btn.dataset.originalText;
+                        delete btn.dataset.originalText;
+                    }
+                });
+            }, 1000);
+        }
     }
-}
+
+    // Fungsi helper untuk highlight input field
+    function highlightInputField(menuType, commandText) {
+        switch(menuType) {
+            case 'analysis':
+                const stockInput = document.getElementById('stockInput');
+                if (stockInput) {
+                    // Ekstrak stock code dari command
+                    const stockMatch = commandText.match(/[A-Z]{1,4}$/) || commandText.match(/-([A-Z]{1,4})/);
+                    if (stockMatch) {
+                        stockInput.value = stockMatch[1] || stockMatch[0];
+                    } else {
+                        stockInput.value = commandText;
+                    }
+                    stockInput.classList.add('persistent');
+                }
+                break;
+
+            case 'top-broker':
+                const brokerInput = document.getElementById('brokerInput');
+                if (brokerInput) {
+                    // Ekstrak broker codes
+                    const brokerMatch = commandText.match(/\/(?:vol\d+|vvsms\d+)-([A-Z-]+)/);
+                    if (brokerMatch && brokerMatch[1]) {
+                        brokerInput.value = brokerMatch[1];
+                    }
+                }
+                break;
+
+            case 'broker-monthly':
+                const brokerMonthlyInput = document.getElementById('brokerInputMonthly');
+                if (brokerMonthlyInput) {
+                    // Format: /AK-ZP-BK+BBCA+2025-10
+                    const parts = commandText.substring(1).split('+');
+                    if (parts.length >= 2) {
+                        brokerMonthlyInput.value = `${parts[0]}+${parts[1]}`;
+                    }
+                }
+                break;
+
+            case 'command-bot':
+                // Kosongkan input setelah berhasil
+                const commandInput = document.getElementById('commandInput');
+                if (commandInput) {
+                    commandInput.value = '';
+                }
+                break;
+        }
+    }
     
     
     // Fungsi untuk mengirim command ke bot Telegram via GAS
+    // ===== FUNGSI UNTUK QUICK COMMAND BOT =====
     async function sendCommandToBot() {
-      const commandInput = document.getElementById('commandInput');
-      const command = commandInput.value.trim();
-      if (!command) {
-        alert('Masukkan command!');
-        return;
-      }
-      // Ambil data user dari Telegram WebApp
-      const tg = window.Telegram.WebApp;
-      const user = tg.initDataUnsafe?.user;
-      // Data yang dikirim ke GAS
-      const payload = {
-        userId: user?.id || 'unknown',
-        command: command,
-        username: user?.username || user?.first_name || 'User',
-        timestamp: new Date().toISOString(),
-        source: 'mini_app'
-      };
-      try {
-        // Kirim POST request ke GAS
-        const response = await fetch(GAS_WEB_APP_URL, {
-          method: 'POST',
-          mode: 'no-cors', // Important for GAS
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-        console.log('Command sent:', command);
-        alert(`✅ Command "${command}" telah dikirim!`);
+        const commandInput = document.getElementById('commandInput');
+        const command = commandInput.value.trim();
+
+        if (!command) {
+            showNotification('Please enter a command!', 'warning');
+            return;
+        }
+
+        // Kirim menggunakan fungsi utama
+        await sendTelegramCommand(command);
+
         // Kosongkan input setelah berhasil
         commandInput.value = '';
-      } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Gagal mengirim command');
-      }
     }
+
     // Event listener untuk tombol send
     document.getElementById('commandBot').addEventListener('click', sendCommandToBot);
     // Enter key support
@@ -3086,6 +3443,63 @@ async function sendTelegramCommand(commandText) {
     });
   });
 
+    // ===== EVENT LISTENERS UNTUK AUTO-SAVE =====
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inisialisasi semua history
+      initAllHistories();
+
+      // Auto-save ketika input berubah (dengan debounce)
+      let saveTimeout;
+
+      function scheduleSave(menuType, value) {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          if (value && value.trim()) {
+            saveToMenuHistory(menuType, value.trim());
+          }
+        }, 1000);
+      }
+
+      // Analysis Tools
+      document.getElementById('stockInput')?.addEventListener('input', function() {
+        scheduleSave('analysis', this.value.toUpperCase());
+      });
+
+      // Top Stock by Broker
+      document.getElementById('brokerInput')?.addEventListener('input', function() {
+        scheduleSave('top-broker', this.value.toUpperCase());
+      });
+
+      // Broker Monthly Tracking
+      const brokerMonthlyInput = document.getElementById('brokerInputMonthly');
+      const startMonthInput = document.getElementById('startMonth');
+
+      brokerMonthlyInput?.addEventListener('input', function() {
+        const brokerValue = this.value.trim();
+        const monthValue = startMonthInput?.value || '';
+        if (brokerValue && monthValue) {
+          const fullValue = `${brokerValue}|${monthValue}`;
+          scheduleSave('broker-monthly', fullValue);
+        }
+      });
+
+      startMonthInput?.addEventListener('change', function() {
+        const brokerValue = brokerMonthlyInput?.value.trim() || '';
+        const monthValue = this.value;
+        if (brokerValue && monthValue) {
+          const fullValue = `${brokerValue}|${monthValue}`;
+          scheduleSave('broker-monthly', fullValue);
+        }
+      });
+
+      // Quick Command Bot
+      document.getElementById('commandInput')?.addEventListener('input', function() {
+        scheduleSave('command-bot', this.value);
+      });
+
+      // Update recent actions display
+      updateRecentActions();
+    });
   
 
   </script>
